@@ -1,0 +1,1 @@
+{"name":"glitch-l2d","version":"0.1.0","private":true,"scripts":{"test":"node tools/verify.mjs"},"devDependencies":{"playwright":"1.61.1"}}

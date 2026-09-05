@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GLITCH · Live2D</title><link rel="icon" href="data:,"><link rel="stylesheet" href="style.css"></head>
+<body>
+<header><a class="brand" href="./">G<span>·</span> / GLITCH</a><span class="tag">LIVE2D LAB · 01</span><a href="https://github.com/yazelin/glitch-l2d">原始碼 ↗</a></header>
+<main><section class="stage-wrap"><div class="stage-label"><span class="dot"></span><span id="status" role="status">模型載入中</span></div><div class="backword" aria-hidden="true">GLITCH</div><div id="stage"></div><div class="stage-bottom"><span>格莉奇 / CHARACTER 01</span><span>· 輕觸揮手</span></div></section>
+<aside><p class="eyebrow">HELLO, WORLD_</p><h1>今天也有一點<br><em>小故障。</em></h1><p class="intro">讓格莉奇動起來。開啟待機，看看她呼吸、眨眼，或親手調整每個動作。</p>
+<div class="actions"><button id="auto" aria-pressed="true">Ⅱ 暫停待機</button><button id="wave">· 揮個手</button></div>
+<div class="panel"><div class="panel-title"><h2>動作控制</h2><button id="reset" class="text-button">重設</button></div><p class="hint">拖動滑桿會暫停待機。</p><div id="controls"></div></div>
+<div class="panel settings"><label><input id="mesh" type="checkbox"> 顯示網格</label><label><input id="follow" type="checkbox" checked> 頭部跟隨游標</label><label><input id="talk" type="checkbox"> 模擬說話</label></div>
+<p class="note">製作中的基礎模型 · 表情素材仍待精修。<br>保留可編輯專案，方便日後替換分層原畫。</p><a class="download" href="source/glitch.cmo3" download>下載 Cubism 專案 ↓</a>
+</aside></main><footer><span>GLITCH / A LITTLE ERROR, A LITTLE LIFE.</span><span>Cubism SDK 5.0 相容模型</span></footer>
+<script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.10/dist/browser/pixi.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js"></script><script src="app.js"></script>
+</body></html>

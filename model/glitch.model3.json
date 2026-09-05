@@ -1,0 +1,43 @@
+{
+  "Version": 3,
+  "FileReferences": {
+    "Moc": "glitch.moc3",
+    "Textures": [
+      "glitch.2048/texture_00.png"
+    ],
+    "DisplayInfo": "glitch.cdi3.json",
+    "Motions": {
+      "Idle": [
+        {
+          "File": "motions/idle.motion3.json",
+          "FadeInTime": 0.5,
+          "FadeOutTime": 0.5
+        }
+      ],
+      "Wave": [
+        {
+          "File": "motions/wave.motion3.json",
+          "FadeInTime": 0.2,
+          "FadeOutTime": 0.3
+        }
+      ]
+    }
+  },
+  "Groups": [
+    {
+      "Target": "Parameter",
+      "Name": "EyeBlink",
+      "Ids": [
+        "ParamEyeLOpen",
+        "ParamEyeROpen"
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Name": "LipSync",
+      "Ids": [
+        "ParamMouthOpenY"
+      ]
+    }
+  ]
+}

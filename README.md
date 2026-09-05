@@ -1,0 +1,60 @@
+# GLITCH · 格莉奇 Live2D
+
+以提供的角色原圖製作的 Cubism SDK 5.0 相容基礎模型，附互動展示頁與可編輯來源。
+
+[開啟展示頁](https://yazelin.github.io/glitch-l2d/)
+
+## 已完成的動作
+
+| 參數 | 動作 | 模型內的實作 |
+| --- | --- | --- |
+| `ParamAngleZ` | 頭部傾斜 | `D_Head` 旋轉變形器 |
+| `ParamBodyAngleZ` | 身體擺動 | `D_Body` 旋轉變形器 |
+| `ParamBreath` | 呼吸 | `D_Breath` 控制上衣縮放 |
+| `ParamWave` | 揮手 | `D_ArmWave` 控制手掌與袖子 |
+| `ParamEyeLOpen` / `ParamEyeROpen` | 左右眨眼 | 眼皮透明度 |
+| `ParamMouthOpenY` | 開口 | 開口素材透明度 |
+
+模型有 30 個 ArtMesh、4 個旋轉變形器、28 個參數。其餘標準參數尚未綁定，不代表都能驅動動作。這一版不包含臉部 XY 轉向、視線移動、髮絲物理或手指關節。
+
+網頁只改變模型參數，由 Cubism Core 計算網格變形。網格檢視可直接查看三角形結構。待機與揮手另附 `.motion3.json`，可供其他 Cubism 播放器使用。
+
+## 檔案
+
+- `model/glitch.model3.json`：SDK 載入入口；使用時保留整個 `model/` 目錄結構。
+- `model/glitch.moc3`：以 Editor 的「For SDK 5.0 / Cubism5.0」匯出。
+- `source/glitch.cmo3`：可繼續修改綁定的 Cubism 專案。
+- `source/glitch.psd`：原始 34 層素材，畫布 1196 × 3072。模型移除了 I、U、E、O 四個測試嘴形。
+- `pet-plain.webp`：提供的原圖，598 × 1536。
+- [換圖規格](source/REPLACE-ART.md)：交給之後精修素材的人。
+
+## 本機執行
+
+```sh
+python3 -m http.server 8766
+```
+
+開啟 `http://localhost:8766`。展示頁需連網載入 Cubism Core、PixiJS 與 pixi-live2d-display。使用 PixiJS 6.5.10、pixi-live2d-display 0.4.0；後者的 `cubism4` 檔名是其套件命名，實際 Core 已驗證可載入本模型的 SDK 5.0 格式。
+
+## 驗證
+
+```sh
+npm install
+npm run test
+```
+
+測試會啟動本機伺服器，以 Chromium 載入實際模型，比較各參數極值的網格頂點或透明度，並檢查滑桿、待機、揮手、網格顯示與手機版。首次使用 Playwright 需執行 `npx playwright install chromium`。
+
+## 素材品質與換圖
+
+目前是可動作的基礎版本。原始分層中的臉底與遮擋處是簡單補色，閉眼及開口也是測試素材。呼吸是上衣的輕微等比縮放；揮手幅度保持小範圍，減少接縫外露。眼皮透過透明度過渡，尚未做完整眼瞼網格變形。
+
+可沿用本專案更換精修原畫，優先保持畫布、姿勢、分層名稱與順序。輪廓、比例或部位位置改動較大時，需調整網格和關鍵姿勢。替換完成後重新整理貼圖集，並重新匯出整套模型。
+
+參考：[Live2D PSD 重新匯入說明](https://docs.live2d.com/en/cubism-editor-manual/psd-re-import/)、[模型範本說明](https://docs.live2d.com/en/cubism-editor-manual/template/)。本版直接建立變形器，未套用外部模型範本。
+
+## 來源與授權
+
+角色素材來自本次提供的圖片及既有 `glitch-vn` 分層專案；本 repo 不另行授予角色美術素材的使用權。網站程式碼採 MIT 授權，見 `LICENSE-CODE`。
+
+Live2D Cubism Core © Live2D Inc.，由官方網址載入，使用依其授權條款。PixiJS 與 pixi-live2d-display 為 MIT 授權的第三方程式庫。
