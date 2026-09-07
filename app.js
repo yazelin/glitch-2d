@@ -42,8 +42,8 @@ const specs=[['ParamAngleZ','頭部傾斜',-30,30,0],['ParamBodyAngleZ','身體�
  }
  // 揮手：0–0.25s 反向蓄力，之後主振（頻率 11），尾端 40% 用衰減包絡收
  const WAVE_T=2.4;
- function waveCurve(u){if(u<.25)return -6*Math.sin(Math.PI*u/.25)*.5;const w=u-.25,L=WAVE_T-.25;
-  const env=(w<L*.6?Math.sin(Math.PI*Math.min(w/(L*.35),1)/2):Math.exp(-(w-L*.6)*3.2))*Math.min(1,(WAVE_T-u)/.3);return Math.sin(w*11)*27*env}
+ function waveCurve(u){if(u<.25)return -3*Math.sin(Math.PI*u/.25)*.5;const w=u-.25,L=WAVE_T-.25;
+  const env=(w<L*.6?Math.sin(Math.PI*Math.min(w/(L*.35),1)/2):Math.exp(-(w-L*.6)*3.2))*Math.min(1,(WAVE_T-u)/.3);return Math.sin(w*11)*14*env}
  app.ticker.add(()=>{elapsed+=app.ticker.deltaMS/1000;const v={...values};if(automatic){idle(elapsed,v,document.querySelector('#follow').checked?pointer:0)}if(elapsed-waveStart<WAVE_T)v.ParamWave=waveCurve(elapsed-waveStart);if(document.querySelector('#talk').checked)v.ParamMouthOpenY=Math.max(0,Math.sin(elapsed*10))*.8;apply(v);for(const[id,c]of Object.entries(controls)){c.input.value=v[id];c.out.value=v[id].toFixed(2)}overlay.clear();if(document.querySelector('#mesh').checked){overlay.lineStyle(.7,0xa6f5e0,.5);const d=core._model.drawables;d.vertexPositions.forEach((positions,i)=>{if(d.opacities[i]<.01)return;positions=model.internalModel.getDrawableVertices(i);const pts=model.internalModel.localTransform;const idx=d.indices[i];for(let j=0;j<idx.length;j+=3){for(let k=0;k<4;k++){const n=idx[j+k%3]*2;const p=pts.apply(new PIXI.Point(positions[n],positions[n+1]));const q=model.toGlobal(p);k?overlay.lineTo(q.x,q.y):overlay.moveTo(q.x,q.y)}}})}});
  document.querySelector('#status').textContent='模型已載入';window.__demo={status:'ok',errors:[],params:core._parameterIds.length,drawables:core._model.drawables.count};
 })().catch(e=>{window.__demo.status='error';window.__demo.errors.push(String(e));document.querySelector('#status').textContent=e.message;console.error(e)});

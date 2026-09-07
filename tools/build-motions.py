@@ -66,11 +66,11 @@ motion('idle', IDLE_T, True, {
 # ---- 揮手：0–0.25s 反向蓄力，主振頻率 11，尾端衰減收 ----
 WAVE_T = 2.4
 def wave(u):
-    if u < .25: return -6 * math.sin(math.pi * u / .25) * .5
+    if u < .25: return -3 * math.sin(math.pi * u / .25) * .5
     w = u - .25; L = WAVE_T - .25
     env = math.sin(math.pi * min(w / (L * .35), 1) / 2) if w < L * .6 else math.exp(-(w - L * .6) * 3.2)
     env *= min(1, (WAVE_T - u) / .3)                        # 最後 0.3 秒線性歸零，接回待機不跳
-    return math.sin(w * 11) * 27 * env
+    return math.sin(w * 11) * 14 * env
 motion('wave', WAVE_T, False, {'ParamWave': wave})
 
 p = root / 'model/glitch.model3.json'; m = json.loads(p.read_text())

@@ -62,6 +62,10 @@ npm run test
 
 重匯時不必重生網格的做法：Cubism 的 Auto Mesh 對話框在 Wine 下按鈕搆不到，所以把新開口素材**以唇線為中心往下移**、裁到舊網格範圍內（Cubism 預設 boundary margin 20px），再用 File → Open PSD → `Model settings` 選已開啟的模型 → `Re-import settings` 選 `Replace [舊 PSD]`。圖層靠名字對回 ArtMesh；模型沒有的四張嘴形不會被加進來，重排圖集時會問要不要刪掉它們的舊圖，答 Yes。
 
+揮手切到身體的修法（2026-09-07）：舉手那隻袖子原本有 49% 疊在軀幹上，`D_ArmWave` 一轉整塊跟著走。
+`glitch-vn/art/live2d/refine/split_sleeve.py` 把肩縫右側的袖子像素搬進帽T（直通 alpha over 合成，休息姿態不變），
+袖子網格只剩手臂本體；揮手幅度同時從 ±27° 降到 ±14°。上下臂仍是同一個旋轉，要分開得在 Cubism 加手肘軸的旋轉變形器。
+
 匯出的檔名跟著 `.cmo3` 專案名走（`glitch-rig-v2.*`），`tools/finalize-export.sh <匯出目錄>` 會改回 `glitch.*`、修 model3.json 的引用、補回 Motions／Groups、跑測試。
 
 可沿用本專案更換精修原畫，優先保持畫布、姿勢、分層名稱與順序。輪廓、比例或部位位置改動較大時，需調整網格和關鍵姿勢。替換完成後重新整理貼圖集，並重新匯出整套模型。
