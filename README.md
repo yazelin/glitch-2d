@@ -63,7 +63,7 @@ npm run test
 重匯時不必重生網格的做法：Cubism 的 Auto Mesh 對話框在 Wine 下按鈕搆不到，所以把新開口素材**以唇線為中心往下移**、裁到舊網格範圍內（Cubism 預設 boundary margin 20px），再用 File → Open PSD → `Model settings` 選已開啟的模型 → `Re-import settings` 選 `Replace [舊 PSD]`。圖層靠名字對回 ArtMesh；模型沒有的四張嘴形不會被加進來，重排圖集時會問要不要刪掉它們的舊圖，答 Yes。
 
 切錯位置的兩處修正（2026-09-07）：後髮層底部原本含帽T 的肩膀與帽子滾邊（頭一轉帽T 跟著動），指尖被切層腳本當小碎片丟進粒子層（手一揮指尖留在原地）。
-修法在 `glitch-vn/art/live2d/refine/fix_head_hands.py`，用 `refine/rebuild_all.sh` 從原圖重跑整條修補管線後 Replace 重匯。
+修法在 `glitch-vn/art/live2d/refine/head_mask.py`（沿髮絲與衣服交界手描折線，線下像素一律搬出頭部層——用顏色分不開同色系的髮與帽T）與 `fix_head_hands.py`（指尖），用 `refine/rebuild_all.sh` 從原圖重跑整條修補管線後 Replace 重匯。
 
 滑桿範圍是 rig 的極限，不是保守：這一版沒有脖子與肩膀的變形器，`D_Head`、`D_ArmWave` 都是單一剛體旋轉，
 頭超過 ±12°、揮手超過 ±14° 就會露出切口（後髮蓋上領口、袖子上緣離開肩膀）。要開到 ±30° 得在 Cubism 加脖子與肩膀的變形器。
