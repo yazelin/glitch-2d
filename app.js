@@ -1,7 +1,8 @@
 /* Cubism owns deformation. The page only drives exported model parameters. */
 'use strict';
 window.__demo={status:'loading',errors:[]};
-const specs=[['ParamAngleZ','頭部傾斜',-30,30,0],['ParamBodyAngleZ','身體擺動',-10,10,0],['ParamBreath','呼吸',0,1,0],['ParamWave','揮手',-30,30,0],['ParamEyeLOpen','左眼開合',0,1,1],['ParamEyeROpen','右眼開合',0,1,1],['ParamMouthOpenY','嘴巴開合',0,1,0]];
+/* 滑桿範圍＝這個 rig 撐得住的角度：沒有脖子與肩膀變形器，頭超過 ±12°、揮手超過 ±14° 就會露出切口 */
+const specs=[['ParamAngleZ','頭部傾斜',-12,12,0],['ParamBodyAngleZ','身體擺動',-10,10,0],['ParamBreath','呼吸',0,1,0],['ParamWave','揮手',-14,14,0],['ParamEyeLOpen','左眼開合',0,1,1],['ParamEyeROpen','右眼開合',0,1,1],['ParamMouthOpenY','嘴巴開合',0,1,0]];
 (async()=>{
  if(!window.Live2DCubismCore||!window.PIXI?.live2d)throw Error('無法載入 Live2D，請確認網路後重新整理。');
  const stage=document.querySelector('#stage'),app=new PIXI.Application({resizeTo:stage,backgroundAlpha:0,antialias:true,resolution:Math.min(devicePixelRatio,2),autoDensity:true});stage.append(app.view);
@@ -35,7 +36,7 @@ const specs=[['ParamAngleZ','頭部傾斜',-30,30,0],['ParamBodyAngleZ','身體�
   if(t>=blink.next){blink.start=t;blink.double=Math.random()<.18;blink.next=t+(blink.double?.5:0)+2.5+Math.random()*3.5}
   const b=breath(t);
   v.ParamBreath=b;
-  v.ParamAngleZ=Math.sin(t*.65)*5+Math.sin(t*.17+1.3)*3+(b-.5)*1.2+pointer*12;
+  v.ParamAngleZ=Math.sin(t*.65)*5+Math.sin(t*.17+1.3)*3+(b-.5)*1.2+pointer*4;   // 8+4=12，不超過滑桿範圍
   v.ParamBodyAngleZ=Math.sin(t*.55)*2.6+Math.sin(t*.13+.7)*1.4+(b-.5)*1.6;
   v.ParamWave=Math.sin(t*.9)*1.4+Math.sin(t*.21)*.8;
   v.ParamEyeLOpen=blinkAt(t,0);v.ParamEyeROpen=blinkAt(t,.025);
