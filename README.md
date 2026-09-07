@@ -58,7 +58,11 @@ npm run test
 
 ## 素材品質與換圖
 
-目前是可動作的基礎版本。原始分層中的臉底與遮擋處是簡單補色。閉眼（`22_lid_R`、`23_lid_L`）與開口（`42_mouth_A`）已換成沿原畫風重做的素材（來源與做法在 `glitch-vn/art/live2d/refine/`），`source/glitch.psd` 是換過的版本；**模型本身要等 PSD 重匯後才會用到新素材**，重匯步驟見下方。開口素材比舊的高（往上多了約 37px），重匯後 `42_mouth_A` 那個 ArtMesh 要重新自動生成網格，否則多出來的部分會不見。呼吸是上衣的輕微等比縮放；揮手幅度保持小範圍，減少接縫外露。眼皮透過透明度過渡，尚未做完整眼瞼網格變形。
+目前是可動作的基礎版本。原始分層中的臉底與遮擋處是簡單補色。閉眼（`22_lid_R`、`23_lid_L`）與開口（`42_mouth_A`）已換成沿原畫風重做的素材並重匯進模型（來源與做法在 `glitch-vn/art/live2d/refine/`）。
+
+重匯時不必重生網格的做法：Cubism 的 Auto Mesh 對話框在 Wine 下按鈕搆不到，所以把新開口素材**以唇線為中心往下移**、裁到舊網格範圍內（Cubism 預設 boundary margin 20px），再用 File → Open PSD → `Model settings` 選已開啟的模型 → `Re-import settings` 選 `Replace [舊 PSD]`。圖層靠名字對回 ArtMesh；模型沒有的四張嘴形不會被加進來，重排圖集時會問要不要刪掉它們的舊圖，答 Yes。
+
+匯出的檔名跟著 `.cmo3` 專案名走（`glitch-rig-v2.*`），`tools/finalize-export.sh <匯出目錄>` 會改回 `glitch.*`、修 model3.json 的引用、補回 Motions／Groups、跑測試。
 
 可沿用本專案更換精修原畫，優先保持畫布、姿勢、分層名稱與順序。輪廓、比例或部位位置改動較大時，需調整網格和關鍵姿勢。替換完成後重新整理貼圖集，並重新匯出整套模型。
 
