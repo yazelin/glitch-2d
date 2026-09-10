@@ -1,4 +1,4 @@
-import { mouthFromRms, rms } from './motion.js?v=0.3.1';
+import { mouthFromRms, rms } from './motion.js?v=0.4.0';
 
 export class VoicePlayer {
   constructor(motion, onState = () => {}) {

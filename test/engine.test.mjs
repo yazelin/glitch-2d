@@ -133,7 +133,8 @@ test('full and bust framing contain their art bounds and can map pointers back t
 
 test('atlas crops exclude neighboring pieces and source art is untouched', async () => {
   const source = await loadImage(await readFile(new URL('../character/glitch/sleeves-v2.png', import.meta.url)));
-  const spec = rig.textures.sleeveLeft;
+  // Keep the original shared atlas as a fixture for crop/exclusion behavior.
+  const spec = { chroma: [49,226,25], crop: [732,24,423,617], clearRects: [[890,600,365,60]] };
   const result = prepareTexture(source, spec, createCanvas);
   assert.equal(source.width, 1254); assert.equal(result.width, 423); assert.equal(result.height, 617);
   const ctx = result.getContext('2d');

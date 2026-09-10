@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#151c29">
+  <title>格莉奇 · 比例對齊</title>
+  <meta name="description" content="以格莉奇三視圖的正面為固定底圖，疊合角色、拖動部件並等比縮放。">
+  <link rel="stylesheet" href="style.css?v=0.4.0">
+</head>
+<body>
+  <header class="app-header"><a class="brand" href="../"><span>G·</span> 格莉奇 <b>/ 比例對齊</b></a><a class="back-link" href="../">回角色展示 ↗</a></header>
+  <main>
+    <section class="workspace" aria-label="正面比例對照工作區">
+      <div class="toolbar">
+        <div class="segmented" role="group" aria-label="對照模式"><button data-mode="reference" aria-pressed="false">原圖</button><button data-mode="overlay" aria-pressed="true">疊圖</button><button data-mode="model" aria-pressed="false">組裝</button></div>
+        <div class="view-buttons" role="group" aria-label="取景範圍"><button data-frame="full" aria-pressed="true">全身</button><button data-frame="head" aria-pressed="false">頭部</button><button data-frame="lower" aria-pressed="false">腰腿</button></div>
+        <label class="zoom-label">放大 <input id="zoom" type="range" min="100" max="300" step="10" value="100"><output id="zoom-value" for="zoom">100%</output></label>
+      </div>
+      <div id="viewport" class="viewport">
+        <div id="artboard" class="artboard" tabindex="0" aria-label="角色對齊畫布。點選並拖動部件；方向鍵微調，Shift 加速，Escape 取消拖曳。">
+          <canvas id="reference" aria-label="三視圖正面固定底圖"></canvas>
+          <canvas id="model" aria-label="目前組裝的格莉奇"></canvas>
+          <canvas id="selection" aria-hidden="true"></canvas>
+          <div id="loading" class="loading" role="status">正在載入正面底圖與角色…</div>
+        </div>
+      </div>
+      <div class="workspace-footer"><span class="reference-badge"><span aria-hidden="true">●</span> 正面三視圖 · 底圖固定</span><span id="status" role="status">準備中</span></div>
+    </section>
+    <aside class="panel" aria-label="比例調整工具">
+      <section><p class="eyebrow">FRONT / ALIGNMENT</p><h1>對著原圖，<br>調成她的比例。</h1><p class="hint">點選角色部件後拖動。底圖保持固定，角色暫停動作，方便看清楚輪廓。</p></section>
+      <fieldset id="tools" disabled>
+        <section class="control-section"><label class="section-title" for="opacity">角色透明度 <output id="opacity-value" for="opacity">50%</output></label><input id="opacity" class="wide-range" type="range" min="0" max="100" value="50"><p class="hint">0% 看原圖，100% 看清楚組裝細節。</p><label class="check"><input id="guides" type="checkbox" checked>顯示中心線與高度參考線</label><label class="check"><input id="bones" type="checkbox">顯示骨架參考線</label><p class="hint">骨架線標示關節的大致位置，會跟著部件移動。</p></section>
+        <section class="control-section"><label class="section-title" for="part">調整哪個部分</label><select id="part"><option value="">點選畫面或選擇部件</option></select><p id="selection-hint" class="hint">眼睛可整組調整，保持眼白、虹膜與閉眼線對齊。</p>
+          <div id="selection-controls" hidden>
+            <div class="number-grid"><label>中心 X<input id="center-x" type="number" step="1"></label><label>中心 Y<input id="center-y" type="number" step="1"></label><label>寬度<input id="width" type="number" min="1" step="1"></label><label>高度<input id="height" type="number" min="1" step="1"></label></div>
+            <p class="unit-note">單位：參考原圖像素 · 縮放保持比例</p>
+            <div class="action-row"><button id="smaller">縮小 2%</button><button id="larger">放大 2%</button></div>
+            <div class="action-row"><button id="rotate-left">左轉 1°</button><button id="rotate-right">右轉 1°</button></div>
+            <div class="nudge" role="group" aria-label="微調位置"><button data-nudge="0,-1" aria-label="上移一像素">↑</button><button data-nudge="-1,0" aria-label="左移一像素">←</button><span>移動</span><button data-nudge="1,0" aria-label="右移一像素">→</button><button data-nudge="0,1" aria-label="下移一像素">↓</button></div>
+            <button id="reset-part" class="text-button">還原選取部件</button>
+          </div>
+        </section>
+        <section class="control-section"><h2>每片分開看</h2><div class="visibility-actions"><button id="show-all">全開</button><button id="hide-all">全關</button><button id="solo">只看選取</button></div><div id="parts-list" class="parts-list"></div><p class="hint">這裡的開關只供比對；下載設定時仍保留全部部件。閉眼線和張嘴片也能單獨開啟。</p></section>
+        <section class="control-section"><div class="action-row"><button id="undo" disabled>復原</button><button id="redo" disabled>重做</button></div><button id="reset-all" class="text-button">還原全部調整</button></section>
+        <section class="control-section"><h2>保留這次調整</h2><button id="export" class="primary">下載角色設定 ↓</button><div class="action-row file-actions"><label class="file-button">載入設定<input id="import" type="file" accept=".json,application/json"></label><button id="save-image">下載對照圖</button></div><p class="hint">可載入本工具匯出的設定繼續調整。重新整理會回到已發布版本，離開前請下載保存。</p></section>
+      </fieldset>
+      <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+      <p class="shortcut-hint">拖角落縮放 · 拖上方圓點旋轉<br>方向鍵微調 · Shift × 10 · Ctrl / ⌘ Z 復原</p>
+    </aside>
+  </main>
+  <script type="module" src="app.js?v=0.4.0"></script>
+</body>
+</html>

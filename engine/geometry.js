@@ -1,4 +1,4 @@
-import { clamp } from './motion.js?v=0.3.1';
+import { clamp } from './motion.js?v=0.4.0';
 
 export const identity = () => [1, 0, 0, 1, 0, 0];
 export function multiply(a, b) {
@@ -133,8 +133,9 @@ export function buildScene(rig, pose, { explode = 0, hidden = new Set() } = {}) 
   return rig.parts.filter(part => !hidden.has(part.id)).map(part => {
     const baseOpacity = partOpacity(part, pose);
     const opacity = part.visible === false ? 0 : baseOpacity + (1 - baseOpacity) * explode;
-    const matrix = matrices[part.node || 'root'];
-    if (!matrix) throw new Error(`Missing node for ${part.id}`);
+    const parentMatrix = matrices[part.node || 'root'];
+    if (!parentMatrix) throw new Error(`Missing node for ${part.id}`);
+    const matrix = part.adjustment ? multiply(parentMatrix, part.adjustment) : parentMatrix;
     const [x, y, w, h] = part.rect;
     const [u, v, uw, vh] = part.uv;
     const columns = part.mesh?.[0] || 4, rows = part.mesh?.[1] || 6;

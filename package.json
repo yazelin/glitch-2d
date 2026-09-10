@@ -1,6 +1,6 @@
 {
   "name": "glitch-2d",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,7 +9,8 @@
     "test:runtime": "node tools/check-runtime.mjs",
     "build": "node tools/validate.mjs",
     "render": "node tools/render.mjs",
-    "compare": "node tools/compare-turnaround.mjs"
+    "compare": "node tools/compare-turnaround.mjs",
+    "test:alignment": "node tools/check-alignment.mjs"
   },
   "devDependencies": {
     "@napi-rs/canvas": "1.0.8",

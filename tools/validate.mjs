@@ -38,6 +38,7 @@ for (const part of rig.parts) {
   const [u, v, uw, vh] = part.uv;
   assert(u >= 0 && v >= 0 && uw > 0 && vh > 0 && u + uw <= w && v + vh <= h, `UV outside atlas: ${part.id}`);
   if (part.lockAspect) assert(Math.abs(part.rect[2] / uw - part.rect[3] / vh) < 1e-6, `Stretched reference art: ${part.id}`);
+  if (part.adjustment) assert(part.adjustment.length === 6 && part.adjustment.every(Number.isFinite) && part.adjustment[0]*part.adjustment[3]-part.adjustment[1]*part.adjustment[2] > 0, `Invalid alignment: ${part.id}`);
   if (part.attachment) assert(part.attachment.depth > 0 && part.attachment.depth <= 1 && part.attachment.extend >= 0 && part.attachment.extend <= 1, `Invalid root overlap: ${part.id}`);
   if (part.hand) {
     assert(part.hand.anchor.length === 2 && part.hand.anchor.every(n => n >= 0 && n <= 1));
@@ -49,12 +50,14 @@ const motion = new Motion(() => .5);
 for (const scene of [buildScene(rig, { ...motion.values, hair: 0 }), buildScene(rig, { ...motion.values, eyeOpen: 0, headZ: 1, hair: .7 })]) {
   for (const item of scene) assert(item.positions.every(Number.isFinite), `Invalid geometry: ${item.part.id}`);
 }
-const index = await readFile(new URL('index.html', root), 'utf8');
-assert(index.includes('lang="zh-Hant"')); assert(index.includes('type="module"'));
-assert(!/live2dcubismcore|pixi(?:\.min)?\.js|cubism4\.min/.test(index), 'Legacy runtime in new entry');
-for (const match of index.matchAll(/(?:href|src)="([^"#?][^"]*)"/g)) {
-  if (/^(?:https?:|data:)/.test(match[1])) continue;
-  const path = match[1].split(/[?#]/)[0]; await access(new URL(path, root));
+for (const entry of ['index.html', 'align/index.html']) {
+  const entryURL = new URL(entry, root), index = await readFile(entryURL, 'utf8');
+  assert(index.includes('lang="zh-Hant"')); assert(index.includes('type="module"'));
+  assert(!/live2dcubismcore|pixi(?:\.min)?\.js|cubism4\.min/.test(index), 'Legacy runtime in new entry');
+  for (const match of index.matchAll(/(?:href|src)="([^"#?][^"]*)"/g)) {
+    if (/^(?:https?:|data:)/.test(match[1])) continue;
+    const path = match[1].split(/[?#]/)[0]; await access(new URL(path, entryURL));
+  }
 }
 const checked = new Set();
 async function checkModule(url) {
@@ -68,6 +71,7 @@ async function checkModule(url) {
   }
 }
 await checkModule(new URL('studio.js', root));
+await checkModule(new URL('align/app.js', root));
 await access(new URL('voice-intro.mp3', rigBase));
-assert(index.includes('https://yazelin.github.io/glitch-l2d/character/glitch/social-card.png'));
+assert((await readFile(new URL('index.html', root), 'utf8')).includes('https://yazelin.github.io/glitch-l2d/character/glitch/social-card.png'));
 console.log(`Validated ${rig.parts.length} parts, ${Object.keys(dimensions).length} local atlases, ${checked.size} native modules and entry links. No build output needed for GitHub Pages.`);

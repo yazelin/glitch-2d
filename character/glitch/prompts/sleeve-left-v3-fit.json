@@ -1,0 +1,32 @@
+{
+  "source": "sleeve-left-v3.png",
+  "dimensions": [
+    1038,
+    1516
+  ],
+  "crop": [
+    36,
+    55,
+    940,
+    1395
+  ],
+  "shoulder": [
+    820,
+    78
+  ],
+  "wrist": [
+    323,
+    1190
+  ],
+  "targetShoulder": [
+    327.5,
+    630
+  ],
+  "targetWrist": [
+    10,
+    1220
+  ],
+  "scale": 0.5500805546936294,
+  "restAngle": 0.07338029764891152,
+  "method": "Uniform shoulder/wrist two-point fit to the same front-reference landmarks. Hand gets a separate wrist-centered rest correction. Exactly four non-thumb fingers and one thumb."
+}

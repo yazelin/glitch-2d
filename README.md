@@ -2,7 +2,24 @@
 
 格莉奇自己的 2D 角色原型，可切換全身與聊天近景。重新生成的角色部件由原生 JavaScript 組合，使用 WebGL 繪製、Web Audio 帶動嘴型，沒有 Live2D、Cubism 或 Pixi 的執行期依賴。
 
-**[開啟全身展示](https://yazelin.github.io/glitch-l2d/?v=0.3.1&view=full)** · [聊天近景](https://yazelin.github.io/glitch-l2d/?v=0.3.1&view=bust) · [透明舞台](https://yazelin.github.io/glitch-l2d/?overlay=1&view=bust) · [先前的 Live2D 版本](https://yazelin.github.io/glitch-l2d/legacy/)
+**[開啟全身展示](https://yazelin.github.io/glitch-l2d/?v=0.4.0&view=full)** · [聊天近景](https://yazelin.github.io/glitch-l2d/?v=0.4.0&view=bust) · [透明舞台](https://yazelin.github.io/glitch-l2d/?overlay=1&view=bust) · [先前的 Live2D 版本](https://yazelin.github.io/glitch-l2d/legacy/)
+
+## 0.4：自己動手對齊比例
+
+**[開啟比例對齊小工具](https://yazelin.github.io/glitch-l2d/align/?v=0.4.0)**。三視圖的正面固定在底層，目前的 21 個角色部件疊在上面；初始角色透明度為 50%，沒有待機動作。
+
+- 每個部件都能獨立開關，也能全開、全關或只看選取部件。閉眼線與張嘴片預設隱藏，需要時可單獨開啟。
+- 點選部件後用滑鼠拖動；拖曳選取框角落可等比縮放，上方圓形把手可旋轉。右側也有位置與大小欄位、旋轉和微調按鈕。
+- 可以整組調整頭部、頭髮、臉部、左右眼或雙腿。點選眼睛時，預設選取眼白、虹膜、閉眼線與眉毛整組。
+- 切換全身、頭部、腰腿取景，放大至 300%，或切換原圖、疊圖與組裝。中心線、高度線與骨架參考線可分別開關。
+- 方向鍵移動一個參考原圖像素，搭配 Shift 可移動十個像素；Ctrl / ⌘ Z 復原，Ctrl / ⌘ Shift Z 重做。Escape 取消正在進行的拖曳。
+- 按「下載角色設定」保存 `glitch-aligned.rig.json`，之後可以用「載入設定」繼續調整，或交回專案套用。也能下載三欄對照圖。
+
+底圖與角色共用取景和縮放，編輯只改角色部件。下載的設定記錄每片的位置、旋轉與縮放；臨時關掉的部件仍會保留。設定只在目前頁面中，重新整理會回到已發布版本，離開前請下載保存。
+
+骨架線是跟隨部件的關節位置示意，供檢查肩、肘、腕、髖、膝、踝；目前不提供骨架拖曳或自動帶動相鄰部件。這個工具調整組裝比例，正式套用設定後仍需檢查動作接縫。
+
+另外重製畫面左側、沒有手腕螢幕的衣袖與手，修正六指問題。新版確認為四根手指加一根拇指，指甲自然無色，並重新對齊肩膀與袖口。右側衣袖沿用原素材。[目前三視圖疊圖](character/glitch/proportion-check-v0.4.0.png)。
 
 ## 0.3.1：依三視圖重新對齊
 
@@ -39,7 +56,8 @@
 | --- | --- |
 | `character/glitch/rig.json` | 開放的角色設定，含畫布尺寸、父子節點、轉動中心、部件位置、UV 區域與網格密度 |
 | `character/glitch/hair-v2.png` | 瀏海、後髮與兩側髮束；各部件維持來源比例 |
-| `character/glitch/sleeves-v2.png` | 寬鬆衣袖與自然無色指甲的雙手；只取兩側衣袖，上衣區域不使用 |
+| `character/glitch/sleeves-v2.png` | 畫面右側衣袖與手；保留手腕螢幕 |
+| `character/glitch/sleeve-left-v3.png` | 修正五指的畫面左側衣袖與手，使用自然無色指甲 |
 | `character/glitch/skirt-v1.png` | 百褶裙與畫面左側垂帶 |
 | `character/glitch/legs-v2.png` | 依三視圖調整寬度的兩側腿部、長襪、腿套與鞋子 |
 | `character/glitch/face-base.png` | 完整下顎輪廓的無五官臉部底圖 |
@@ -68,9 +86,11 @@
 | --- | --- |
 | `engine/motion.js` | 參數範圍、平滑過渡、表情、眨眼、呼吸、招呼動作與彈性運動 |
 | `engine/geometry.js` | 父子節點變換、網格變形、UV 與眼眶遮罩 |
+| `engine/alignment.js` | 部件選取、整組位移、旋轉、等比縮放、復原、設定匯入與骨架參考點 |
 | `engine/renderer.js` | 原生 WebGL 繪製、Canvas 備援、圖集載入及分件網格顯示 |
 | `engine/audio.js` | 語音播放、實際音量分析、停止與錯誤處理 |
 | `studio.js` | 展示頁操作、分件位置調整、設定匯出與外部控制介面 |
+| `align/` | 使用正面三視圖底圖的比例調整小工具 |
 
 執行期只使用瀏覽器功能，所有角色素材由同一網站載入。`@napi-rs/canvas` 與 Playwright 都是開發用套件，不會送到展示頁，也不需要使用者安裝。
 
@@ -117,6 +137,7 @@ npm run build
 npm run render
 npm run compare
 npm run test:runtime
+npm run test:alignment
 ```
 
 - `npm test`：檢查參數限制、眨眼幾何、視線遮罩、音量嘴型、彈性運動、父子節點與極端參數。
@@ -124,6 +145,9 @@ npm run test:runtime
 - `npm run render`：用相同網格產生全身、近景、眨眼、表情、轉頭及手臂擺動等十二個狀態的透明 PNG，存入忽略提交的 `test-results/`，供檢查接縫與表情。
 - `npm run compare`：產生相同尺度的三欄疊圖，存入 `test-results/turnaround-alignment.png`。確認完成後，可用 `npm run compare -- --publish` 更新目前版本的公開對照圖。
 - `npm run test:runtime`：啟動臨時伺服器，驗證 Chromium 中的 WebGL 與 Canvas 程式介面、語音嘴型、播放停止及資源載入。首次使用若缺少 Chromium，執行 `npx playwright install chromium`。此檢查不截圖、不操作控制面板，也不代表完成手動外觀驗收。
+- `npm run test:alignment`：透過程式介面驗證小工具的載入、移動、旋轉、縮放、部件開關、骨架開關、取景、復原與設定往返；同時確認底圖位置保持固定。
+
+比例工具匯出的 `parts[].adjustment` 是部件的額外仿射變換，套用在網格變形後、父節點變換前，眼眶遮罩也使用相同變換。原始素材、UV 與部件設定保持不變，因此匯出檔可直接供展示頁讀取。載入設定時會核對底模，拒絕套用不同素材或不同部件結構的設定。
 
 `?renderer=canvas` 可強制使用 Canvas 備援；效能會依裝置與畫面大小而異。`?overlay=1` 隱藏操作介面，保留透明角色畫面。`?view=bust` 顯示聊天近景，省略時預設全身。
 
