@@ -1,4 +1,4 @@
-import { clamp } from './motion.js?v=0.4.6';
+import { clamp } from './motion.js?v=0.4.7';
 
 export const identity = () => [1, 0, 0, 1, 0, 0];
 export function multiply(a, b) {

@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { once } from 'node:events';
 import { readFile } from 'node:fs/promises';
 const calibrations = [];
-for (const name of ['user-alignment-v0.4.0', 'user-alignment-v0.4.1', 'user-alignment-v0.4.2']) {
+for (const name of ['user-alignment-v0.4.0', 'user-alignment-v0.4.1', 'user-alignment-v0.4.2', 'user-alignment-v0.4.6']) {
   calibrations.push({ name, rig: JSON.parse(await readFile(new URL(`../character/glitch/calibration/${name}.json`, import.meta.url))) });
 }
 process.env.GLITCH_PORT='0';
@@ -42,7 +42,8 @@ try{
     const expected={
       'user-alignment-v0.4.0':[['arm-left','arm-right','skirt','leg-left','leg-right'],['torso','face']],
       'user-alignment-v0.4.1':[['arm-left','arm-right','leg-left','leg-right'],['torso','face']],
-      'user-alignment-v0.4.2':[['arm-left','arm-right','leg-left','leg-right'],['torso']]};
+      'user-alignment-v0.4.2':[['arm-left','arm-right','leg-left','leg-right'],['torso']],
+      'user-alignment-v0.4.6':[['leg-left','leg-right'],[]]};
     for(const entry of result.migrations){const[replaced,recalibrated]=expected[entry.name];assert.deepEqual(entry.migration.replaced,replaced,entry.name);assert.deepEqual(entry.migration.recalibrated,recalibrated,entry.name);assert(entry.preserved&&entry.currentArt,entry.name);}
     assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);console.log(JSON.stringify({mode,...result,errors,failed},null,2));await page.close();
   }
