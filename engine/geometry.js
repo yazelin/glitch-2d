@@ -103,13 +103,6 @@ export function deformPoint(part, x, y, pose, rig, explode = 0) {
     // also lowers the band and uncovers more throat.
     y = bottom - (bottom - y) * (1 - shrink * weight) + drop * weight;
   }
-  for (const band of part.bands || []) {
-    // Local width edits along one part: a fuller thigh, a cuff that grips, a strap mark.
-    const { top, bottom, scale, feather = 24, center = cx } = band;
-    let weight = clamp(Math.min(y - top + feather, bottom + feather - y) / feather, 0, 1);
-    weight *= weight * (3 - 2 * weight);
-    x = center + (x - center) * (1 + (scale - 1) * weight);
-  }
   if (part.jaw) {
     // Rounder chin: widen the lower face and let it fall a little further.
     const { top, bottom, widen = 0, drop = 0 } = part.jaw;
