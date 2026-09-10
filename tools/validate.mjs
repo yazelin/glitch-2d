@@ -58,6 +58,16 @@ const motion = new Motion(() => .5);
 for (const scene of [buildScene(rig, { ...motion.values, hair: 0 }), buildScene(rig, { ...motion.values, eyeOpen: 0, headZ: 1, hair: .7 })]) {
   for (const item of scene) assert(item.positions.every(Number.isFinite), `Invalid geometry: ${item.part.id}`);
 }
+// Version literals drift: the page showed 0.4.1 for seven releases. Fail loudly instead.
+{
+  const { version } = JSON.parse(await readFile(new URL('package.json', root), 'utf8'));
+  for (const entry of ['index.html', 'align/index.html', 'studio.js', 'align/app.js', 'engine/geometry.js', 'engine/motion.js', 'engine/renderer.js', 'engine/audio.js', 'engine/alignment.js']) {
+    const text = await readFile(new URL(entry, root), 'utf8');
+    for (const found of text.match(/\b\d+\.\d+\.\d+\b/g) || []) {
+      assert.equal(found, version, `Stale version ${found} in ${entry}, package.json says ${version}`);
+    }
+  }
+}
 for (const entry of ['index.html', 'align/index.html']) {
   const entryURL = new URL(entry, root), index = await readFile(entryURL, 'utf8');
   assert(index.includes('lang="zh-Hant"')); assert(index.includes('type="module"'));
@@ -81,5 +91,5 @@ async function checkModule(url) {
 await checkModule(new URL('studio.js', root));
 await checkModule(new URL('align/app.js', root));
 await access(new URL('voice-intro.mp3', rigBase));
-assert((await readFile(new URL('index.html', root), 'utf8')).includes('https://yazelin.github.io/glitch-l2d/character/glitch/social-card.png'));
+assert((await readFile(new URL('index.html', root), 'utf8')).includes('https://yazelin.github.io/glitch-2d/character/glitch/social-card.png'));
 console.log(`Validated ${rig.parts.length} parts, ${Object.keys(dimensions).length} local atlases, ${checked.size} native modules and entry links. No build output needed for GitHub Pages.`);

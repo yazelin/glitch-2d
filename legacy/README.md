@@ -2,7 +2,7 @@
 
 以提供的角色原圖製作的 Cubism SDK 5.0 相容基礎模型，附互動展示頁與可編輯來源。
 
-[開啟先前的展示頁](https://yazelin.github.io/glitch-l2d/legacy/)
+[開啟先前的展示頁](https://yazelin.github.io/glitch-2d/legacy/)
 
 ## 已完成的動作
 

@@ -9,25 +9,25 @@
   <meta property="og:title" content="格莉奇 2D · 聊天中的小故障">
   <meta property="og:description" content="今天也有一點小故障。來看看會眨眼、會說話的格莉奇。">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://yazelin.github.io/glitch-l2d/">
+  <meta property="og:url" content="https://yazelin.github.io/glitch-2d/">
   <meta name="twitter:card" content="summary_large_image">
-  <meta property="og:image" content="https://yazelin.github.io/glitch-l2d/character/glitch/social-card.png">
+  <meta property="og:image" content="https://yazelin.github.io/glitch-2d/character/glitch/social-card.png">
   <meta property="og:image:alt" content="薄荷綠與紫色短髮的格莉奇，旁邊寫著 GLITCH 2D。">
   <meta name="twitter:title" content="格莉奇 2D · 聊天中的小故障">
   <meta name="twitter:description" content="試試格莉奇的表情、視線與語音嘴型。">
-  <meta name="twitter:image" content="https://yazelin.github.io/glitch-l2d/character/glitch/social-card.png">
+  <meta name="twitter:image" content="https://yazelin.github.io/glitch-2d/character/glitch/social-card.png">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23111725'/%3E%3Ctext x='15' y='47' font-family='monospace' font-size='44' fill='%23a8ebdf'%3EG%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="studio.css?v=0.4.8">
+  <link rel="stylesheet" href="studio.css?v=0.4.9">
 </head>
 <body>
   <header class="site-header">
     <a class="brand" href="./" aria-label="格莉奇 2D 首頁"><span class="brand-mark">G<span>·</span></span><span>GLITCH<span class="brand-sub">CHARACTER STUDIO</span></span></a>
     <span class="edition">2D / EXPERIMENT 03</span>
-    <a class="source-link" href="https://github.com/yazelin/glitch-l2d">原始碼 <span aria-hidden="true">↗</span></a>
+    <a class="source-link" href="https://github.com/yazelin/glitch-2d">原始碼 <span aria-hidden="true">↗</span></a>
   </header>
   <main>
     <section class="stage-wrap" aria-label="格莉奇互動舞台">
-      <div class="stage-top"><span class="status"><span class="status-light"></span><span id="status" role="status">正在準備格莉奇</span></span><span id="renderer-label" class="small-code">GLITCH 2D · 0.4.1</span></div>
+      <div class="stage-top"><span class="status"><span class="status-light"></span><span id="status" role="status">正在準備格莉奇</span></span><span id="renderer-label" class="small-code">GLITCH 2D · 0.4.9</span></div>
       <div class="stage-decoration" aria-hidden="true"><span class="backword">HELLO,<br>WORLD<span>_</span></span><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span><span class="stage-cross cross-one">+</span><span class="stage-cross cross-two">+</span></div>
       <div id="stage" tabindex="0" role="button" aria-label="輕觸格莉奇，讓她點頭回應。按空白鍵也可以。">
         <canvas id="character" aria-label="可控制表情與動作的格莉奇全身角色"></canvas>
@@ -41,15 +41,15 @@
     <aside class="studio-panel">
       <div class="intro"><p class="eyebrow"><span></span> A LITTLE ERROR, A LITTLE LIFE.</p><h1>今天也有一點<br><em>小故障。</em></h1><p>一個新的 2D 格莉奇。<br>試試她的表情，或讓她開口和你打聲招呼。</p></div>
       <div class="primary-actions"><button id="voice-demo" class="button-primary" disabled><span aria-hidden="true">▷</span> 聽她自我介紹</button><button id="gesture" class="button-secondary" disabled>打個招呼</button></div>
-      <section class="control-section"><div class="section-heading"><h2>看她的樣子</h2><span class="tiny-label">FRAMING</span></div><div class="view-controls" role="group" aria-label="角色取景"><button data-view="full" aria-pressed="true" disabled>全身</button><button data-view="bust" aria-pressed="false" disabled>聊天近景</button></div><a class="reference-link" href="align/">手動對齊比例 ↗</a> · <a class="reference-link" href="character/glitch/proportion-check-v0.4.1.png" target="_blank" rel="noopener">看三視圖疊圖 <span aria-hidden="true">↗</span></a></section>
+      <section class="control-section"><div class="section-heading"><h2>看她的樣子</h2><span class="tiny-label">FRAMING</span></div><div class="view-controls" role="group" aria-label="角色取景"><button data-view="full" aria-pressed="true" disabled>全身</button><button data-view="bust" aria-pressed="false" disabled>聊天近景</button></div><a class="reference-link" href="align/">手動對齊比例 ↗</a> · <a class="reference-link" href="character/glitch/proportion-check-v0.4.9.png" target="_blank" rel="noopener">看三視圖疊圖 <span aria-hidden="true">↗</span></a></section>
       <section class="control-section"><div class="section-heading"><h2>今天的心情</h2><span class="tiny-label">EXPRESSION</span></div><div id="expressions" class="expressions" role="group" aria-label="角色表情"><button data-expression="neutral" aria-pressed="true" disabled>平常</button><button data-expression="happy" aria-pressed="false" disabled>開心</button><button data-expression="curious" aria-pressed="false" disabled>好奇</button><button data-expression="sleepy" aria-pressed="false" disabled>想睡</button><button data-expression="shy" aria-pressed="false" disabled>害羞</button></div></section>
       <section class="control-section"><div class="section-heading"><h2>讓她動起來</h2><button id="reset" class="text-button" disabled>重設</button></div><div class="toggles"><label class="switch"><input id="idle" type="checkbox" checked><span class="switch-track"></span>自然待機</label><label class="switch"><input id="follow" type="checkbox" checked><span class="switch-track"></span>視線跟隨</label></div><div id="controls" class="sliders"></div><button id="blink" class="text-button blink-button" disabled>眨一下眼 <span aria-hidden="true">↗</span></button></section>
       <details class="control-section"><summary>用自己的聲音測試<span class="tiny-label">VOICE</span></summary><p class="hint">選一段語音，嘴巴會隨音量開合。音檔只在你的瀏覽器播放。</p><label class="upload-button">選擇音檔<input id="audio-file" type="file" accept="audio/*"></label><button id="stop-audio" class="text-button">停止播放</button><div class="audio-meter" role="meter" aria-label="語音音量" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="audio-level"></span></div><p id="audio-status" class="hint" role="status">尚未播放語音</p></details>
       <details class="control-section inspector"><summary>拆開看看<span class="tiny-label">PARTS</span></summary><p class="hint">每個部件都有自己的圖片、位置和動作。調整後可以下載設定，保留這次修改。</p><label class="switch"><input id="explode" type="checkbox"><span class="switch-track"></span>展開分件</label><label class="switch"><input id="show-mesh" type="checkbox"><span class="switch-track"></span>顯示變形網格</label><label class="part-label" for="part-select">選擇部件</label><select id="part-select"><option value="">全部部件</option></select><div id="part-controls" hidden><label class="part-visible"><input id="part-visible" type="checkbox" checked>顯示這個部件</label><label class="part-visible"><input id="part-aspect" type="checkbox" checked>縮放時保持比例</label><div id="part-sliders" class="sliders"></div><button id="part-reset" class="text-button">還原這個部件</button></div><button id="download-rig" class="download-button">下載角色設定 <span aria-hidden="true">↓</span></button></details>
-      <p class="footnote">原生 2D 動作原型 · 語音為既有角色配音<br>AI 對話與 YouTube 留言尚未接入。</p><div class="panel-links"><a href="legacy/">先前的 Live2D 版本 ↗</a><a href="https://github.com/yazelin/glitch-l2d#readme">製作筆記 ↗</a><a id="overlay-link" href="?overlay=1&view=full" target="_blank" rel="noopener">透明舞台 ↗</a></div>
+      <p class="footnote">原生 2D 動作原型 · 語音為既有角色配音<br>AI 對話與 YouTube 留言尚未接入。</p><div class="panel-links"><a href="legacy/">先前的 Live2D 版本 ↗</a><a href="https://github.com/yazelin/glitch-2d#readme">製作筆記 ↗</a><a id="overlay-link" href="?overlay=1&view=full" target="_blank" rel="noopener">透明舞台 ↗</a></div>
     </aside>
   </main>
   <footer><span>GLITCH 2D <span class="footer-dot">·</span> OUR LITTLE CHARACTER EXPERIMENT</span><span>圖像、動作，慢慢調成她的樣子。</span></footer>
-  <script type="module" src="studio.js?v=0.4.8"></script>
+  <script type="module" src="studio.js?v=0.4.9"></script>
 </body>
 </html>

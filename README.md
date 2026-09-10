@@ -2,13 +2,19 @@
 
 格莉奇自己的 2D 角色原型，可切換全身與聊天近景。重新生成的角色部件由原生 JavaScript 組合，使用 WebGL 繪製、Web Audio 帶動嘴型，沒有 Live2D、Cubism 或 Pixi 的執行期依賴。
 
-**[開啟全身展示](https://yazelin.github.io/glitch-l2d/?v=0.4.8&view=full)** · [聊天近景](https://yazelin.github.io/glitch-l2d/?v=0.4.8&view=bust) · [透明舞台](https://yazelin.github.io/glitch-l2d/?overlay=1&view=bust) · [先前的 Live2D 版本](https://yazelin.github.io/glitch-l2d/legacy/)
+**[開啟全身展示](https://yazelin.github.io/glitch-2d/?v=0.4.8&view=full)** · [聊天近景](https://yazelin.github.io/glitch-2d/?v=0.4.8&view=bust) · [透明舞台](https://yazelin.github.io/glitch-2d/?overlay=1&view=bust) · [先前的 Live2D 版本](https://yazelin.github.io/glitch-2d/legacy/)
+
+## 0.4.9：頁面上的版本號終於跟著版本走
+
+頁面右上角從 0.4.1 一路寫到 0.4.8 都沒改過，因為版本號硬寫在 `index.html`、`studio.js`、`align/app.js` 三個地方，而升版只改了 `package.json` 與模組網址的 `?v=`。三處都補上了，`npm run build` 也加了一條檢查：這幾個檔案裡出現的版本字串必須等於 `package.json`，對不上就中斷。
+
+repo 也從 `glitch-l2d` 改名為 `glitch-2d`，因為這裡跑的是自己寫的原生 2D 骨架，執行期沒有 Live2D、Cubism 或 Pixi。舊的 Live2D 版本仍在 `legacy/`。網址改成 https://yazelin.github.io/glitch-2d/ ，舊網址不再保證可用。
 
 ## 0.4.8：對齊定稿
 
 套用 `glitch-aligned.rig (9).json`，這是使用者調完的版本：後髮、裙子、兩片衣袖、上衣、虹膜、嘴、兩側髮束與瀏海共 11 個部件。素材沒有變。
 
-[全身疊圖](character/glitch/proportion-check-v0.4.8.png) · [衣袖放大對照](character/glitch/sleeve-check-v0.4.8.png) · [腿與鞋底對照](character/glitch/lower-body-check-v0.4.8.png)。設定收在 [calibration/user-alignment-v0.4.7.json](character/glitch/calibration/user-alignment-v0.4.7.json)。
+[全身疊圖](character/glitch/proportion-check-v0.4.9.png) · [衣袖放大對照](character/glitch/sleeve-check-v0.4.9.png) · [腿與鞋底對照](character/glitch/lower-body-check-v0.4.9.png)。設定收在 [calibration/user-alignment-v0.4.7.json](character/glitch/calibration/user-alignment-v0.4.7.json)。
 
 ## 0.4.7：套用使用者的對齊設定
 
@@ -89,7 +95,7 @@
 
 ## 0.4：自己動手對齊比例
 
-**[開啟比例對齊小工具](https://yazelin.github.io/glitch-l2d/align/?v=0.4.8)**。三視圖的正面固定在底層，目前的 21 個角色部件疊在上面；初始角色透明度為 50%，沒有待機動作。
+**[開啟比例對齊小工具](https://yazelin.github.io/glitch-2d/align/?v=0.4.8)**。三視圖的正面固定在底層，目前的 21 個角色部件疊在上面；初始角色透明度為 50%，沒有待機動作。
 
 - 每個部件都能獨立開關，也能全開、全關或只看選取部件。閉眼線與張嘴片預設隱藏，需要時可單獨開啟。
 - 點選部件後用滑鼠拖動；拖曳選取框角落可等比縮放，上方圓形把手可旋轉。右側也有位置與大小欄位、旋轉和微調按鈕。
@@ -148,7 +154,7 @@
 | `character/glitch/torso.png` | 沿用的上衣、頸部、斜背帶與包包；原始 PNG 保留 |
 | `character/glitch/design-reference.png` | 生成分件時使用的完整造型參考；不參與角色動畫 |
 | `character/glitch/turnaround-reference.png` | 服裝、不對稱配件與全身比例的三視圖；不參與角色動畫 |
-| `character/glitch/proportion-check-v0.4.8.png` | 正面三視圖、目前組裝與相同尺度的半透明疊圖 |
+| `character/glitch/proportion-check-v0.4.9.png` | 正面三視圖、目前組裝與相同尺度的半透明疊圖 |
 | `character/glitch/proportion-calibration.json` | 正面參考座標、衣袖對齊點與腿部來源區域 |
 | [本次素材與提示詞清單](character/glitch/prompts/release-v0.4.6.json) | 內建 imagegen 的提示詞、裁切座標與修正紀錄 |
 | [user-alignment-v0.4.7.json](character/glitch/calibration/user-alignment-v0.4.7.json) | 使用者提供的最後一份微調設定，供比較與還原 |
