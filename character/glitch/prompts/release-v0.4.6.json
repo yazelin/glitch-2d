@@ -1,0 +1,29 @@
+{
+  "release": "0.4.6",
+  "mode": "Codex image service on the .11 host, edited as a 1:1 patch",
+  "reference": "turnaround-reference.png",
+  "userAlignment": "calibration/user-alignment-v0.4.2.json",
+  "corrects": "0.4.4",
+  "why": "The garter mark added in 0.4.4 read as a strap pulled tight into the flesh. The strap should just rest on the thigh.",
+  "assets": [
+    {
+      "src": "legs-v6.png",
+      "from": "legs-v5.png",
+      "fixes": "Removes the pinch and the two flesh bulges around the viewer-right garter band; the band, buckle, connector, stocking, cuffs, warmers and sneakers are byte-identical",
+      "sha256": "e7c20c1a80de82237b71886ee14ed53ddb94177cd675053507f3b772df7cabf8",
+      "changedPixels": 12850,
+      "changedBox": [
+        482,
+        40,
+        773,
+        274
+      ]
+    }
+  ],
+  "method": "The .11 service only emits 1024x1536, so a whole-atlas edit came back at the wrong aspect and moved 24 percent of the pixels. Instead the right thigh block was cropped at native pixels into a green 1024x1536 canvas, edited there, and pasted back at 1:1 with a 14-row feather. No resampling of the atlas.",
+  "verified": [
+    "Left leg unchanged: 0 pixels",
+    "Nothing below y=300 changed: 0 pixels",
+    "Sole baselines still y=1732"
+  ]
+}
