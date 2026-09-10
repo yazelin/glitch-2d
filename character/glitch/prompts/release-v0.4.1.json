@@ -1,0 +1,66 @@
+{
+  "release": "0.4.1",
+  "mode": "Built-in imagegen; no CLI or separate image API",
+  "reference": "turnaround-reference.png",
+  "userAlignment": "calibration/user-alignment-v0.4.0.json",
+  "assets": [
+    {
+      "src": "sleeve-left-v4.png",
+      "prompts": [
+        "prompts/sleeve-left-v4.json"
+      ],
+      "sha256": "d815d0296ae9625b180faa3156492169a51cb929994f3a8d1385c12e0fb444ab"
+    },
+    {
+      "src": "sleeve-right-v4.png",
+      "prompts": [
+        "prompts/sleeve-right-v4.txt"
+      ],
+      "sha256": "73cab5744fbd1a9851dc149e808835ad9c30eee5135f46e698799aea5ff84374"
+    },
+    {
+      "src": "skirt-v2.png",
+      "prompts": [
+        "prompts/skirt-v2.json"
+      ],
+      "sha256": "f92abb21b8c7bb55f7c1c0637adad9c6e473a82d04a6409934b9d71e057c81c5"
+    },
+    {
+      "src": "legs-v3.png",
+      "prompts": [
+        "prompts/legs-v3.txt",
+        "prompts/legs-v3-width-correction.txt"
+      ],
+      "sha256": "cedf4017e37a89db1619c75f5619d1f48693d6622c0647bd22bb7452cf7756a5"
+    }
+  ],
+  "fit": [
+    "prompts/sleeves-v4-fit.json",
+    "prompts/lower-body-v0.4.1-fit.json"
+  ],
+  "measurements": [
+    "prompts/sleeve-measurements-v0.4.1.json",
+    "prompts/lower-body-measurements-v0.4.1.json"
+  ],
+  "neckRest": {
+    "top": 608,
+    "bottom": 680,
+    "inner": 52,
+    "outer": 100,
+    "pinch": 0.14,
+    "drop": 30
+  },
+  "invariants": [
+    "Five digits on each hand; natural unpainted nails",
+    "Wrist screen only on viewer-right",
+    "Original torso PNG unchanged",
+    "Head and torso adjustment matrices retained from the latest user export",
+    "All new part rectangles preserve native source aspect ratio",
+    "Shared reference coordinates; both sole boundaries at reference y954"
+  ],
+  "limitations": [
+    "Art contours and garment folds are not pixel-identical to the reference",
+    "Sampled sleeves and legs still have local width differences; see measurements",
+    "Rig is an animated 2D prototype, not a complete character editor or AI streaming system"
+  ]
+}

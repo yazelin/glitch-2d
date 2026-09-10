@@ -2,11 +2,23 @@
 
 格莉奇自己的 2D 角色原型，可切換全身與聊天近景。重新生成的角色部件由原生 JavaScript 組合，使用 WebGL 繪製、Web Audio 帶動嘴型，沒有 Live2D、Cubism 或 Pixi 的執行期依賴。
 
-**[開啟全身展示](https://yazelin.github.io/glitch-l2d/?v=0.4.0&view=full)** · [聊天近景](https://yazelin.github.io/glitch-l2d/?v=0.4.0&view=bust) · [透明舞台](https://yazelin.github.io/glitch-l2d/?overlay=1&view=bust) · [先前的 Live2D 版本](https://yazelin.github.io/glitch-l2d/legacy/)
+**[開啟全身展示](https://yazelin.github.io/glitch-l2d/?v=0.4.1&view=full)** · [聊天近景](https://yazelin.github.io/glitch-l2d/?v=0.4.1&view=bust) · [透明舞台](https://yazelin.github.io/glitch-l2d/?overlay=1&view=bust) · [先前的 Live2D 版本](https://yazelin.github.io/glitch-l2d/legacy/)
+
+## 0.4.1：重製衣袖、直裙與腿部
+
+以使用者最新匯出的 `glitch-aligned.rig (5).json` 為調整基礎，保留頭部、五官、髮束和上衣的微調。依正面三視圖重製兩片衣袖、百褶裙和兩條腿，再用同一套座標疊圖檢查。
+
+- 衣袖重新校準肩膀到袖口的長度與前臂寬度；手掌在固定手腕的前提下等比調整。雙手各五指、自然無色指甲，手腕螢幕只在畫面右側。
+- 裙子改為較直的百褶輪廓，減少下擺外張，保留畫面左側垂帶與不對稱圖案。
+- 腿部恢復較直、較纖細的小腿線條，重新對齊鞋底高度，保留長襪、腿環、OK 繃與腿套。
+- 上衣原圖保留，頸部另做局部比例修正，讓頸圈與較細的脖子露出來；外側帽 T 不跟著縮窄。
+- 舊版對齊設定可以載入：更新重製部件與頸部修正，其餘保留使用者的調整。頭部對照圖也修正了底圖越過欄位、蓋住中欄的問題。
+
+[全身疊圖](character/glitch/proportion-check-v0.4.1.png) · [衣袖放大對照](character/glitch/sleeve-check-v0.4.1.png) · [裙子、腿與鞋底對照](character/glitch/lower-body-check-v0.4.1.png)。參考圖、修改前與修改後使用同一比例；衣褶與局部輪廓仍有差異，可在小工具繼續微調。
 
 ## 0.4：自己動手對齊比例
 
-**[開啟比例對齊小工具](https://yazelin.github.io/glitch-l2d/align/?v=0.4.0)**。三視圖的正面固定在底層，目前的 21 個角色部件疊在上面；初始角色透明度為 50%，沒有待機動作。
+**[開啟比例對齊小工具](https://yazelin.github.io/glitch-l2d/align/?v=0.4.1)**。三視圖的正面固定在底層，目前的 21 個角色部件疊在上面；初始角色透明度為 50%，沒有待機動作。
 
 - 每個部件都能獨立開關，也能全開、全關或只看選取部件。閉眼線與張嘴片預設隱藏，需要時可單獨開啟。
 - 點選部件後用滑鼠拖動；拖曳選取框角落可等比縮放，上方圓形把手可旋轉。右側也有位置與大小欄位、旋轉和微調按鈕。
@@ -19,7 +31,7 @@
 
 骨架線是跟隨部件的關節位置示意，供檢查肩、肘、腕、髖、膝、踝；目前不提供骨架拖曳或自動帶動相鄰部件。這個工具調整組裝比例，正式套用設定後仍需檢查動作接縫。
 
-另外重製畫面左側、沒有手腕螢幕的衣袖與手，修正六指問題。新版確認為四根手指加一根拇指，指甲自然無色，並重新對齊肩膀與袖口。右側衣袖沿用原素材。[目前三視圖疊圖](character/glitch/proportion-check-v0.4.0.png)。
+0.4.0 重製畫面左側、沒有手腕螢幕的衣袖與手，修正六指問題。當時確認為四根手指加一根拇指，指甲自然無色，並重新對齊肩膀與袖口。當時右側衣袖沿用原素材。[0.4.0 三視圖疊圖](character/glitch/proportion-check-v0.4.0.png)。
 
 ## 0.3.1：依三視圖重新對齊
 
@@ -56,18 +68,19 @@
 | --- | --- |
 | `character/glitch/rig.json` | 開放的角色設定，含畫布尺寸、父子節點、轉動中心、部件位置、UV 區域與網格密度 |
 | `character/glitch/hair-v2.png` | 瀏海、後髮與兩側髮束；各部件維持來源比例 |
-| `character/glitch/sleeves-v2.png` | 畫面右側衣袖與手；保留手腕螢幕 |
-| `character/glitch/sleeve-left-v3.png` | 修正五指的畫面左側衣袖與手，使用自然無色指甲 |
-| `character/glitch/skirt-v1.png` | 百褶裙與畫面左側垂帶 |
-| `character/glitch/legs-v2.png` | 依三視圖調整寬度的兩側腿部、長襪、腿套與鞋子 |
+| [sleeve-right-v4.png](character/glitch/sleeve-right-v4.png) | 重製的畫面右側衣袖與五指手掌；保留手腕螢幕 |
+| [sleeve-left-v4.png](character/glitch/sleeve-left-v4.png) | 重製的畫面左側衣袖與五指手掌，指甲自然無色 |
+| [skirt-v2.png](character/glitch/skirt-v2.png) | 輪廓較直的百褶裙與畫面左側垂帶 |
+| [legs-v3.png](character/glitch/legs-v3.png) | 依正面三視圖重製的腿部、長襪、腿套與鞋子 |
 | `character/glitch/face-base.png` | 完整下顎輪廓的無五官臉部底圖 |
 | `character/glitch/face-features.png` | 眼白、虹膜、眉毛、閉眼線及嘴型圖集 |
 | `character/glitch/torso.png` | 沿用的上衣、頸部、斜背帶與包包；原始 PNG 保留 |
 | `character/glitch/design-reference.png` | 生成分件時使用的完整造型參考；不參與角色動畫 |
 | `character/glitch/turnaround-reference.png` | 服裝、不對稱配件與全身比例的三視圖；不參與角色動畫 |
-| `character/glitch/proportion-check-v0.3.1.png` | 正面三視圖、目前組裝與相同尺度的半透明疊圖 |
+| `character/glitch/proportion-check-v0.4.1.png` | 正面三視圖、目前組裝與相同尺度的半透明疊圖 |
 | `character/glitch/proportion-calibration.json` | 正面參考座標、衣袖對齊點與腿部來源區域 |
-| `character/glitch/prompts/` | 內建 imagegen 的提示詞、裁切座標與修正紀錄 |
+| [本次素材與提示詞清單](character/glitch/prompts/release-v0.4.1.json) | 內建 imagegen 的提示詞、裁切座標與修正紀錄 |
+| [user-alignment-v0.4.0.json](character/glitch/calibration/user-alignment-v0.4.0.json) | 使用者提供的最後一份舊素材微調設定，供比較與還原 |
 | `character/glitch/voice-intro.mp3` | 取自既有 `glitch-vn/docs/voice/intro-glitch.mp3` 的格莉奇配音 |
 
 原圖參考為 `glitch-vn/art/sprite-glitch.png`。新原畫、部件和分享圖片使用內建 imagegen 生成，沒有使用 CLI 或另外呼叫圖片 API。圖片工具這次輸出 RGB，未提供真正的透明通道，因此部件採用單一綠色底；載入時以色差建立透明度並去除綠色邊緣，保留原始 PNG。造型參考圖中的棋盤格是圖片內容，沒有拿它當透明圖使用。
@@ -147,7 +160,7 @@ npm run test:alignment
 - `npm run test:runtime`：啟動臨時伺服器，驗證 Chromium 中的 WebGL 與 Canvas 程式介面、語音嘴型、播放停止及資源載入。首次使用若缺少 Chromium，執行 `npx playwright install chromium`。此檢查不截圖、不操作控制面板，也不代表完成手動外觀驗收。
 - `npm run test:alignment`：透過程式介面驗證小工具的載入、移動、旋轉、縮放、部件開關、骨架開關、取景、復原與設定往返；同時確認底圖位置保持固定。
 
-比例工具匯出的 `parts[].adjustment` 是部件的額外仿射變換，套用在網格變形後、父節點變換前，眼眶遮罩也使用相同變換。原始素材、UV 與部件設定保持不變，因此匯出檔可直接供展示頁讀取。載入設定時會核對底模，拒絕套用不同素材或不同部件結構的設定。
+比例工具匯出的 `parts[].adjustment` 是部件的額外仿射變換，套用在網格變形後、父節點變換前，眼眶遮罩也使用相同變換。原始素材、UV 與部件設定保持不變，因此匯出檔可直接供展示頁讀取。載入設定時會核對底模。已知的衣袖、裙子、腿部更新會套用新版素材及初始比例，頸部使用新版局部修正，其餘調整會保留；不相容的其他部件結構仍會拒絕載入。
 
 `?renderer=canvas` 可強制使用 Canvas 備援；效能會依裝置與畫面大小而異。`?overlay=1` 隱藏操作介面，保留透明角色畫面。`?view=bust` 顯示聊天近景，省略時預設全身。
 

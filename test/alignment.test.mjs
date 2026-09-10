@@ -66,3 +66,29 @@ test('skeleton wrist guides follow the calibrated artwork and exported rigs use 
   close(after.joints.wristRight,before.joints.wristRight);
   assert.deepEqual(buildScene(e.exportRig(),e.pose),e.scene());
 });
+
+test('replacing artwork preserves edits to unchanged parts and rejects unrelated base changes',()=>{
+  const legacy=structuredClone(rig);
+  legacy.textures.sleeveLeft.src='previous-left.png';
+  legacy.textures.sleeveRight.src='previous-right.png';
+  legacy.parts.find(p=>p.id==='arm-left').rect=[0,0,400,650];
+  legacy.parts.find(p=>p.id==='arm-right').rect=[500,0,400,650];
+  legacy.parts.find(p=>p.id==='arm-left').adjustment=[1.2,0,0,1.2,10,40];
+  legacy.textures.skirt.src='previous-skirt.png';
+  legacy.textures.legs.src='previous-legs.png';
+  const oldTorso=legacy.parts.find(p=>p.id==='torso');
+  delete oldTorso.neck.rest;oldTorso.adjustment=[1.05,0,0,1.05,-20,15];
+  legacy.parts.find(p=>p.id==='face').adjustment=[1,0,0,1,-8,15];
+  const e=new Alignment(rig),result=e.importRig(legacy);
+  assert.deepEqual(result.replaced,['arm-left','arm-right','skirt','leg-left','leg-right']);
+  assert.deepEqual(result.recalibrated,['torso']);
+  assert.deepEqual(e.rig.parts.find(p=>p.id==='torso').adjustment,oldTorso.adjustment);
+  assert.deepEqual(e.rig.parts.find(p=>p.id==='torso').neck,rig.parts.find(p=>p.id==='torso').neck);
+  assert.deepEqual(e.rig.parts.find(p=>p.id==='face').adjustment,[1,0,0,1,-8,15]);
+  assert.deepEqual(e.rig.parts.find(p=>p.id==='arm-left'),rig.parts.find(p=>p.id==='arm-left'));
+  for(const id of ['skirt','leg-left','leg-right']) assert.deepEqual(e.rig.parts.find(p=>p.id===id),rig.parts.find(p=>p.id===id));
+  assert.deepEqual(e.rig.textures,rig.textures);
+  e.undo();assert.deepEqual(e.exportRig(),rig);e.redo();
+  const saved=e.exportRig();legacy.parts.find(p=>p.id==='face').rect[0]+=1;
+  assert.throws(()=>e.importRig(legacy),/底模/);assert.deepEqual(e.exportRig(),saved);
+});

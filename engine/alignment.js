@@ -1,5 +1,5 @@
-import { around, buildScene, deformPoint, identity, multiply, nodeMatrices, point } from './geometry.js?v=0.4.0';
-import { Motion } from './motion.js?v=0.4.0';
+import { around, buildScene, deformPoint, identity, multiply, nodeMatrices, point } from './geometry.js?v=0.4.1';
+import { Motion } from './motion.js?v=0.4.1';
 
 export const restPose = () => ({ ...new Motion().values, hair: 0 });
 
@@ -145,14 +145,52 @@ export class Alignment {
       for (const p of copy.parts) delete p.adjustment;
       return JSON.stringify(copy);
     };
-    if (stripped(candidate) !== stripped(this.original)) throw new Error('這份設定的底模不同，請載入本工具匯出的設定。');
-    for (const p of candidate.parts) if (p.adjustment !== undefined) {
+    let imported = candidate, replaced = [], recalibrated = [];
+    if (stripped(candidate) !== stripped(this.original)) {
+      // Art replacements keep edits to every unchanged part. A shared atlas
+      // migrates as one unit; imported texture URLs are never used or loaded.
+      imported = structuredClone(candidate);
+      const torso = imported.parts.find(p => p.id === 'torso');
+      const currentTorso = this.original.parts.find(p => p.id === 'torso');
+      if (torso && currentTorso && JSON.stringify(torso.neck) !== JSON.stringify(currentTorso.neck)) {
+        torso.neck = structuredClone(currentTorso.neck);
+        recalibrated.push('torso');
+      }
+      const groups = [
+        { texture: 'sleeveLeft', parts: ['arm-left'], nodes: ['arm-left'] },
+        { texture: 'sleeveRight', parts: ['arm-right'], nodes: ['arm-right'] },
+        { texture: 'skirt', parts: ['skirt'], nodes: [] },
+        { texture: 'legs', parts: ['leg-left', 'leg-right'], nodes: ['leg-left', 'leg-right'] },
+      ];
+      const base = (rig, group) => JSON.stringify({
+        texture: rig.textures?.[group.texture],
+        parts: group.parts.map(id => {
+          const part = structuredClone(rig.parts.find(p => p.id === id));
+          if (part) delete part.adjustment;
+          return part;
+        }),
+        nodes: group.nodes.map(id => rig.nodes?.find(n => n.id === id)),
+      });
+      for (const group of groups) {
+        if (base(imported, group) === base(this.original, group)) continue;
+        for (const [list, ids] of [['parts', group.parts], ['nodes', group.nodes]]) for (const id of ids) {
+          const index = imported[list]?.findIndex(item => item.id === id) ?? -1;
+          if (index < 0) throw new Error('這份設定的底模不同，請載入本工具匯出的設定。');
+          imported[list][index] = structuredClone(this.original[list].find(item => item.id === id));
+        }
+        if (imported.textures) imported.textures[group.texture] = structuredClone(this.original.textures[group.texture]);
+        replaced.push(...group.parts);
+      }
+      if (stripped(imported) !== stripped(this.original)) throw new Error('這份設定的底模不同，請載入本工具匯出的設定。');
+    }
+    for (const p of imported.parts) if (p.adjustment !== undefined) {
       const m = p.adjustment;
       if (!Array.isArray(m) || m.length !== 6 || !m.every(n => Number.isFinite(n) && Math.abs(n) < 100000)) throw new Error('設定含有無效的部件位置。');
       const det = m[0] * m[3] - m[1] * m[2];
       if (det < .009999 || det > 100.001) throw new Error('設定含有超出範圍的部件大小。');
     }
-    this.begin(); this.restore(candidate.parts.map(p => p.adjustment || null)); this.commit();
+    this.begin(); this.restore(imported.parts.map(p => p.adjustment || null)); this.commit();
+    return { replaced, recalibrated };
   }
   get changed() {
     return this.rig.parts.filter((p, i) => JSON.stringify(p.adjustment || null) !== JSON.stringify(this.original.parts[i].adjustment || null)).length;

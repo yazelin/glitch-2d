@@ -1,0 +1,119 @@
+{
+  "selectedImage": "/home/ct/.codex/generated_images/glitch2d-art/sleeve-left-measured-v4.png",
+  "rawGeneratedOutput": "/home/ct/.codex/generated_images/01a08a70-0725-7f13-a3b5-892e3c8fdd63/exec-c3e8e97d-d522-4f02-9a8c-2d4d13810e8b.png",
+  "generator": "Built-in imagegen only, initial call plus one targeted correction.",
+  "size": [
+    1024,
+    1536
+  ],
+  "mode": "RGB",
+  "inkBounds": [
+    37,
+    83,
+    925,
+    1364
+  ],
+  "fullCanvasCrop": [
+    0,
+    0,
+    1024,
+    1536
+  ],
+  "backgroundCorner": [
+    33,
+    230,
+    21
+  ],
+  "background": "RGB near-flat chroma green; requested true alpha in initial call yielded baked checkerboard and was rejected.",
+  "sourceTemplate": "/home/ct/glitch-l2d/test-results/sleeve-v4/left-front-template.png",
+  "sourceTemplateSize": [
+    800,
+    1200
+  ],
+  "sourceTemplateRawTurnaroundCrop": [
+    75,
+    225,
+    200,
+    300
+  ],
+  "sourceTemplateScale": 4,
+  "sourceTemplateSha256": "eb50266216c772125101b28e259f150db09c2588133a5cdb1f7b1ff631f250fd",
+  "sourceTurnaround": "/home/ct/glitch-l2d/character/glitch/turnaround-reference.png",
+  "outputSha256": "d815d0296ae9625b180faa3156492169a51cb929994f3a8d1385c12e0fb444ab",
+  "landmarks": {
+    "sourceTemplateShoulder": [
+      704,
+      84
+    ],
+    "sourceTemplateWrist": [
+      196,
+      1028
+    ],
+    "requestedOutputShoulder": [
+      901.12,
+      107.52
+    ],
+    "requestedOutputWrist": [
+      250.88,
+      1315.84
+    ],
+    "note": "Output landmarks are exact 1.28-scaled template targets, not independently verified joint centers. Parent should compare against the template and align using actual cuff/shoulder geometry."
+  },
+  "scaleToTemplate": [
+    0.78125,
+    0.78125
+  ],
+  "forearmWidthProfile": [
+    {
+      "t": 0.7,
+      "referenceWidthTemplatePixels": 312,
+      "candidateWidthTemplatePixels": 316.5,
+      "referenceRatio": 0.2910427500435996,
+      "candidateRatio": 0.2952404820153823,
+      "relativeErrorPercent": 1.4423076923076872
+    },
+    {
+      "t": 0.75,
+      "referenceWidthTemplatePixels": 337,
+      "candidateWidthTemplatePixels": 328.75,
+      "referenceRatio": 0.31436348322017005,
+      "candidateRatio": 0.30666764127190177,
+      "relativeErrorPercent": -2.448071216617209
+    },
+    {
+      "t": 0.8,
+      "referenceWidthTemplatePixels": 321,
+      "candidateWidthTemplatePixels": 286.5,
+      "referenceRatio": 0.29943821398716497,
+      "candidateRatio": 0.2672556022034977,
+      "relativeErrorPercent": -10.747663551401864
+    },
+    {
+      "t": 0.85,
+      "referenceWidthTemplatePixels": 263,
+      "candidateWidthTemplatePixels": 226.75,
+      "referenceRatio": 0.24533411301752142,
+      "candidateRatio": 0.21151904991149423,
+      "relativeErrorPercent": -13.783269961977185
+    }
+  ],
+  "qcMethod": "Sample transverse foreground spans perpendicular to the supplied template shoulder-to-wrist line at t=.70/.75/.80/.85, using 0.25-template-pixel steps and green-dominance foreground classification.",
+  "visualInspection": [
+    "Exactly four distinct non-thumb fingers plus one thumb are visible, five digits total.",
+    "Natural unpainted nails; plain purple cuff; no wrist device.",
+    "Single left sleeve and hand only; torso, strap, skirt, other body and guide lines removed.",
+    "Native 2:3 canvas ratio exactly matches source template; use scale 0.78125 to compare at 800x1200.",
+    "Measured broad forearm width is within about 2.5 percent of reference at t=.70 and .75.",
+    "Remaining drift: sleeve narrows earlier near cuff; widths are about 10.7 percent and 13.8 percent below target at t=.80 and .85. This is a closer candidate, not a claim of exact tracing.",
+    "No old sleeve art used as generation reference. Only measured source crop, turnaround and current-task initial candidate were referenced.",
+    "No site assets or source edited; generated output copied unchanged."
+  ],
+  "rejectedInitialOutput": {
+    "path": "/home/ct/.codex/generated_images/01a08a70-0725-7f13-a3b5-892e3c8fdd63/exec-74f7aef8-5a16-4199-b684-cd56ddd2c0c7.png",
+    "reasons": [
+      "Baked checkerboard RGB background",
+      "Three visible non-thumb fingers plus thumb",
+      "Early cuff taper and shoulder/wrist placement drift"
+    ]
+  }
+}

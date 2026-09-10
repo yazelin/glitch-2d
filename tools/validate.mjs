@@ -40,6 +40,10 @@ for (const part of rig.parts) {
   if (part.lockAspect) assert(Math.abs(part.rect[2] / uw - part.rect[3] / vh) < 1e-6, `Stretched reference art: ${part.id}`);
   if (part.adjustment) assert(part.adjustment.length === 6 && part.adjustment.every(Number.isFinite) && part.adjustment[0]*part.adjustment[3]-part.adjustment[1]*part.adjustment[2] > 0, `Invalid alignment: ${part.id}`);
   if (part.attachment) assert(part.attachment.depth > 0 && part.attachment.depth <= 1 && part.attachment.extend >= 0 && part.attachment.extend <= 1, `Invalid root overlap: ${part.id}`);
+  if (part.neck?.rest) {
+    const { top, bottom, inner, outer, pinch, drop } = part.neck.rest;
+    assert([top,bottom,inner,outer,pinch,drop].every(Number.isFinite) && bottom > top && outer > inner && inner >= 0 && pinch >= 0 && pinch < 1, `Invalid neck rest shape: ${part.id}`);
+  }
   if (part.hand) {
     assert(part.hand.anchor.length === 2 && part.hand.anchor.every(n => n >= 0 && n <= 1));
     assert(part.hand.axis.length === 2 && Math.abs(Math.hypot(...part.hand.axis) - 1) < 1e-6);

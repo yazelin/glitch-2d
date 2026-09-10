@@ -1,0 +1,60 @@
+[
+  {
+    "side": "arm-left",
+    "units": "reference pixels",
+    "shoulderToWrist": 268.00186566514793,
+    "sampleFractions": [
+      0.7,
+      0.75,
+      0.8,
+      0.85
+    ],
+    "reference": [
+      78,
+      84.25,
+      80.25,
+      65.75
+    ],
+    "before": [
+      99,
+      104.25,
+      99,
+      81.75
+    ],
+    "after": [
+      81.5,
+      87.25,
+      87,
+      71.25
+    ]
+  },
+  {
+    "side": "arm-right",
+    "units": "reference pixels",
+    "shoulderToWrist": 267.56868277135874,
+    "sampleFractions": [
+      0.7,
+      0.75,
+      0.8,
+      0.85
+    ],
+    "reference": [
+      78.5,
+      84.5,
+      79.25,
+      63.75
+    ],
+    "before": [
+      102.75,
+      103.25,
+      95.5,
+      76
+    ],
+    "after": [
+      72.5,
+      78,
+      80.75,
+      69.5
+    ]
+  }
+]

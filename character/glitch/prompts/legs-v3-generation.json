@@ -1,0 +1,405 @@
+{
+  "selected_path": "/home/ct/.codex/generated_images/glitch2d-legs-front-grounded/legs-front-grounded-v2.png",
+  "original_generated_path": "/home/ct/.codex/generated_images/01a08aa9-7565-7531-b577-c9c6bc3a2a6f/exec-e95652d5-0ffa-4516-8832-d6172c8caf58.png",
+  "initial_variant_path": "/home/ct/.codex/generated_images/01a08aa9-7565-7531-b577-c9c6bc3a2a6f/exec-6571a960-3f31-4aac-84c3-0a59bd09724c.png",
+  "template_path": "/home/ct/glitch-l2d/test-results/sleeve-v4/legs-front-template.png",
+  "template_size": [
+    880,
+    1816
+  ],
+  "template_raw_reference_crop_xywh": [
+    204,
+    510,
+    220,
+    454
+  ],
+  "turnaround_path": "/home/ct/glitch-l2d/character/glitch/turnaround-reference.png",
+  "tool": "built-in image_gen",
+  "calls": 2,
+  "old_legs_artwork_used": false,
+  "size": [
+    873,
+    1801
+  ],
+  "mode": "RGB",
+  "alpha_present": false,
+  "background_most_common_rgb": [
+    25,
+    247,
+    12
+  ],
+  "background_border_min": [
+    18,
+    238,
+    9
+  ],
+  "background_border_max": [
+    45,
+    249,
+    28
+  ],
+  "keying_suggestion": "Green dominance; background has slight RGB variation.",
+  "parts": {
+    "viewer_left_bare_leg": {
+      "tight_bbox_ltrb": [
+        48,
+        21,
+        383,
+        1733
+      ],
+      "crop_ltrb_12px_margin": [
+        36,
+        9,
+        395,
+        1745
+      ],
+      "crop_xywh_12px_margin": [
+        36,
+        9,
+        359,
+        1736
+      ],
+      "uv_ltrb_12px_margin": [
+        0.04123711,
+        0.00499722,
+        0.45246277,
+        0.96890616
+      ],
+      "observed_anchors": {
+        "closed_upper_root_top": [
+          248,
+          21
+        ],
+        "upper_skin_tab_center_estimated": [
+          248,
+          38
+        ],
+        "visible_thigh_start_estimated": [
+          248,
+          78
+        ],
+        "cuff_top_outer_rim_estimated": [
+          205,
+          917
+        ],
+        "skin_or_stocking_to_cuff_center_seam_estimated": [
+          205,
+          937
+        ],
+        "cuff_center_estimated": [
+          205,
+          978
+        ],
+        "sole_baseline": [
+          236.0,
+          1732
+        ]
+      },
+      "region_widths": {
+        "upper_thigh": {
+          "bbox_width": 264,
+          "max_row_width": 264
+        },
+        "mid_calf": {
+          "bbox_width": 203,
+          "max_row_width": 200
+        },
+        "leg_warmer": {
+          "bbox_width": 298,
+          "max_row_width": 298
+        },
+        "sneaker": {
+          "bbox_width": 289,
+          "max_row_width": 287
+        }
+      },
+      "row_width_profile": {
+        "75": {
+          "left": 120,
+          "right_exclusive": 382,
+          "width": 262
+        },
+        "100": {
+          "left": 120,
+          "right_exclusive": 382,
+          "width": 262
+        },
+        "150": {
+          "left": 123,
+          "right_exclusive": 377,
+          "width": 254
+        },
+        "200": {
+          "left": 128,
+          "right_exclusive": 372,
+          "width": 244
+        },
+        "350": {
+          "left": 148,
+          "right_exclusive": 356,
+          "width": 208
+        },
+        "500": {
+          "left": 162,
+          "right_exclusive": 347,
+          "width": 185
+        },
+        "600": {
+          "left": 144,
+          "right_exclusive": 330,
+          "width": 186
+        },
+        "700": {
+          "left": 124,
+          "right_exclusive": 315,
+          "width": 191
+        },
+        "750": {
+          "left": 116,
+          "right_exclusive": 313,
+          "width": 197
+        },
+        "800": {
+          "left": 112,
+          "right_exclusive": 311,
+          "width": 199
+        },
+        "850": {
+          "left": 113,
+          "right_exclusive": 307,
+          "width": 194
+        },
+        "900": {
+          "left": 116,
+          "right_exclusive": 301,
+          "width": 185
+        },
+        "950": {
+          "left": 100,
+          "right_exclusive": 312,
+          "width": 212
+        },
+        "1000": {
+          "left": 103,
+          "right_exclusive": 309,
+          "width": 206
+        },
+        "1200": {
+          "left": 72,
+          "right_exclusive": 323,
+          "width": 251
+        },
+        "1400": {
+          "left": 98,
+          "right_exclusive": 315,
+          "width": 217
+        },
+        "1500": {
+          "left": 95,
+          "right_exclusive": 321,
+          "width": 226
+        },
+        "1600": {
+          "left": 81,
+          "right_exclusive": 338,
+          "width": 257
+        },
+        "1700": {
+          "left": 92,
+          "right_exclusive": 361,
+          "width": 269
+        }
+      }
+    },
+    "viewer_right_stocking_leg": {
+      "tight_bbox_ltrb": [
+        490,
+        21,
+        828,
+        1734
+      ],
+      "crop_ltrb_12px_margin": [
+        478,
+        9,
+        840,
+        1746
+      ],
+      "crop_xywh_12px_margin": [
+        478,
+        9,
+        362,
+        1737
+      ],
+      "uv_ltrb_12px_margin": [
+        0.54753723,
+        0.00499722,
+        0.96219931,
+        0.96946141
+      ],
+      "observed_anchors": {
+        "closed_upper_root_top": [
+          622,
+          21
+        ],
+        "upper_skin_tab_center_estimated": [
+          622,
+          38
+        ],
+        "visible_thigh_start_estimated": [
+          622,
+          78
+        ],
+        "cuff_top_outer_rim_estimated": [
+          668,
+          917
+        ],
+        "skin_or_stocking_to_cuff_center_seam_estimated": [
+          668,
+          937
+        ],
+        "cuff_center_estimated": [
+          668,
+          978
+        ],
+        "sole_baseline": [
+          634.0,
+          1733
+        ]
+      },
+      "region_widths": {
+        "upper_thigh": {
+          "bbox_width": 265,
+          "max_row_width": 265
+        },
+        "mid_calf": {
+          "bbox_width": 203,
+          "max_row_width": 198
+        },
+        "leg_warmer": {
+          "bbox_width": 301,
+          "max_row_width": 301
+        },
+        "sneaker": {
+          "bbox_width": 290,
+          "max_row_width": 288
+        }
+      },
+      "row_width_profile": {
+        "75": {
+          "left": 491,
+          "right_exclusive": 754,
+          "width": 263
+        },
+        "100": {
+          "left": 491,
+          "right_exclusive": 755,
+          "width": 264
+        },
+        "150": {
+          "left": 497,
+          "right_exclusive": 751,
+          "width": 254
+        },
+        "200": {
+          "left": 501,
+          "right_exclusive": 748,
+          "width": 247
+        },
+        "350": {
+          "left": 518,
+          "right_exclusive": 727,
+          "width": 209
+        },
+        "500": {
+          "left": 527,
+          "right_exclusive": 716,
+          "width": 189
+        },
+        "600": {
+          "left": 545,
+          "right_exclusive": 732,
+          "width": 187
+        },
+        "700": {
+          "left": 562,
+          "right_exclusive": 756,
+          "width": 194
+        },
+        "750": {
+          "left": 566,
+          "right_exclusive": 763,
+          "width": 197
+        },
+        "800": {
+          "left": 569,
+          "right_exclusive": 765,
+          "width": 196
+        },
+        "850": {
+          "left": 573,
+          "right_exclusive": 764,
+          "width": 191
+        },
+        "900": {
+          "left": 578,
+          "right_exclusive": 762,
+          "width": 184
+        },
+        "950": {
+          "left": 564,
+          "right_exclusive": 776,
+          "width": 212
+        },
+        "1000": {
+          "left": 566,
+          "right_exclusive": 774,
+          "width": 208
+        },
+        "1200": {
+          "left": 551,
+          "right_exclusive": 801,
+          "width": 250
+        },
+        "1400": {
+          "left": 557,
+          "right_exclusive": 775,
+          "width": 218
+        },
+        "1500": {
+          "left": 552,
+          "right_exclusive": 779,
+          "width": 227
+        },
+        "1600": {
+          "left": 534,
+          "right_exclusive": 792,
+          "width": 258
+        },
+        "1700": {
+          "left": 511,
+          "right_exclusive": 781,
+          "width": 270
+        }
+      }
+    }
+  },
+  "reference_template_markers": {
+    "visible_root_y": 64,
+    "cuff_marker_y": 924,
+    "sole_baseline_y": 1776,
+    "visible_leg_length": 1712,
+    "approximate_upper_thigh_width": 288,
+    "approximate_mid_calf_width_range": [
+      208,
+      224
+    ]
+  },
+  "inspection": [
+    "Both complete isolated legs and all asymmetrical costume details preserved.",
+    "Calves follow the original gentle contours without the pronounced old calf bulges.",
+    "Sneakers use flatter front-facing outlines and near-horizontal grounded sole edges, without visible underside tread.",
+    "Source anchor positions are observed or explicitly labeled estimates; generated landmarks did not exactly match requested coordinates.",
+    "Both sole baselines align within measured image-pixel tolerance recorded in parts.",
+    "One initial call plus one allowed proportion correction; no site or repository edits."
+  ]
+}

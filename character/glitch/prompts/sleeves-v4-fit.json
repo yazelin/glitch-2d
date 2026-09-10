@@ -1,0 +1,139 @@
+{
+  "mode": "Built-in imagegen",
+  "referenceMap": {
+    "scale": 2.5,
+    "translate": [
+      -300,
+      15
+    ]
+  },
+  "userAlignment": {
+    "src": "../calibration/user-alignment-v0.4.0.json",
+    "sha256": "c8d13ac4cf2755e7d14023730fbdadaf10825a8bb20bdc2d079f52194d00e624",
+    "preserved": [
+      "back-hair",
+      "torso",
+      "face",
+      "eye-left",
+      "eye-right",
+      "iris-left",
+      "iris-right",
+      "lid-left",
+      "lid-right",
+      "brow-left",
+      "brow-right",
+      "mouth",
+      "lip",
+      "side-hair-left",
+      "side-hair-right",
+      "front-hair"
+    ],
+    "replaced": [
+      "arm-left",
+      "arm-right",
+      "skirt",
+      "leg-left",
+      "leg-right"
+    ],
+    "sourceFilename": "glitch-aligned.rig (5).json",
+    "recalibrated": [
+      "torso.neck"
+    ]
+  },
+  "arms": [
+    {
+      "side": "left",
+      "image": "/home/ct/.codex/generated_images/glitch2d-art/sleeve-left-measured-v4.png",
+      "crop": [
+        25,
+        71,
+        950,
+        1389
+      ],
+      "chroma": [
+        33,
+        230,
+        21
+      ],
+      "shoulder": [
+        878,
+        128
+      ],
+      "wrist": [
+        274,
+        1255
+      ],
+      "targetShoulder": [
+        327.5,
+        630
+      ],
+      "targetWrist": [
+        10,
+        1220
+      ],
+      "scale": 0.5239939253854893,
+      "restAngle": 0.0017071303598474863,
+      "src": "sleeve-left-v4.png",
+      "hand": {
+        "anchor": [
+          0.26210526315789473,
+          0.8524118070554355
+        ],
+        "axis": [
+          -0.6,
+          0.8
+        ],
+        "transition": 0.025,
+        "scale": 0.86,
+        "angle": 0.16
+      }
+    },
+    {
+      "side": "right",
+      "image": "/home/ct/.codex/generated_images/glitch2d-sleeve-right-front/right-sleeve-front-v2.png",
+      "crop": [
+        44,
+        44,
+        920,
+        1351
+      ],
+      "chroma": [
+        32,
+        246,
+        11
+      ],
+      "shoulder": [
+        148,
+        107
+      ],
+      "wrist": [
+        725,
+        1194
+      ],
+      "targetShoulder": [
+        670,
+        630
+      ],
+      "targetWrist": [
+        950,
+        1237.5
+      ],
+      "scale": 0.5435517987018176,
+      "restAngle": 0.05611185669098728,
+      "src": "sleeve-right-v4.png",
+      "hand": {
+        "anchor": [
+          0.7402173913043478,
+          0.851221317542561
+        ],
+        "axis": [
+          0.6,
+          0.8
+        ],
+        "transition": 0.025,
+        "scale": 0.87,
+        "angle": -0.24
+      }
+    }
+  ]
+}

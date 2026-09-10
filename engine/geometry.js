@@ -1,4 +1,4 @@
-import { clamp } from './motion.js?v=0.4.0';
+import { clamp } from './motion.js?v=0.4.1';
 
 export const identity = () => [1, 0, 0, 1, 0, 0];
 export function multiply(a, b) {
@@ -88,6 +88,18 @@ export function deformPoint(part, x, y, pose, rig, explode = 0) {
         x += (moved[0] - rest[0]) * blend; y += (moved[1] - rest[1]) * blend;
       }
     }
+  }
+  if (part.neck?.rest) {
+    // Keep the small neck independent from the roomy hoodie scale. Blend into
+    // the hidden hood lining and upper chest; the outer clothing stays fixed.
+    const { top, bottom, inner, outer, pinch, drop } = part.neck.rest;
+    let vertical = clamp((bottom - y) / (bottom - top), 0, 1);
+    let horizontal = clamp((outer - Math.abs(x - part.neck.center)) / (outer - inner), 0, 1);
+    vertical *= vertical * (3 - 2 * vertical);
+    horizontal *= horizontal * (3 - 2 * horizontal);
+    const weight = vertical * horizontal;
+    x = part.neck.center + (x - part.neck.center) * (1 - pinch * weight);
+    y += drop * weight;
   }
   if (type === 'hair') {
     const weight = clamp((y - ry) / h, 0, 1);

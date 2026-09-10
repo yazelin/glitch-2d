@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { Motion, Spring, rms, mouthFromRms } from '../engine/motion.js';
-import { buildScene, deformPoint, around, point, nodeMatrices, facePoint, fitView, editPartRect } from '../engine/geometry.js';
+import { buildScene, deformPoint, around, point, multiply, identity, nodeMatrices, facePoint, fitView, editPartRect } from '../engine/geometry.js';
 import { removeChroma, prepareTexture } from '../engine/renderer.js';
 import { createCanvas, loadImage } from '@napi-rs/canvas';
 
@@ -10,6 +10,11 @@ const rig = JSON.parse(await readFile(new URL('../character/glitch/rig.json', im
 const neutral = () => ({ ...new Motion().values, hair: 0 });
 const height = item => {
   const ys = item.positions.filter((_, i) => i % 2); return Math.max(...ys) - Math.min(...ys);
+};
+const localHeight = item => {
+  const columns = item.part.mesh?.[0] || 4, rows = item.part.mesh?.[1] || 6;
+  const bottom = rows * (columns + 1) * 2;
+  return Math.hypot(item.positions[bottom] - item.positions[0], item.positions[bottom + 1] - item.positions[1]);
 };
 
 test('parameter API clamps range and ignores invalid or inherited properties', () => {
@@ -24,7 +29,7 @@ test('blink closes geometry and aperture without squashing the iris', () => {
   const open = buildScene(rig, neutral());
   const closed = buildScene(rig, { ...neutral(), eyeOpen: .15 });
   const find = (scene, id) => scene.find(item => item.part.id === id);
-  assert(height(find(closed, 'eye-left')) < height(find(open, 'eye-left')) * .2);
+  assert(localHeight(find(closed, 'eye-left')) < localHeight(find(open, 'eye-left')) * .2);
   assert(Math.abs(height(find(closed, 'iris-left')) - height(find(open, 'iris-left'))) < 1e-6);
   assert(Math.hypot(...find(closed, 'iris-left').clip.axisY) < Math.hypot(...find(open, 'iris-left').clip.axisY) * .2);
   const motion = new Motion(() => .5); motion.idle = false; motion.blink();
@@ -95,7 +100,7 @@ test('skin, facial features and eye aperture share one face transform at extreme
   const iris = rig.parts.find(p => p.id === 'iris-left');
   for (const headX of [-1, 1]) for (const headZ of [-1, 1]) {
     const pose = { ...neutral(), headX, headZ, headY: .7, eyeOpen: .2 };
-    const scene = buildScene(rig, pose), matrix = nodeMatrices(rig, pose).head;
+    const scene = buildScene(rig, pose), matrix = multiply(nodeMatrices(rig, pose).head, iris.adjustment || identity());
     const [x, y, w, h] = iris.clip;
     const center = point(matrix, ...facePoint(rig, pose, x + w / 2, y + h / 2));
     assert.deepEqual(scene.find(p => p.part.id === iris.id).clip.center, center);

@@ -1,0 +1,139 @@
+{
+  "final_path": "/home/ct/.codex/generated_images/glitch2d-sleeve-right-front/right-sleeve-front-v2.png",
+  "original_generated_path": "/home/ct/.codex/generated_images/01a08aa9-7565-7531-b577-c9c6bc3a2a6f/exec-1ec1e8c9-b811-4e7e-9a1e-b125a1c7e78f.png",
+  "initial_discarded_path": "/home/ct/.codex/generated_images/01a08aa9-7565-7531-b577-c9c6bc3a2a6f/exec-453920e3-d119-4370-bd56-eede58b6a3ab.png",
+  "source_template": "/home/ct/glitch-l2d/test-results/sleeve-v4/right-front-template.png",
+  "source_template_size": [
+    840,
+    1260
+  ],
+  "source_turnaround": "/home/ct/glitch-l2d/character/glitch/turnaround-reference.png",
+  "size": [
+    1024,
+    1536
+  ],
+  "mode": "RGB",
+  "alpha_present": false,
+  "background_most_common_rgb": [
+    32,
+    246,
+    11
+  ],
+  "background_border_min": [
+    25,
+    237,
+    7
+  ],
+  "background_border_max": [
+    52,
+    248,
+    26
+  ],
+  "tight_bbox_ltrb": [
+    56,
+    56,
+    952,
+    1383
+  ],
+  "crop_ltrb_12px_margin": [
+    44,
+    44,
+    964,
+    1395
+  ],
+  "crop_xywh_12px_margin": [
+    44,
+    44,
+    920,
+    1351
+  ],
+  "uv_ltrb_12px_margin": [
+    0.04296875,
+    0.02864583,
+    0.94140625,
+    0.90820312
+  ],
+  "reference_anchors_template_pixels": {
+    "shoulder": [
+      132,
+      84
+    ],
+    "wrist": [
+      580,
+      1056
+    ]
+  },
+  "desired_anchors_at_output_size": {
+    "shoulder": [
+      160.914,
+      102.4
+    ],
+    "wrist": [
+      707.048,
+      1287.314
+    ]
+  },
+  "visually_estimated_output_anchors": {
+    "shoulder": [
+      148.0,
+      107.0
+    ],
+    "wrist": [
+      726.0,
+      1190.0
+    ],
+    "confidence": "approximate visual estimate; shoulder cap is completed hidden geometry",
+    "axis_length_px": 1227.588
+  },
+  "transverse_width_qc_using_estimated_output_anchors": [
+    {
+      "t": 0.5,
+      "estimated_width_px": 310.0,
+      "width_over_estimated_axis": 0.252528,
+      "reference_width_over_axis": 0.266285
+    },
+    {
+      "t": 0.6,
+      "estimated_width_px": 312.75,
+      "width_over_estimated_axis": 0.254768,
+      "reference_width_over_axis": 0.26722
+    },
+    {
+      "t": 0.7,
+      "estimated_width_px": 334.25,
+      "width_over_estimated_axis": 0.272282,
+      "reference_width_over_axis": 0.293381
+    },
+    {
+      "t": 0.75,
+      "estimated_width_px": 357.75,
+      "width_over_estimated_axis": 0.291425,
+      "reference_width_over_axis": 0.315805
+    },
+    {
+      "t": 0.8,
+      "estimated_width_px": 375.0,
+      "width_over_estimated_axis": 0.305477,
+      "reference_width_over_axis": 0.296184
+    },
+    {
+      "t": 0.85,
+      "estimated_width_px": 325.0,
+      "width_over_estimated_axis": 0.264747,
+      "reference_width_over_axis": 0.238255
+    }
+  ],
+  "inspected_digits": {
+    "thumb_count": 1,
+    "distinct_non_thumb_finger_count": 4,
+    "total_digits": 5,
+    "nails": "natural pale nail beds; no colored polish"
+  },
+  "inspection": [
+    "One connected complete sleeve+cuff+hand; all fingertips within canvas.",
+    "Single cyan cuff screen; costume colors, purple stripes and pixels retained.",
+    "Initial native-alpha request produced a painted RGB checkerboard; authorized correction replaced it with chroma green.",
+    "Correction fixed five distinct digits but did not fully achieve requested normalized wrist placement. Wrist remains about 97 px above the specified y=1287 target; source anchors are provided for parent alignment.",
+    "One initial built-in image_gen call plus one allowed targeted correction; no repository edits."
+  ]
+}

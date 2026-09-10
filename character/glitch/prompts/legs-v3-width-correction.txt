@@ -1,0 +1,22 @@
+Built-in image_gen: one further width-only edit authorized after parent's measured assembly. Input was selected legs-front-grounded-v2.png only; no old legs artwork or full template supplied for this edit.
+
+Use case: precise-object-edit.
+Input image: the selected 873×1801 green leg-pair atlas is the ONLY edit target. Keep this exact atlas, drawing, pose, colors, positions, vertical landmarks and grounded sneakers. Make ONLY the following final WIDTH correction, based on measured assembly against the original FRONT reference.
+ABSOLUTE VERTICAL LOCK: do not change any y coordinate or height. Upper skin tabs remain at y≈21, visible upper-thigh overlap region around y≈78, knees and bandages at their existing heights, garter and stocking top at their existing heights, cuff tops around y≈917 and bottoms around y≈1034. Left shoe bottom stays y=1732 and right shoe bottom stays y=1733. Keep the 873×1801 canvas, overall layout and flat chroma green background exactly the same.
+EDIT ZONE 1 — upper thighs: broaden ONLY the upper thighs with a smooth taper toward the knees and existing thin calves. Widen symmetrically around each leg's OWN EXISTING local horizontal centerline; do not move either leg inward or outward. This is a locally varying outline correction, not whole-leg scaling.
+Exact desired foreground row widths in pixels on this same canvas:
+Viewer-LEFT bare leg:
+at y=100: width 286, center x=250.5 (current width262);
+at y=300: width 245, center x=250.5 (current220);
+at y=500: width 200, center x=254 (current185);
+at y=700: width196, center x=219, already close to current shape;
+at y=850: width194, center x=209.5, EXACTLY unchanged from current.
+Viewer-RIGHT garter/stocking leg:
+at y=100: width301, center x=622.5 (current264);
+at y=300: width264, center x=623 (current219);
+at y=500: width213, center x=621 (current189);
+at y=700: width205, center x=658.5, gently transitioning;
+at y=850: width191, center x=668, EXACTLY unchanged from current.
+Interpolate smooth natural contours through those widths. The top right thigh needs more broadening than the left. Taper the correction progressively so the lower calves remain their current slim, nearly straight shapes. Do not add a rounded calf-muscle bulge. Preserve the exact existing calf outline below the transition and all lower-leg anatomy. Extend the closed hidden upper skin tabs and garter surfaces naturally to fit the broader upper thighs while preserving their heights. Keep all garter, buckle, stocking-heart, thigh-pixel and bandage details at their original y positions and original design/size.
+EDIT ZONE 2 — ribbed leg-warmer CUFFS only: the dark-purple/lavender ribbed cuff bands around y=940–1010 are currently only about209–214 pixels wide. Make BOTH cuff outer silhouettes approximately245–250 pixels wide, centered on their original x≈205 and x≈670, while retaining exactly their original vertical height, top y, bottom y, ribbing style and lavender stripe height. They are slightly looser cuffs around the SAME thin calves. Do not thicken the calves to fill them. Preserve the dark angular attached loops, their scale and y positions. Blend the wider cuff naturally into the already roomy warmer fabric immediately beneath it.
+PRESERVE EVERYTHING ELSE: all calf shapes below the gradual upper-thigh transition, all scrunched warmer fabric below the cuffs, BOTH complete sneakers and their exact flat grounded front silhouettes, shoe scale, toe view, sole thickness, sole baselines, color palette, purple outlines, costume asymmetry and clean green gutter. In particular do not widen the shoes, enlarge all legs, change length, reframe, rotate, add perspective, redraw sneaker details or move soles. No added objects, skirt, pelvis, labels, text, guides, shadows or checkerboard. The result should look exactly like the input except for fuller correctly measured upper thighs and slightly looser ribbed cuffs.
