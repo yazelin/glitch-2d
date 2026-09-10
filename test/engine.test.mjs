@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { Motion, Spring, rms, mouthFromRms } from '../engine/motion.js';
-import { buildScene, around, point, nodeMatrices, facePoint, fitView, editPartRect } from '../engine/geometry.js';
+import { buildScene, deformPoint, around, point, nodeMatrices, facePoint, fitView, editPartRect } from '../engine/geometry.js';
 import { removeChroma, prepareTexture } from '../engine/renderer.js';
 import { createCanvas, loadImage } from '@napi-rs/canvas';
 
@@ -139,4 +139,38 @@ test('atlas crops exclude neighboring pieces and source art is untouched', async
   const ctx = result.getContext('2d');
   assert.equal(ctx.getImageData(220, 601, 1, 1).data[3], 0, 'Neighbor shoulder must not leak into the left hand crop');
   assert(ctx.getImageData(345, 220, 1, 1).data[3] > 200, 'Sleeve paint must survive the extraction');
+});
+
+test('hand calibration holds the wrist and sleeve while preserving fingertip proportions', () => {
+  for (const part of rig.parts.filter(p => p.hand)) {
+    const [x, y, w, h] = part.rect;
+    const wrist = [x + w * part.hand.anchor[0], y + h * part.hand.anchor[1]];
+    const distance = h * part.hand.transition * 2;
+    const tip = wrist.map((n, i) => n + part.hand.axis[i] * distance);
+    const sleeve = wrist.map((n, i) => n - part.hand.axis[i] * distance);
+    const deform = p => deformPoint(part, ...p, neutral(), rig);
+    assert.deepEqual(deform(wrist), wrist);
+    assert.deepEqual(deform(sleeve), sleeve, 'Hand corrections must not shorten the sleeve');
+    const first = deform(tip), second = deform([tip[0] + 4, tip[1] + 3]);
+    assert(Math.abs(Math.hypot(first[0] - second[0], first[1] - second[1]) - 5 * part.hand.scale) < 1e-7);
+    assert(Math.abs(Math.hypot(first[0] - wrist[0], first[1] - wrist[1]) - distance * part.hand.scale) < 1e-7);
+  }
+});
+
+test('hidden thigh roots cover the skirt joint without moving knees or soles, including after resizing', () => {
+  for (const source of rig.parts.filter(p => p.attachment)) {
+    for (const factor of [1, 1.5]) {
+      const part = structuredClone(source);
+      editPartRect(part, 2, part.rect[2] * factor);
+      editPartRect(part, 1, part.rect[1] + 25);
+      const [x, y, w, h] = part.rect;
+      const top = deformPoint(part, x + w / 2, y, neutral(), rig);
+      assert(top[1] < y, 'The hidden root must overlap the skirt');
+      for (const depth of [part.attachment.depth, .25, .5, 1]) {
+        const original = [x + w / 2, y + h * depth];
+        const actual = deformPoint(part, ...original, neutral(), rig);
+        original.forEach((n, i) => assert(Math.abs(n - actual[i]) < 1e-7));
+      }
+    }
+  }
 });

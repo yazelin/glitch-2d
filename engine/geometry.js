@@ -1,4 +1,4 @@
-import { clamp } from './motion.js?v=0.3.0';
+import { clamp } from './motion.js?v=0.3.1';
 
 export const identity = () => [1, 0, 0, 1, 0, 0];
 export function multiply(a, b) {
@@ -60,6 +60,21 @@ export function deformPoint(part, x, y, pose, rig, explode = 0) {
   const [rx, ry, w, h] = part.rect;
   const cx = rx + w / 2, cy = ry + h / 2;
   const type = part.type || 'sprite';
+  if (part.attachment) {
+    // Extend only the hidden root under the skirt. Fractions follow editor resizing.
+    const { depth, extend } = part.attachment;
+    y -= clamp(1 - (y - ry) / (h * depth), 0, 1) * h * extend;
+  }
+  if (part.hand) {
+    // Refine the hand around its fixed wrist without shortening the sleeve.
+    const anchor = [rx + w * part.hand.anchor[0], ry + h * part.hand.anchor[1]];
+    const delta = [x - anchor[0], y - anchor[1]];
+    const distance = delta[0] * part.hand.axis[0] + delta[1] * part.hand.axis[1];
+    let blend = clamp(distance / (h * part.hand.transition), 0, 1);
+    blend = blend * blend * (3 - 2 * blend);
+    const adjusted = point(around(anchor, part.hand.angle, part.hand.scale, part.hand.scale), x, y);
+    x += (adjusted[0] - x) * blend; y += (adjusted[1] - y) * blend;
+  }
   if (part.neck && Math.abs(x - part.neck.center) < 80 && y < part.neck.bottom) {
     const weight = clamp((part.neck.bottom - y) / (part.neck.bottom - part.neck.top), 0, 1);
     x = part.neck.center + (x - part.neck.center) * (1 - weight * part.neck.pinch);

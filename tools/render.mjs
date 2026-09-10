@@ -28,9 +28,10 @@ const states = [
 for (const [name, parameters] of states) {
   const motion = new Motion(() => .5);
   const pose = { ...motion.values, hair: 0, ...parameters };
-  const canvas = createCanvas(name === 'full' ? 1120 : 1060, name === 'full' ? 2520 : 1390);
+  const framing = name === 'full' ? 'full' : 'bust';
+  const canvas = createCanvas(...rig.views[framing].slice(2));
   const renderer = new CanvasRenderer(canvas, textures);
-  const options = { explode: name === 'exploded' ? 1 : 0, framing: name === 'full' ? 'full' : 'bust' };
+  const options = { explode: name === 'exploded' ? 1 : 0, framing };
   renderer.render(buildScene(rig, pose, options), rig, options);
   const out = new URL(`test-results/${name}.png`, root);
   await writeFile(out, canvas.toBuffer('image/png'));

@@ -2,8 +2,8 @@
   "format": "glitch2d.rig",
   "version": 1,
   "name": "格莉奇",
-  "size": [1120,2530],
-  "views": {"full":[-60,10,1120,2520],"bust":[-30,10,1060,1390]},
+  "size": [1320,2470],
+  "views": {"full":[-160,0,1320,2470],"bust":[-160,0,1320,1395]},
   "facePlane": {"center":[500,410],"yaw":10,"shear":0.025},
   "textures": {
     "face": {"src":"face-features.png","chroma":[17,239,15]},
@@ -13,25 +13,27 @@
     "sleeveLeft": {"src":"sleeves-v2.png","chroma":[49,226,25],"crop":[732,24,423,617],"clearRects":[[890,600,365,60]]},
     "sleeveRight": {"src":"sleeves-v2.png","chroma":[49,226,25],"crop":[864,607,386,630],"clearRects":[[864,607,23,40]]},
     "skirt": {"src":"skirt-v1.png","chroma":[15,247,17]},
-    "legs": {"src":"legs-v1.png","chroma":[30,234,10]}
+    "legs": {"src":"legs-v2.png","chroma":[23,230,9]}
   },
   "nodes": [
-    {"id":"body","parent":"root","pivot":[500,2467],"drive":"body"},
+    {"id":"body","parent":"root","pivot":[500,2395],"drive":"body"},
     {"id":"head","parent":"body","pivot":[500,560],"offset":[0,20],"drive":"head"},
-    {"id":"arm-left","parent":"body","pivot":[305,680],"drive":"arm","side":1,"restAngle":-0.13},
-    {"id":"arm-right","parent":"body","pivot":[700,680],"drive":"arm","side":-1,"restAngle":0.13}
+    {"id":"arm-left","parent":"body","pivot":[327.5,630],"drive":"arm","side":1,"restAngle":0.0437609248},
+    {"id":"arm-right","parent":"body","pivot":[670,630],"drive":"arm","side":-1,"restAngle":-0.0489870017},
+    {"id":"leg-left","parent":"body","pivot":[342.5,2395],"restAngle":0.01},
+    {"id":"leg-right","parent":"body","pivot":[638,2395],"restAngle":-0.038}
   ],
   "parts": [
-    {"id":"back-hair","label":"後髮","texture":"hair","uv":[667,148,560,474],"rect":[240,138,520.8000000000001,440.82000000000005],"node":"head","type":"hair","sway":7,"mesh":[8,10],"explode":[0,-130],"lockAspect":true},
-    {"id":"leg-left","label":"左側裸腿與鞋","texture":"legs","uv":[192,31,247,1380],"rect":[282,1345,197.6,1104],"node":"body","mesh":[6,16],"lockAspect":true,"explode":[-125,125]},
-    {"id":"leg-right","label":"右側長襪與鞋","texture":"legs","uv":[636,31,258,1380],"rect":[519,1345,206.4,1104],"node":"body","mesh":[6,16],"lockAspect":true,"explode":[125,125]},
-    {"id":"skirt","label":"百褶裙與垂帶","texture":"skirt","uv":[106,332,1042,637],"rect":[245,1162,510,311.77543186180424],"node":"body","mesh":[10,8],"lockAspect":true,"explode":[0,180]},
-    {"id":"arm-left","label":"左側衣袖與手","texture":"sleeveLeft","uv":[0,0,423,617],"rect":[-62.12,637.36,439.92,641.68],"node":"arm-left","mesh":[8,14],"explode":[-160,100],"lockAspect":true},
-    {"id":"arm-right","label":"右側衣袖與手","texture":"sleeveRight","uv":[0,0,386,630],"rect":[614.72,640.48,401.44,655.2],"node":"arm-right","mesh":[8,14],"explode":[160,100],"lockAspect":true},
-    {"id":"torso","label":"上衣與頸部","texture":"torso","uv":[215,25,825,1205],"rect":[252,525,496,724],"node":"body","neck":{"center":500,"top":525,"bottom":595,"pinch":0.15,"extend":36,"follow":0.85},"mesh":[16,20],"explode":[0,100]},
+    {"id":"back-hair","label":"後髮","texture":"hair","uv":[667,148,560,474],"rect":[222.8,126,554.4,469.26],"node":"head","type":"hair","sway":7,"mesh":[8,10],"explode":[0,-130],"lockAspect":true},
+    {"id":"leg-left","label":"左側裸腿與鞋","texture":"legs","uv":[168,32,285,1380],"rect":[216.572,1310,225.72,1092.96],"node":"leg-left","mesh":[8,24],"lockAspect":true,"explode":[-125,125],"attachment":{"depth":0.0640462597,"extend":0.0512370078}},
+    {"id":"leg-right","label":"右側長襪與鞋","texture":"legs","uv":[622,31,297,1382],"rect":[532.664,1310,235.224,1094.544],"node":"leg-right","mesh":[8,24],"lockAspect":true,"explode":[125,125],"attachment":{"depth":0.0639535734,"extend":0.0511628587}},
+    {"id":"skirt","label":"百褶裙與垂帶","texture":"skirt","uv":[106,332,1042,637],"rect":[242.105,1089.43,515.79,315.315],"node":"body","mesh":[10,8],"lockAspect":true,"explode":[0,180]},
+    {"id":"arm-left","label":"左側衣袖與手","texture":"sleeveLeft","uv":[0,0,423,617],"rect":[-94.4646530824,615.4911867135,511.4356683491,745.9948164809],"node":"arm-left","mesh":[12,26],"explode":[-160,100],"lockAspect":true,"hand":{"anchor":[0.2553191489,0.8282009724],"axis":[-0.8,0.6],"transition":0.055,"scale":0.88,"angle":0.04}},
+    {"id":"arm-right","label":"右側衣袖與手","texture":"sleeveRight","uv":[0,0,386,630],"rect":[573.9730077006,618.919962427,475.2105003533,775.6026301103],"node":"arm-right","mesh":[12,26],"explode":[160,100],"lockAspect":true,"hand":{"anchor":[0.7279792746,0.8142857143],"axis":[0.6,0.8],"transition":0.055,"scale":0.82,"angle":-0.28}},
+    {"id":"torso","label":"上衣與頸部","texture":"torso","uv":[215,25,825,1205],"rect":[263.16,508.105,473.68,691.42],"node":"body","neck":{"center":500,"top":508.105,"bottom":574.955,"pinch":0.15,"extend":34.38,"follow":0.85},"mesh":[16,20],"explode":[0,100]},
     {"id":"face","label":"臉部底圖","texture":"skin","uv":[150,75,950,1030],"rect":[325,170,350,380],"node":"head","mesh":[10,10],"face":true,"explode":[0,0]},
-    {"id":"eye-left","label":"左眼眼白與睫毛","texture":"face","uv":[14,178,282,208],"rect":[372.52,353.68,120.96000000000001,89.64],"node":"head","type":"eye","face":true,"mesh":[6,6],"explode":[-120,-20],"apertureY":406},
-    {"id":"eye-right","label":"右眼眼白與睫毛","texture":"face","uv":[355,178,290,208],"rect":[506.52,353.68,120.96000000000001,89.64],"node":"head","type":"eye","face":true,"mesh":[6,6],"explode":[120,-20],"apertureY":406},
+    {"id":"eye-left","label":"左眼眼白與睫毛","texture":"face","uv":[14,178,282,208],"rect":[372.52,353.68,120.96,89.64],"node":"head","type":"eye","face":true,"mesh":[6,6],"explode":[-120,-20],"apertureY":406},
+    {"id":"eye-right","label":"右眼眼白與睫毛","texture":"face","uv":[355,178,290,208],"rect":[506.52,353.68,120.96,89.64],"node":"head","type":"eye","face":true,"mesh":[6,6],"explode":[120,-20],"apertureY":406},
     {"id":"iris-left","label":"左眼虹膜","texture":"face","uv":[693,174,180,221],"rect":[407,370.5,59,61],"node":"head","type":"iris","face":true,"travel":[11,6],"clip":[378.52,382,105,48],"mesh":[3,4],"explode":[-120,40]},
     {"id":"iris-right","label":"右眼虹膜","texture":"face","uv":[989,174,183,221],"rect":[534,370.5,59,61],"node":"head","type":"iris","face":true,"travel":[11,6],"clip":[512.52,382,105,48],"mesh":[3,4],"explode":[120,40]},
     {"id":"lid-left","label":"左眼閉眼線","texture":"face","uv":[647,626,264,102],"rect":[377,388,112,36],"node":"head","type":"closed-eye","face":true,"explode":[-120,90]},
@@ -40,8 +42,9 @@
     {"id":"brow-right","label":"右眉","texture":"face","uv":[356,586,275,94],"rect":[512,336,108,30],"node":"head","type":"brow","side":-1,"face":true,"explode":[120,-75]},
     {"id":"mouth","label":"張嘴","texture":"face","uv":[714,923,118,138],"rect":[485,467,30,34],"node":"head","type":"mouth","face":true,"explode":[90,75]},
     {"id":"lip","label":"閉嘴線","texture":"face","uv":[375,948,197,65],"rect":[477,475,46,15],"node":"head","type":"lip","face":true,"explode":[-90,75]},
-    {"id":"side-hair-left","label":"左側髮束","texture":"hair","uv":[229,790,168,318],"rect":[288,312,151.20000000000002,286.2],"node":"head","type":"hair","sway":12,"mesh":[6,12],"explode":[-210,0],"lockAspect":true},
-    {"id":"side-hair-right","label":"右側髮束","texture":"hair","uv":[859,791,206,314],"rect":[568,313,185.4,282.6],"node":"head","type":"hair","sway":12,"mesh":[6,12],"explode":[210,0],"lockAspect":true},
-    {"id":"front-hair","label":"瀏海與髮飾","texture":"hair","uv":[65,49,514,447],"rect":[269,23,462.6,402.3],"node":"head","type":"hair","sway":2,"mesh":[10,12],"explode":[0,-190],"lockAspect":true}
-  ]
+    {"id":"side-hair-left","label":"左側髮束","texture":"hair","uv":[229,790,168,318],"rect":[273,303,157.92,298.92],"node":"head","type":"hair","sway":12,"mesh":[6,12],"explode":[-210,0],"lockAspect":true},
+    {"id":"side-hair-right","label":"右側髮束","texture":"hair","uv":[859,791,206,314],"rect":[583,304,193.64,295.16],"node":"head","type":"hair","sway":12,"mesh":[6,12],"explode":[210,0],"lockAspect":true},
+    {"id":"front-hair","label":"瀏海與髮飾","texture":"hair","uv":[65,49,514,447],"rect":[268.7,23,462.6,402.3],"node":"head","type":"hair","sway":2,"mesh":[10,12],"explode":[0,-190],"lockAspect":true}
+  ],
+  "reference": {"src":"turnaround-reference.png","crop":[60,0,500,966],"rect":[-150,15,1250,2415],"scale":2.5,"origin":[320,0]}
 }

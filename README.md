@@ -2,17 +2,19 @@
 
 格莉奇自己的 2D 角色原型，可切換全身與聊天近景。重新生成的角色部件由原生 JavaScript 組合，使用 WebGL 繪製、Web Audio 帶動嘴型，沒有 Live2D、Cubism 或 Pixi 的執行期依賴。
 
-**[開啟全身展示](https://yazelin.github.io/glitch-l2d/?v=0.3.0&view=full)** · [聊天近景](https://yazelin.github.io/glitch-l2d/?v=0.3.0&view=bust) · [透明舞台](https://yazelin.github.io/glitch-l2d/?overlay=1&view=bust) · [先前的 Live2D 版本](https://yazelin.github.io/glitch-l2d/legacy/)
+**[開啟全身展示](https://yazelin.github.io/glitch-l2d/?v=0.3.1&view=full)** · [聊天近景](https://yazelin.github.io/glitch-l2d/?v=0.3.1&view=bust) · [透明舞台](https://yazelin.github.io/glitch-l2d/?overlay=1&view=bust) · [先前的 Live2D 版本](https://yazelin.github.io/glitch-l2d/legacy/)
 
-## 0.3 的造型修正
+## 0.3.1：依三視圖重新對齊
 
-組裝比例以 `design-reference.png` 為準，服裝細節對照原始角色圖與三視圖。上衣沿用原先的圖片；指甲保持自然無色，手腕螢幕只在畫面右側。
+這次以 `turnaround-reference.png` 的正面為全身比例基準，將參考圖與組裝結果放在相同座標，以半透明疊圖檢查。**[看三視圖、組裝結果與 50% 疊圖](character/glitch/proportion-check-v0.3.1.png)**。
 
-- 重製寬鬆衣袖與手。前版手臂的垂直縮放比水平多約 40%，本版改為等比例縮放，再用肩膀轉動中心調整角度。
-- 重製四個頭髮部件，移除瀏海重複帶入的長側髮，減少疊加的髮量。
-- 眼睛整組下移並調整間距，重新對齊虹膜、眼白和眨眼遮罩，修正虹膜底部被切平的問題。
-- 加入百褶裙、左側裸腿、右側長襪、腿部配件、腿套與鞋子，共 21 個部件。
-- 轉頭時臉部與五官使用同一個變形平面，頸部上緣跟隨下巴；聊天近景與全身使用同一套動作。
+- 依肩膀與袖口的位置，重新等比例放大衣袖並調整角度，修正前版手臂偏短、太往內收的組裝。
+- 手掌另以手腕為固定點調整大小和方向，保持袖長；指甲仍是自然無色，手腕螢幕只在畫面右側。
+- 上衣沿用原圖，重新對齊領口與下襬；裙子往上接回下襬，修正腰部與裙襬偏低的位置。
+- 重製較有份量的腿部與鞋子，再等比例組裝；以鞋底固定站姿，調整大腿位置，並將隱藏的腿根延伸到裙子底下。
+- 放寬後髮與兩側髮束的輪廓，瀏海保持原本高度。眼睛、眨眼與嘴型沿用上一版設定。
+
+疊圖使用固定換算：`x = (原圖 x − 320) × 2.5 + 500`、`y = 原圖 y × 2.5 + 15`。兩張圖使用同一個取景與縮放；關閉待機、轉頭與髮束擺動後比較。三視圖中的頭部略微傾斜，分件原畫的髮束、臉部與衣褶也有差異，因此這是比例對照，並非逐像素重現。
 
 ## 可以試什麼
 
@@ -39,12 +41,14 @@
 | `character/glitch/hair-v2.png` | 瀏海、後髮與兩側髮束；各部件維持來源比例 |
 | `character/glitch/sleeves-v2.png` | 寬鬆衣袖與自然無色指甲的雙手；只取兩側衣袖，上衣區域不使用 |
 | `character/glitch/skirt-v1.png` | 百褶裙與畫面左側垂帶 |
-| `character/glitch/legs-v1.png` | 兩側腿部、長襪、腿套與鞋子 |
+| `character/glitch/legs-v2.png` | 依三視圖調整寬度的兩側腿部、長襪、腿套與鞋子 |
 | `character/glitch/face-base.png` | 完整下顎輪廓的無五官臉部底圖 |
 | `character/glitch/face-features.png` | 眼白、虹膜、眉毛、閉眼線及嘴型圖集 |
 | `character/glitch/torso.png` | 沿用的上衣、頸部、斜背帶與包包；原始 PNG 保留 |
 | `character/glitch/design-reference.png` | 生成分件時使用的完整造型參考；不參與角色動畫 |
 | `character/glitch/turnaround-reference.png` | 服裝、不對稱配件與全身比例的三視圖；不參與角色動畫 |
+| `character/glitch/proportion-check-v0.3.1.png` | 正面三視圖、目前組裝與相同尺度的半透明疊圖 |
+| `character/glitch/proportion-calibration.json` | 正面參考座標、衣袖對齊點與腿部來源區域 |
 | `character/glitch/prompts/` | 內建 imagegen 的提示詞、裁切座標與修正紀錄 |
 | `character/glitch/voice-intro.mp3` | 取自既有 `glitch-vn/docs/voice/intro-glitch.mp3` 的格莉奇配音 |
 
@@ -53,6 +57,8 @@
 圖集以 UV 區域取出部件，程式沒有把眼睛或嘴巴畫成幾何替代圖案。眼睛開合會壓縮眼白網格，虹膜保留原來的形狀，再由隨開合縮小的眼眶範圍遮罩；閉到最後才接上閉眼線。髮束則依根部至髮梢的權重產生不同幅度的變形。
 
 `textures.crop` 在載入時擷取來源區域，`clearRects` 排除圖集裡相鄰部件的邊角，`clearPolygons` 遮去上衣原先畫出的袖口接合洞，讓衣袖接在上衣後方。這些都是載入時的遮罩，沒有覆寫原始圖片。`rect` 使用角色座標，`uv` 使用擷取後的圖片座標；有 `lockAspect` 的部件會在驗證時檢查來源比例。前版 `body-hair.png` 仍保留，但新版不再載入。
+
+衣袖的 `hand` 設定使用相對於部件的手腕座標，僅調整手掌區域。腿部 `attachment.depth` 與 `attachment.extend` 是部件高度的比例，控制裙子底下的遮蓋區域，縮放部件時會一起更新；膝蓋、配件與鞋底不受此延伸影響。`reference` 固定參考圖在角色座標中的位置，供離線疊圖工具使用。
 
 更換圖片時，可以沿用圖集與 UV，也可以新增單獨的 PNG，再調整 `textures`、`uv`、`rect`。原生透明 PNG 可省略 `chroma`。目前網頁下載的設定可取代 `character/glitch/rig.json`，圖片仍需保留在同一目錄。
 
@@ -109,12 +115,14 @@ npm run dev
 npm test
 npm run build
 npm run render
+npm run compare
 npm run test:runtime
 ```
 
 - `npm test`：檢查參數限制、眨眼幾何、視線遮罩、音量嘴型、彈性運動、父子節點與極端參數。
 - `npm run build`：檢查 JS 語法、圖集尺寸、UV、網格、網站連結與本機依賴；GitHub Pages 直接使用原始檔，不另產生打包目錄。
 - `npm run render`：用相同網格產生全身、近景、眨眼、表情、轉頭及手臂擺動等十二個狀態的透明 PNG，存入忽略提交的 `test-results/`，供檢查接縫與表情。
+- `npm run compare`：產生相同尺度的三欄疊圖，存入 `test-results/turnaround-alignment.png`。確認完成後，可用 `npm run compare -- --publish` 更新目前版本的公開對照圖。
 - `npm run test:runtime`：啟動臨時伺服器，驗證 Chromium 中的 WebGL 與 Canvas 程式介面、語音嘴型、播放停止及資源載入。首次使用若缺少 Chromium，執行 `npx playwright install chromium`。此檢查不截圖、不操作控制面板，也不代表完成手動外觀驗收。
 
 `?renderer=canvas` 可強制使用 Canvas 備援；效能會依裝置與畫面大小而異。`?overlay=1` 隱藏操作介面，保留透明角色畫面。`?view=bust` 顯示聊天近景，省略時預設全身。

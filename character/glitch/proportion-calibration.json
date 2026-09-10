@@ -1,0 +1,117 @@
+{
+  "release": "0.3.1",
+  "reference": "turnaround-reference.png",
+  "coordinateMap": {
+    "scale": 2.5,
+    "translation": [
+      -300,
+      15
+    ]
+  },
+  "method": "One reference-to-rig transform for the entire front view. Neutral pose, no independent image contain-fitting.",
+  "referenceLandmarks": {
+    "crown": [
+      320,
+      50
+    ],
+    "chin": [
+      319,
+      217
+    ],
+    "choker": [
+      320,
+      225
+    ],
+    "shoulderLeft": [
+      251,
+      246
+    ],
+    "shoulderRight": [
+      388,
+      246
+    ],
+    "wristLeft": [
+      124,
+      482
+    ],
+    "wristRight": [
+      500,
+      489
+    ],
+    "hoodieHem": [
+      320,
+      472
+    ],
+    "skirtHem": [
+      320,
+      526
+    ],
+    "shoeLeft": [
+      257,
+      954
+    ],
+    "shoeRight": [
+      375,
+      954
+    ]
+  },
+  "sleeves": {
+    "source": "sleeves-v2.png",
+    "left": {
+      "shoulder": [
+        1081,
+        36
+      ],
+      "wrist": [
+        840,
+        535
+      ],
+      "scale": 1.20906777387502
+    },
+    "right": {
+      "shoulder": [
+        942,
+        616
+      ],
+      "wrist": [
+        1145,
+        1120
+      ],
+      "scale": 1.2311152858893752
+    }
+  },
+  "legs": {
+    "source": "legs-v2.png",
+    "generatedFrom": "legs-v1.png",
+    "prompt": "prompts/legs-v2-proportions.txt",
+    "dimensions": [
+      1086,
+      1448
+    ],
+    "chroma": [
+      23,
+      230,
+      9
+    ],
+    "scale": 0.792,
+    "leftCrop": [
+      168,
+      32,
+      285,
+      1380
+    ],
+    "rightCrop": [
+      622,
+      31,
+      297,
+      1382
+    ]
+  },
+  "notes": [
+    "Source anatomy was widened with one built-in imagegen edit; crop dimensions preserve its native aspect at assembly.",
+    "Hands have a separate wrist-centered rest correction so sleeve alignment does not lengthen fingers.",
+    "Hidden thigh-root overlap changes only the area under the skirt; foot pivots set the standing leg angle.",
+    "Torso source PNG, unpainted nails, asymmetric wrist device, face, blink and mouth assets are preserved.",
+    "The front reference head is slightly tilted. Artwork contours and folds differ; this is a proportion check, not pixel identity."
+  ]
+}
