@@ -1,0 +1,28 @@
+{
+  "source": "/home/ct/.codex/generated_images/glitch2d-art/face-no-neck-green.png",
+  "originalOutput": "/home/ct/.codex/generated_images/01a08a70-0725-7f13-a3b5-892e3c8fdd63/exec-3405bf7c-5bd7-457d-8ee4-43cdfb5242c8.png",
+  "mode": "RGB",
+  "size": [
+    1254,
+    1254
+  ],
+  "inkBounds": [
+    169,
+    93,
+    910,
+    987
+  ],
+  "crop": [
+    150,
+    75,
+    950,
+    1030
+  ],
+  "coordinates": "[x,y,width,height] in source pixels",
+  "backgroundCorner": [
+    20,
+    240,
+    15
+  ],
+  "inspection": "Complete blank face skin ends at pointed chin; no neck, no eyes, no eyebrows, no mouth, no hair. Ears, blush, cyan cheek pixels and tiny nose highlight preserved. Generated artwork copied without repainting or alpha alteration."
+}

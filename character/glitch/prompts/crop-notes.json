@@ -1,0 +1,340 @@
+{
+  "generator": "Built-in tools.image_gen__imagegen only; five calls total",
+  "alpha": "All generated outputs are RGB. First alpha correction failed. Production parts use near-pure green chroma backing for runtime alpha extraction; raw artwork has not been repainted or altered.",
+  "coordinates": "All crop and inkBounds rectangles are [x,y,width,height] in source image pixels. Left and right refer to viewer side.",
+  "files": {
+    "body-hair-atlas-green.png": {
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "backgroundCorner": [
+        19,
+        241,
+        13
+      ],
+      "parts": {
+        "armLeft": {
+          "crop": [
+            445,
+            25,
+            260,
+            510
+          ],
+          "inkBounds": [
+            457,
+            35,
+            234,
+            485
+          ]
+        },
+        "armRight": {
+          "crop": [
+            826,
+            24,
+            262,
+            510
+          ],
+          "inkBounds": [
+            838,
+            34,
+            241,
+            490
+          ]
+        },
+        "backHair": {
+          "crop": [
+            1110,
+            40,
+            418,
+            481
+          ],
+          "inkBounds": [
+            1120,
+            48,
+            399,
+            458
+          ]
+        },
+        "faceBlank": {
+          "crop": [
+            55,
+            580,
+            310,
+            388
+          ],
+          "inkBounds": [
+            66,
+            590,
+            290,
+            364
+          ]
+        },
+        "frontHair": {
+          "crop": [
+            372,
+            546,
+            455,
+            430
+          ],
+          "inkBounds": [
+            380,
+            558,
+            444,
+            397
+          ]
+        },
+        "sideHairLeft": {
+          "crop": [
+            824,
+            550,
+            288,
+            450
+          ],
+          "inkBounds": [
+            830,
+            562,
+            260,
+            424
+          ]
+        },
+        "sideHairRight": {
+          "crop": [
+            1236,
+            550,
+            280,
+            450
+          ],
+          "inkBounds": [
+            1251,
+            562,
+            229,
+            418
+          ]
+        }
+      }
+    },
+    "face-features-atlas-green.png": {
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "backgroundCorner": [
+        17,
+        239,
+        15
+      ],
+      "parts": {
+        "whiteLeft": {
+          "crop": [
+            14,
+            178,
+            282,
+            208
+          ],
+          "inkBounds": [
+            23,
+            196,
+            256,
+            175
+          ]
+        },
+        "whiteRight": {
+          "crop": [
+            355,
+            178,
+            290,
+            208
+          ],
+          "inkBounds": [
+            378,
+            196,
+            257,
+            174
+          ]
+        },
+        "irisLeft": {
+          "crop": [
+            693,
+            174,
+            180,
+            221
+          ],
+          "inkBounds": [
+            709,
+            183,
+            148,
+            200
+          ]
+        },
+        "irisRight": {
+          "crop": [
+            989,
+            174,
+            183,
+            221
+          ],
+          "inkBounds": [
+            1008,
+            183,
+            148,
+            200
+          ]
+        },
+        "browLeft": {
+          "crop": [
+            25,
+            586,
+            265,
+            94
+          ],
+          "inkBounds": [
+            35,
+            599,
+            241,
+            67
+          ]
+        },
+        "browRight": {
+          "crop": [
+            356,
+            586,
+            275,
+            94
+          ],
+          "inkBounds": [
+            371,
+            599,
+            242,
+            67
+          ]
+        },
+        "lidLeft": {
+          "crop": [
+            647,
+            626,
+            264,
+            102
+          ],
+          "inkBounds": [
+            666,
+            638,
+            226,
+            70
+          ]
+        },
+        "lidRight": {
+          "crop": [
+            976,
+            626,
+            257,
+            102
+          ],
+          "inkBounds": [
+            992,
+            638,
+            223,
+            71
+          ]
+        },
+        "mouthNeutral": {
+          "crop": [
+            87,
+            951,
+            153,
+            49
+          ],
+          "inkBounds": [
+            102,
+            969,
+            124,
+            15
+          ]
+        },
+        "mouthSmile": {
+          "crop": [
+            375,
+            948,
+            197,
+            65
+          ],
+          "inkBounds": [
+            390,
+            965,
+            165,
+            30
+          ]
+        },
+        "mouthOpen": {
+          "crop": [
+            714,
+            923,
+            118,
+            138
+          ],
+          "inkBounds": [
+            732,
+            937,
+            83,
+            107
+          ]
+        },
+        "mouthHappy": {
+          "crop": [
+            998,
+            923,
+            174,
+            138
+          ],
+          "inkBounds": [
+            1013,
+            937,
+            141,
+            107
+          ]
+        }
+      }
+    },
+    "torso-only-green.png": {
+      "size": [
+        1254,
+        1254
+      ],
+      "mode": "RGB",
+      "backgroundCorner": [
+        19,
+        240,
+        14
+      ],
+      "parts": {
+        "torso": {
+          "crop": [
+            210,
+            25,
+            835,
+            1210
+          ],
+          "inkBounds": [
+            228,
+            38,
+            801,
+            1181
+          ]
+        }
+      }
+    }
+  },
+  "compositingNotes": [
+    "Use torso-only-green.png for the torso. The atlas top-left torso retained duplicate sleeve shapes and is superseded.",
+    "Torso has illustrated dark oval shoulder openings; place sleeve upper roots over these openings. Neck top is intentionally flat for face/head overlap.",
+    "Back hair includes a duplicate ahoge above the crown. Keep the back-hair portion at atlas y>=140 or omit that upper tuft in renderer; frontHair already supplies the ahoge and both antennas.",
+    "frontHair has completed central bangs and long side fringe. sideHairLeft and sideHairRight are additional flowing side bundles for restrained independent motion.",
+    "faceBlank includes tiny ears, cheek blush and cyan cheek pixels, nose highlight, full forehead and a short neck under chin. There are no eye, eyebrow or mouth marks.",
+    "Eyes are separated into white+lash outlines and complete iris ovals. Clip irises to the open eye aperture and render lashes above irises.",
+    "Closed lids, eyebrows and mouths have no large skin patches. Body and face parts were newly illustrated, not cut out of a flattened master.",
+    "Master images have a baked checkerboard and are style references only, not production textures.",
+    "Background green is nearly pure but not exact RGB 0,255,0; use green dominance and edge despill, not an exact-color equality test."
+  ]
+}

@@ -1,1 +1,17 @@
-{"name":"glitch-l2d","version":"0.1.0","private":true,"scripts":{"test":"node tools/verify.mjs"},"devDependencies":{"playwright":"1.61.1"}}
+{
+  "name": "glitch-2d",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node tools/serve.mjs",
+    "test": "node --test test/*.test.mjs",
+    "test:runtime": "node tools/check-runtime.mjs",
+    "build": "node tools/validate.mjs",
+    "render": "node tools/render.mjs"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "1.0.8",
+    "playwright": "1.61.1"
+  }
+}
