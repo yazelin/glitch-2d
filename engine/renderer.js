@@ -1,4 +1,4 @@
-import { fitView } from './geometry.js?v=0.4.4';
+import { fitView } from './geometry.js?v=0.4.5';
 
 // Color-difference matting is performed at load time. The generated source atlas
 // is kept intact, including its chroma backing, so art can always be replaced.

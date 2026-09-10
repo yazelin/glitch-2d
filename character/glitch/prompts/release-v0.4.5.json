@@ -1,0 +1,33 @@
+{
+  "release": "0.4.5",
+  "mode": "Codex image service on the .11 host (same built-in imagegen, different quota); the local Codex workspace ran out of credits",
+  "reference": "turnaround-reference.png",
+  "userAlignment": "calibration/user-alignment-v0.4.2.json",
+  "corrects": "0.4.4",
+  "why": "0.4.4 redrew the画面左 hand as a small stubby child hand. That hand was never wrong: 0.4.1 through 0.4.3 all had the correct slender fingers, and 0.4.2 also re-inked them harder than the original. Only the画面右 hand ever had a real fault, its fused mitten fingers.",
+  "assets": [
+    {
+      "src": "sleeve-left-v8.png",
+      "from": "sleeve-left-v4.png",
+      "fixes": "Bitten notch and hook in the upper band; adds the small square keeper. The 0.4.1 hand is carried over untouched, including its softer warm outlines",
+      "sha256": "d73b353fdb1fbf2531ffdf9ab4430c7996933aad5b10b4655026dd4bcd3acc14",
+      "handPixelsChanged": 4363
+    },
+    {
+      "src": "sleeve-right-v6.png",
+      "from": "sleeve-right-v5.png",
+      "fixes": "Fingers were fused into a mitten; redrawn slender, separated and tapering, and the hand now reaches a little further out of the cuff",
+      "sha256": "54764b1ac6ab23977028aa389123e170c817e9394f686a3986ee25d8dd4f045c",
+      "handBox": [
+        223,
+        209
+      ]
+    }
+  ],
+  "postProcess": "Both keyed with the cutout tool and recomposited over each texture's own chroma value",
+  "dropped": [
+    "sleeve-left-v7.png from 0.4.4 was deleted",
+    "The rig-side width bands from 0.4.3 stay removed",
+    "Wrist scales are back to the pre-0.4.4 values, 0.86 and 0.87"
+  ]
+}
