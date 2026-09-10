@@ -2,7 +2,20 @@
 
 格莉奇自己的 2D 角色原型，可切換全身與聊天近景。重新生成的角色部件由原生 JavaScript 組合，使用 WebGL 繪製、Web Audio 帶動嘴型，沒有 Live2D、Cubism 或 Pixi 的執行期依賴。
 
-**[開啟全身展示](https://yazelin.github.io/glitch-l2d/?v=0.4.2&view=full)** · [聊天近景](https://yazelin.github.io/glitch-l2d/?v=0.4.2&view=bust) · [透明舞台](https://yazelin.github.io/glitch-l2d/?overlay=1&view=bust) · [先前的 Live2D 版本](https://yazelin.github.io/glitch-l2d/legacy/)
+**[開啟全身展示](https://yazelin.github.io/glitch-l2d/?v=0.4.3&view=full)** · [聊天近景](https://yazelin.github.io/glitch-l2d/?v=0.4.3&view=bust) · [透明舞台](https://yazelin.github.io/glitch-l2d/?overlay=1&view=bust) · [先前的 Live2D 版本](https://yazelin.github.io/glitch-l2d/legacy/)
+
+## 0.4.3：脖子改短、袖紋改回粗版，腿部細節改用寬度帶
+
+以使用者匯出的 `glitch-aligned.rig (7).json` 為基準，只重畫一張素材，其餘用 rig 參數修。
+
+- 脖子：0.4.2 把頸環壓細的同時也一併往下推，脖子跟著變長。頸環改對回三視圖的高度與厚度：頸環上緣參考圖在第 326 列、本版 327 列，厚度都是 9 像素。
+- 畫面左側衣袖：0.4.2 把兩條橫紋都改成細版是錯的。原圖是粗橫紋，橫紋下方另有一個小方形扣環。重畫成粗橫紋加獨立的方扣，原本被咬掉的缺口也補平。
+- 兩手大小：兩張衣袖素材的手本來就不一樣大，而且都比三視圖大。用手部校正把兩隻手縮到三視圖的尺寸，左右也對齊。
+- 腋下到腰間的黑粗線：衣袖與上衣之間差幾個像素沒接上，兩片各自的輪廓線就疊成一條粗線。衣袖往內拉之後接縫回到單一條線。
+- 肩寬對齊三視圖，每一列取樣誤差在 2 像素以內。
+- 腿部改用新的寬度帶（`bands`）微調，沒有重新產圖：大腿加回厚度、腿套上緣束回小腿、右腿吊襪帶壓出勒痕。取樣寬度與三視圖的差距見 [prompts/release-v0.4.3.json](character/glitch/prompts/release-v0.4.3.json)。
+
+[全身疊圖](character/glitch/proportion-check-v0.4.3.png) · [衣袖放大對照](character/glitch/sleeve-check-v0.4.3.png) · [腿與鞋底對照](character/glitch/lower-body-check-v0.4.3.png)。
 
 ## 0.4.2：修掉 0.4.1 留下的六個問題
 
@@ -33,7 +46,7 @@
 
 ## 0.4：自己動手對齊比例
 
-**[開啟比例對齊小工具](https://yazelin.github.io/glitch-l2d/align/?v=0.4.2)**。三視圖的正面固定在底層，目前的 21 個角色部件疊在上面；初始角色透明度為 50%，沒有待機動作。
+**[開啟比例對齊小工具](https://yazelin.github.io/glitch-l2d/align/?v=0.4.3)**。三視圖的正面固定在底層，目前的 21 個角色部件疊在上面；初始角色透明度為 50%，沒有待機動作。
 
 - 每個部件都能獨立開關，也能全開、全關或只看選取部件。閉眼線與張嘴片預設隱藏，需要時可單獨開啟。
 - 點選部件後用滑鼠拖動；拖曳選取框角落可等比縮放，上方圓形把手可旋轉。右側也有位置與大小欄位、旋轉和微調按鈕。
@@ -84,7 +97,7 @@
 | `character/glitch/rig.json` | 開放的角色設定，含畫布尺寸、父子節點、轉動中心、部件位置、UV 區域與網格密度 |
 | `character/glitch/hair-v2.png` | 瀏海、後髮與兩側髮束；各部件維持來源比例 |
 | [sleeve-right-v5.png](character/glitch/sleeve-right-v5.png) | 畫面右側衣袖與併攏五指的手掌；保留手腕螢幕 |
-| [sleeve-left-v5.png](character/glitch/sleeve-left-v5.png) | 畫面左側衣袖與五指手掌，兩條橫紋等寬平行 |
+| [sleeve-left-v6.png](character/glitch/sleeve-left-v6.png) | 畫面左側衣袖與五指手掌，粗橫紋與方形扣環 |
 | [skirt-v2.png](character/glitch/skirt-v2.png) | 輪廓較直的百褶裙與畫面左側垂帶 |
 | [legs-v4.png](character/glitch/legs-v4.png) | 細腿版腿部、長襪、腿套與鞋子，腿套下緣蓋住鞋口 |
 | `character/glitch/face-base.png` | 完整下顎輪廓的無五官臉部底圖 |
@@ -92,10 +105,10 @@
 | `character/glitch/torso.png` | 沿用的上衣、頸部、斜背帶與包包；原始 PNG 保留 |
 | `character/glitch/design-reference.png` | 生成分件時使用的完整造型參考；不參與角色動畫 |
 | `character/glitch/turnaround-reference.png` | 服裝、不對稱配件與全身比例的三視圖；不參與角色動畫 |
-| `character/glitch/proportion-check-v0.4.2.png` | 正面三視圖、目前組裝與相同尺度的半透明疊圖 |
+| `character/glitch/proportion-check-v0.4.3.png` | 正面三視圖、目前組裝與相同尺度的半透明疊圖 |
 | `character/glitch/proportion-calibration.json` | 正面參考座標、衣袖對齊點與腿部來源區域 |
-| [本次素材與提示詞清單](character/glitch/prompts/release-v0.4.2.json) | 內建 imagegen 的提示詞、裁切座標與修正紀錄 |
-| [user-alignment-v0.4.1.json](character/glitch/calibration/user-alignment-v0.4.1.json) | 使用者提供的最後一份舊素材微調設定，供比較與還原 |
+| [本次素材與提示詞清單](character/glitch/prompts/release-v0.4.3.json) | 內建 imagegen 的提示詞、裁切座標與修正紀錄 |
+| [user-alignment-v0.4.2.json](character/glitch/calibration/user-alignment-v0.4.2.json) | 使用者提供的最後一份舊素材微調設定，供比較與還原 |
 | `character/glitch/voice-intro.mp3` | 取自既有 `glitch-vn/docs/voice/intro-glitch.mp3` 的格莉奇配音 |
 
 原圖參考為 `glitch-vn/art/sprite-glitch.png`。新原畫、部件和分享圖片使用內建 imagegen 生成，沒有使用 CLI 或另外呼叫圖片 API。圖片工具這次輸出 RGB，未提供真正的透明通道，因此部件採用單一綠色底；載入時以色差建立透明度並去除綠色邊緣，保留原始 PNG。造型參考圖中的棋盤格是圖片內容，沒有拿它當透明圖使用。

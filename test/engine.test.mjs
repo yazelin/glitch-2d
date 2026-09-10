@@ -165,8 +165,24 @@ test('atlas crops exclude neighboring pieces and source art is untouched', async
   assert(ctx.getImageData(345, 220, 1, 1).data[3] > 200, 'Sleeve paint must survive the extraction');
 });
 
+test('width bands fill out the thigh, cinch the warmer cuff and mark the garter, and leave the shoe alone', () => {
+  const pose = neutral();
+  const leg = rig.parts.find(part => part.id === 'leg-right');
+  const plain = { ...leg, bands: undefined };
+  const width = (part, y) => {
+    const cx = part.rect[0] + part.rect[2] / 2;
+    return deformPoint(part, cx + 100, y, pose, rig)[0] - deformPoint(part, cx - 100, y, pose, rig)[0];
+  };
+  assert(width(leg, 1500) > width(plain, 1500), 'The thigh carries more width than the drawn art');
+  assert(width(leg, 1900) < width(plain, 1900), 'The ribbed cuff grips the calf instead of floating around it');
+  assert(width(leg, 1404) < width(leg, 1374), 'The garter squeezes the flesh it crosses');
+  assert.deepEqual(deformPoint(leg, 600, 2300, pose, rig), deformPoint(plain, 600, 2300, pose, rig),
+    'The sneaker keeps the drawn width');
+});
 test('hand calibration holds the wrist and sleeve while preserving fingertip proportions', () => {
-  for (const part of rig.parts.filter(p => p.hand)) {
+  for (const source of rig.parts.filter(p => p.hand)) {
+    // Width bands are a separate edit; this checks the hand correction alone.
+    const part = { ...source, bands: undefined };
     const [x, y, w, h] = part.rect;
     const wrist = [x + w * part.hand.anchor[0], y + h * part.hand.anchor[1]];
     const distance = h * part.hand.transition * 2;

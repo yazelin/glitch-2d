@@ -44,6 +44,10 @@ for (const part of rig.parts) {
     const { top, bottom, inner, outer, pinch, drop, shrink = 0 } = part.neck.rest;
     assert([top,bottom,inner,outer,pinch,drop,shrink].every(Number.isFinite) && bottom > top && outer > inner && inner >= 0 && pinch >= 0 && pinch < 1 && shrink >= 0 && shrink < 1, `Invalid neck rest shape: ${part.id}`);
   }
+  for (const band of part.bands || []) {
+    const { top, bottom, scale, feather = 24 } = band;
+    assert([top,bottom,scale,feather].every(Number.isFinite) && bottom > top && scale > 0 && scale < 3 && feather > 0, `Invalid width band: ${part.id}`);
+  }
   if (part.jaw) {
     const { top, bottom, widen = 0, drop = 0 } = part.jaw;
     assert([top,bottom,widen,drop].every(Number.isFinite) && bottom > top && widen >= 0 && widen < 1 && drop >= 0, `Invalid jaw shape: ${part.id}`);

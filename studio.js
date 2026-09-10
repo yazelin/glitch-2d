@@ -1,7 +1,7 @@
-import { Motion, PARAMS, clamp } from './engine/motion.js?v=0.4.2';
-import { buildScene, fitView, editPartRect } from './engine/geometry.js?v=0.4.2';
-import { WebGLRenderer, CanvasRenderer, loadTextures, drawMesh } from './engine/renderer.js?v=0.4.2';
-import { VoicePlayer } from './engine/audio.js?v=0.4.2';
+import { Motion, PARAMS, clamp } from './engine/motion.js?v=0.4.3';
+import { buildScene, fitView, editPartRect } from './engine/geometry.js?v=0.4.3';
+import { WebGLRenderer, CanvasRenderer, loadTextures, drawMesh } from './engine/renderer.js?v=0.4.3';
+import { VoicePlayer } from './engine/audio.js?v=0.4.3';
 
 const $ = selector => document.querySelector(selector);
 const query = new URLSearchParams(location.search);
@@ -34,7 +34,7 @@ function showError(error) {
 $('#retry').addEventListener('click', () => location.reload());
 
 async function start() {
-  const rigURL = new URL('character/glitch/rig.json?v=0.4.2', location.href);
+  const rigURL = new URL('character/glitch/rig.json?v=0.4.3', location.href);
   const response = await fetch(rigURL, { signal: AbortSignal.timeout(25000) });
   if (!response.ok) throw new Error(`角色設定讀取失敗（${response.status}）`);
   const rig = await response.json();

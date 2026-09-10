@@ -1,5 +1,5 @@
-import { around, buildScene, deformPoint, identity, multiply, nodeMatrices, point } from './geometry.js?v=0.4.2';
-import { Motion } from './motion.js?v=0.4.2';
+import { around, buildScene, deformPoint, identity, multiply, nodeMatrices, point } from './geometry.js?v=0.4.3';
+import { Motion } from './motion.js?v=0.4.3';
 
 export const restPose = () => ({ ...new Motion().values, hair: 0 });
 
@@ -184,6 +184,12 @@ export class Alignment {
         }
         if (imported.textures) imported.textures[group.texture] = structuredClone(this.original.textures[group.texture]);
         replaced.push(...group.parts);
+      }
+      // Art fixes outside those groups (masks, chroma) also belong to the model.
+      for (const [id, spec] of Object.entries(this.original.textures || {})) {
+        if (!imported.textures || JSON.stringify(imported.textures[id]) === JSON.stringify(spec)) continue;
+        imported.textures[id] = structuredClone(spec);
+        if (!recalibrated.includes(id)) recalibrated.push(id);
       }
       if (stripped(imported) !== stripped(this.original)) throw new Error('這份設定的底模不同，請載入本工具匯出的設定。');
     }

@@ -1,0 +1,66 @@
+{
+  "release": "0.4.3",
+  "mode": "Built-in imagegen; no CLI or separate image API",
+  "reference": "turnaround-reference.png",
+  "userAlignment": "calibration/user-alignment-v0.4.2.json",
+  "corrects": "0.4.2",
+  "assets": [
+    {
+      "src": "sleeve-left-v6.png",
+      "fixes": "0.4.2 thinned both sleeve bands and dropped the small square keeper; the turnaround has broad bands and a keeper lying on the fabric",
+      "prompts": [
+        "prompts/sleeve-left-v6.json"
+      ],
+      "sha256": "f6a880105c3c52742ed0e0da5adcb1b0e8b59f4c5935090454701e8017fc1546",
+      "post_process": "Background flattened with the cutout keyer, then recomposited over the texture's chroma value"
+    }
+  ],
+  "rigCorrections": {
+    "neckRest": {
+      "top": 608,
+      "bottom": 680,
+      "inner": 52,
+      "outer": 100,
+      "pinch": 0.1,
+      "drop": -22,
+      "shrink": 0.48,
+      "why": "0.4.2 pushed the choker down while thinning it, which stretched the neck. Measured against the turnaround: choker top row 326 reference, 327 assembled; band height 9 and 9."
+    },
+    "armRects": {
+      "arm-left": "+14 x",
+      "arm-right": "-4 x",
+      "why": "Shoulder silhouette now within 2px of the turnaround on every sampled row"
+    },
+    "armBands": {
+      "arm-left": [
+        {
+          "top": 740,
+          "bottom": 1160,
+          "scale": 1.075,
+          "center": 60,
+          "feather": 70
+        }
+      ],
+      "why": "The sleeve stopped a few pixels short of the hoodie, so both outlines read as one thick black seam from armpit to waist"
+    },
+    "handScale": {
+      "arm-left": 0.58,
+      "arm-right": 0.74,
+      "why": "Both drawn hands are larger than the turnaround and differ from each other; sampled hand width 46 and 49 reference"
+    },
+    "legBands": "Fuller upper leg (1.09), cinched warmer cuff (0.85), fuller warmer body (1.07), garter mark on the right thigh (0.93 between two 1.03 bulges)",
+    "legMesh": [
+      8,
+      64
+    ]
+  },
+  "invariants": [
+    "Sole baselines unchanged at reference y954",
+    "No new generated art beyond the left sleeve",
+    "Part rectangles and UV windows unchanged except the two arm x offsets"
+  ],
+  "limitations": [
+    "The bare interval between the garter and the stocking top is still wider than the turnaround",
+    "The right hand holds its fingers together where the turnaround spreads them"
+  ]
+}

@@ -1,4 +1,4 @@
-import { clamp } from './motion.js?v=0.4.2';
+import { clamp } from './motion.js?v=0.4.3';
 
 export const identity = () => [1, 0, 0, 1, 0, 0];
 export function multiply(a, b) {
@@ -102,6 +102,13 @@ export function deformPoint(part, x, y, pose, rig, explode = 0) {
     // Shrink pulls the neck column and its choker back toward head scale, which
     // also lowers the band and uncovers more throat.
     y = bottom - (bottom - y) * (1 - shrink * weight) + drop * weight;
+  }
+  for (const band of part.bands || []) {
+    // Local width edits along one part: a fuller thigh, a cuff that grips, a strap mark.
+    const { top, bottom, scale, feather = 24, center = cx } = band;
+    let weight = clamp(Math.min(y - top + feather, bottom + feather - y) / feather, 0, 1);
+    weight *= weight * (3 - 2 * weight);
+    x = center + (x - center) * (1 + (scale - 1) * weight);
   }
   if (part.jaw) {
     // Rounder chin: widen the lower face and let it fall a little further.
