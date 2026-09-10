@@ -21,4 +21,3 @@ Composition: portrait production atlas, ideally 1536 pixels wide by 2048 pixels 
 Backdrop: uniform pure CHROMA GREEN close to exact RGB(18,240,14), edge to edge. No shadows on the background, no ground plane, no grid, no labels, no transparency, no checkerboard, no gradient or texture. Avoid green tint on subject edges.
 Style: beautiful production-grade 2D hand-drawn anime illustration matching reference 1 and 3, thin clear purple contours, subtle pastel soft shading, crisp folds and carefully drawn small details. NOT 3D, glossy plastic, realistic skin, manga screentone, vector clipart, or mechanical armor.
 Constraints: exactly two legs only. No head, torso, arms, hands, skirt, pelvis, underwear, skin connection between legs, belts around both thighs, bag, text, watermark, labels, perspective, three-quarter feet, crossed legs, bare feet, visible toes, nail polish, extra legs or accessories. Preserve exact left/right asymmetry from the FRONT view.
-
