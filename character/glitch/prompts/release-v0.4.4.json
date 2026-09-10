@@ -1,0 +1,68 @@
+{
+  "release": "0.4.4",
+  "mode": "Built-in imagegen; no CLI or separate image API",
+  "reference": "turnaround-reference.png",
+  "userAlignment": "calibration/user-alignment-v0.4.2.json",
+  "corrects": "0.4.3",
+  "why": "0.4.3 corrected the legs and hands by stretching the drawn art with rig-side width bands. That distorts the drawing: the calves came out warped and the garter looked like a tourniquet. The bands are gone; the shapes are redrawn instead.",
+  "assets": [
+    {
+      "src": "legs-v5.png",
+      "fixes": "Legs too thin throughout, ribbed warmer cuff as wide as the fabric below it, garter strap lying flat on the thigh with no reaction",
+      "prompts": [
+        "prompts/legs-v5.txt",
+        "prompts/legs-v5-refinement.txt",
+        "prompts/legs-v5-imagegen-validation.json"
+      ],
+      "sha256": "03df4a82e51bf3ef9eecb69ec2118801f6ff58166b2c9dd718fcbf5065fb8ced"
+    },
+    {
+      "src": "sleeve-left-v7.png",
+      "fixes": "Hand far too large for a child; redrawn at 63 percent with the wrist fixed",
+      "prompts": [
+        "prompts/sleeve-left-v7.json"
+      ],
+      "sha256": "027352725aa3cff1ee80373fd2922599a22c19c650079c75c2a910bc467c6725"
+    }
+  ],
+  "postProcess": "Both keyed with the cutout tool and recomposited over each texture's own chroma value; subject pixels untouched",
+  "measured": {
+    "legRowWidths": {
+      "reference": [
+        74,
+        63,
+        52,
+        50,
+        52,
+        65,
+        76,
+        69
+      ],
+      "assembled": [
+        75,
+        65,
+        53,
+        53,
+        57,
+        58,
+        72,
+        67
+      ],
+      "note": "Sample 6 is the ribbed cuff, deliberately narrower than the reference sample because the cuff now grips the calf"
+    },
+    "handWidth": {
+      "reference": [
+        46,
+        49
+      ],
+      "assembled": [
+        45,
+        49
+      ]
+    },
+    "soleY": 954
+  },
+  "open": [
+    "sleeve-right-v6 was not generated: the Codex workspace ran out of credits mid-run. The right hand is still the 0.4.2 drawing, held to size by the pre-existing wrist scale (0.76 instead of 0.87). Redraw it the same way as the left when credits are back."
+  ]
+}

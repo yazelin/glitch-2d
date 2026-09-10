@@ -1,0 +1,20 @@
+{
+  "status": "prepared; awaiting explicit authorization for deterministic pixel editing",
+  "inputs": {
+    "original": "character/glitch/legs-v4.png",
+    "generated_contact_shading": "character/glitch/legs-v5.png"
+  },
+  "proposed_output": "character/glitch/legs-v5.png",
+  "canvas": [
+    873,
+    1801
+  ],
+  "method": [
+    "Use the original atlas for all untouched artwork; preserve its y coordinates by sampling only within the same source row.",
+    "Interpolate horizontal contour corrections through the six specified width pairs, around each original row centre.",
+    "Narrow the cuff geometry horizontally to about 232 pixels, preserving the original cuff top and bottom heights; transition to the original fabric immediately below.",
+    "Apply only the generated local garter contact shading to the corresponding skin region, keeping the original band, buckle and connector.",
+    "Normalize empty background pixels to RGB(18,240,14), preserving antialiased foreground edges.",
+    "Verify output dimensions, requested row widths, source y bounds and sole baselines, cuff widths, flat green, and unchanged foreground outside the edited regions."
+  ]
+}

@@ -1,0 +1,33 @@
+Use case: precise-object-edit
+Asset type: front-view 2D anime character leg atlas for the current project.
+
+INPUT ROLES
+Image 1 (/home/ct/glitch-l2d/character/glitch/legs-v4.png) is the ONLY edit target. It is an 873x1801 chroma-green atlas holding exactly two separate complete legs: viewer-left bare leg and viewer-right garter-and-stocking leg, each from a hidden upper-thigh tab down to a grounded sneaker.
+Image 2 (/home/ct/glitch-l2d/test-results/sleeve-v4/legs-front-template.png) is ONLY the original front-view proportion reference for the same legs. It is the authority for leg thickness and how the leg warmers sit. Do not transfer its skirt, background, crop, resolution, or softer rendering.
+
+ABSOLUTE VERTICAL LOCK
+Edit Image 1 in place, retaining its exact 873x1801 canvas. Keep both existing leg positions and centrelines, and the green gutter between them. Do not move, crop, rotate, rescale, or reframe either leg or the canvas. No y-coordinate changes anywhere: preserve the hidden skin tabs at the top around y=21, thigh garter with square silver X buckle and vertical connector, dark-purple thigh-high stocking and pixel heart, both pastel knee bandages, cyan and lilac thigh pixels, ribbed purple cuff top around y=910, and both sneaker sole baselines at y=1732. Keep all other artwork in place, with the refined soft 2D anime cel shading and restrained purple linework of Image 1.
+
+CORRECTION 1: WIDER LEGS, HORIZONTAL CHANGES ONLY
+Image 1 was over-thinned. Image 2 shows the correct natural build for this child character. Widen each whole leg from the hidden skin tab down to just above its ribbed cuff, around its OWN existing centreline. Keep each calf outline nearly straight with gentle natural taper. No bulging calf muscles or fashion-model proportions.
+Target foreground silhouette row widths in pixels on this same 873x1801 canvas, viewer-LEFT then viewer-RIGHT:
+y=90: 300 and 315
+y=260: 250 and 265
+y=450: 214 and 228
+y=570: 209 and 221
+y=740: 214 and 219
+y=808: 212 and 223
+Interpolate smooth natural contours through these widths. Preserve the current centreline at each row; the two legs must not move toward or away from one another.
+Grow the hidden skin tabs, the garter band and attached strap, and the stocking top only enough horizontally to fit the wider legs; retain their heights, colours and designs. Retain the buckle's existing size.
+
+CORRECTION 2: CUFFS GRIP THE CALVES
+Narrow both dark purple ribbed leg-warmer cuffs to about 232 pixels wide each, centered at their current positions. The cuffs must read as elastic bands gripping the calves, clearly narrower than the slouched fabric directly beneath, as in Image 2.
+Preserve each cuff's existing height and every y coordinate, ribbing, lavender stripe, and dark angular hanging loops. Leave the slouched warmer bodies below at about 270 pixels wide on the left and 264 on the right. Let the fabric flare out immediately below each narrower cuff. Preserve the warmer folds, colours, decorations, and all shoe artwork.
+
+CORRECTION 3: LOCAL SKIN RESPONSE TO GARTER
+At the viewer-right purple thigh garter band, subtly pinch the skin contour where the band crosses, with a little natural fullness immediately above and below the band and subtle corresponding shading. This is a small local contour and shading adjustment. Keep the garter, buckle, and connector at their existing heights and preserve their designs and sizes, apart from the minimum horizontal band extension already needed for the wider thigh. Do not enlarge the buckle or change the strap design.
+
+BACKGROUND AND EXCLUSIONS
+Flat opaque chroma-green background RGB(18,240,14), #12F00E, edge-to-edge, without texture or gradients.
+Change only the three requested corrections. No other changes to artwork. No new accessories, skirt, pelvis, torso, text, labels, guide lines, ground shadows, checkerboard, or transparency. Exactly two isolated complete legs on flat green.
+Return one edited image at exactly 873x1801 with every vertical landmark retained.

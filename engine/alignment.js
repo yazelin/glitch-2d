@@ -1,5 +1,5 @@
-import { around, buildScene, deformPoint, identity, multiply, nodeMatrices, point } from './geometry.js?v=0.4.3';
-import { Motion } from './motion.js?v=0.4.3';
+import { around, buildScene, deformPoint, identity, multiply, nodeMatrices, point } from './geometry.js?v=0.4.4';
+import { Motion } from './motion.js?v=0.4.4';
 
 export const restPose = () => ({ ...new Motion().values, hair: 0 });
 

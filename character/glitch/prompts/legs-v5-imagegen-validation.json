@@ -1,0 +1,429 @@
+{
+  "status": "draft; exact constraints not met",
+  "mode": "built-in image_gen",
+  "selected_attempt": 1,
+  "selected_file": "character/glitch/legs-v5.png",
+  "source_file": "character/glitch/legs-v4.png",
+  "prompts": [
+    "character/glitch/prompts/legs-v5.txt",
+    "character/glitch/prompts/legs-v5-refinement.txt"
+  ],
+  "foreground_measurement": "Pixels are treated as green when G>180, R<70, and B<70; row spans measured separately in x=0..436 and x=437..872.",
+  "requested_background_rgb": [
+    18,
+    240,
+    14
+  ],
+  "images": {
+    "source": {
+      "dimensions": [
+        873,
+        1801
+      ],
+      "sha256": "7e6d97157ca34ad31269217321d72197929184f1f794c42281a9c20eecfec1e4",
+      "rows": {
+        "90": [
+          {
+            "target": 300,
+            "width": 272,
+            "error_px": -28,
+            "x_min": 110,
+            "x_max": 381,
+            "centre_x": 245.5
+          },
+          {
+            "target": 315,
+            "width": 270,
+            "error_px": -45,
+            "x_min": 493,
+            "x_max": 762,
+            "centre_x": 627.5
+          }
+        ],
+        "260": [
+          {
+            "target": 250,
+            "width": 234,
+            "error_px": -16,
+            "x_min": 130,
+            "x_max": 363,
+            "centre_x": 246.5
+          },
+          {
+            "target": 265,
+            "width": 229,
+            "error_px": -36,
+            "x_min": 513,
+            "x_max": 741,
+            "centre_x": 627.0
+          }
+        ],
+        "450": [
+          {
+            "target": 214,
+            "width": 185,
+            "error_px": -29,
+            "x_min": 157,
+            "x_max": 341,
+            "centre_x": 249.0
+          },
+          {
+            "target": 228,
+            "width": 186,
+            "error_px": -42,
+            "x_min": 532,
+            "x_max": 717,
+            "centre_x": 624.5
+          }
+        ],
+        "570": [
+          {
+            "target": 209,
+            "width": 180,
+            "error_px": -29,
+            "x_min": 153,
+            "x_max": 332,
+            "centre_x": 242.5
+          },
+          {
+            "target": 221,
+            "width": 179,
+            "error_px": -42,
+            "x_min": 541,
+            "x_max": 719,
+            "centre_x": 630.0
+          }
+        ],
+        "740": [
+          {
+            "target": 214,
+            "width": 195,
+            "error_px": -19,
+            "x_min": 118,
+            "x_max": 312,
+            "centre_x": 215.0
+          },
+          {
+            "target": 219,
+            "width": 195,
+            "error_px": -24,
+            "x_min": 563,
+            "x_max": 757,
+            "centre_x": 660.0
+          }
+        ],
+        "808": [
+          {
+            "target": 212,
+            "width": 197,
+            "error_px": -15,
+            "x_min": 113,
+            "x_max": 309,
+            "centre_x": 211.0
+          },
+          {
+            "target": 223,
+            "width": 195,
+            "error_px": -28,
+            "x_min": 567,
+            "x_max": 761,
+            "centre_x": 664.0
+          }
+        ]
+      },
+      "vertical_bounds": [
+        [
+          20,
+          1732
+        ],
+        [
+          20,
+          1732
+        ]
+      ],
+      "most_common_background_rgb": [
+        26,
+        245,
+        25
+      ],
+      "most_common_background_count": 783570,
+      "requested_background_pixel_count": 0
+    },
+    "selected_draft": {
+      "dimensions": [
+        873,
+        1801
+      ],
+      "sha256": "321aacdea7bce1b8795ae787c45bcffd453b9e757165bd5ab083b968c9420756",
+      "rows": {
+        "90": [
+          {
+            "target": 300,
+            "width": 294,
+            "error_px": -6,
+            "x_min": 95,
+            "x_max": 388,
+            "centre_x": 241.5
+          },
+          {
+            "target": 315,
+            "width": 291,
+            "error_px": -24,
+            "x_min": 482,
+            "x_max": 772,
+            "centre_x": 627.0
+          }
+        ],
+        "260": [
+          {
+            "target": 250,
+            "width": 261,
+            "error_px": 11,
+            "x_min": 111,
+            "x_max": 371,
+            "centre_x": 241.0
+          },
+          {
+            "target": 265,
+            "width": 257,
+            "error_px": -8,
+            "x_min": 498,
+            "x_max": 754,
+            "centre_x": 626.0
+          }
+        ],
+        "450": [
+          {
+            "target": 214,
+            "width": 209,
+            "error_px": -5,
+            "x_min": 141,
+            "x_max": 349,
+            "centre_x": 245.0
+          },
+          {
+            "target": 228,
+            "width": 207,
+            "error_px": -21,
+            "x_min": 522,
+            "x_max": 728,
+            "centre_x": 625.0
+          }
+        ],
+        "570": [
+          {
+            "target": 209,
+            "width": 200,
+            "error_px": -9,
+            "x_min": 139,
+            "x_max": 338,
+            "centre_x": 238.5
+          },
+          {
+            "target": 221,
+            "width": 200,
+            "error_px": -21,
+            "x_min": 531,
+            "x_max": 730,
+            "centre_x": 630.5
+          }
+        ],
+        "740": [
+          {
+            "target": 214,
+            "width": 219,
+            "error_px": 5,
+            "x_min": 104,
+            "x_max": 322,
+            "centre_x": 213.0
+          },
+          {
+            "target": 219,
+            "width": 220,
+            "error_px": 1,
+            "x_min": 550,
+            "x_max": 769,
+            "centre_x": 659.5
+          }
+        ],
+        "808": [
+          {
+            "target": 212,
+            "width": 223,
+            "error_px": 11,
+            "x_min": 99,
+            "x_max": 321,
+            "centre_x": 210.0
+          },
+          {
+            "target": 223,
+            "width": 223,
+            "error_px": 0,
+            "x_min": 552,
+            "x_max": 774,
+            "centre_x": 663.0
+          }
+        ]
+      },
+      "vertical_bounds": [
+        [
+          19,
+          1732
+        ],
+        [
+          19,
+          1732
+        ]
+      ],
+      "most_common_background_rgb": [
+        27,
+        241,
+        27
+      ],
+      "most_common_background_count": 70220,
+      "requested_background_pixel_count": 1
+    },
+    "second_attempt": {
+      "dimensions": [
+        873,
+        1801
+      ],
+      "sha256": "a23c46fdffbab0bba306f61e12c1933ad751bdbbace9a955c66a5ee340c5e3f9",
+      "rows": {
+        "90": [
+          {
+            "target": 300,
+            "width": 289,
+            "error_px": -11,
+            "x_min": 96,
+            "x_max": 384,
+            "centre_x": 240.0
+          },
+          {
+            "target": 315,
+            "width": 290,
+            "error_px": -25,
+            "x_min": 482,
+            "x_max": 771,
+            "centre_x": 626.5
+          }
+        ],
+        "260": [
+          {
+            "target": 250,
+            "width": 258,
+            "error_px": 8,
+            "x_min": 112,
+            "x_max": 369,
+            "centre_x": 240.5
+          },
+          {
+            "target": 265,
+            "width": 256,
+            "error_px": -9,
+            "x_min": 498,
+            "x_max": 753,
+            "centre_x": 625.5
+          }
+        ],
+        "450": [
+          {
+            "target": 214,
+            "width": 206,
+            "error_px": -8,
+            "x_min": 142,
+            "x_max": 347,
+            "centre_x": 244.5
+          },
+          {
+            "target": 228,
+            "width": 207,
+            "error_px": -21,
+            "x_min": 522,
+            "x_max": 728,
+            "centre_x": 625.0
+          }
+        ],
+        "570": [
+          {
+            "target": 209,
+            "width": 197,
+            "error_px": -12,
+            "x_min": 141,
+            "x_max": 337,
+            "centre_x": 239.0
+          },
+          {
+            "target": 221,
+            "width": 200,
+            "error_px": -21,
+            "x_min": 531,
+            "x_max": 730,
+            "centre_x": 630.5
+          }
+        ],
+        "740": [
+          {
+            "target": 214,
+            "width": 220,
+            "error_px": 6,
+            "x_min": 103,
+            "x_max": 322,
+            "centre_x": 212.5
+          },
+          {
+            "target": 219,
+            "width": 223,
+            "error_px": 4,
+            "x_min": 547,
+            "x_max": 769,
+            "centre_x": 658.0
+          }
+        ],
+        "808": [
+          {
+            "target": 212,
+            "width": 223,
+            "error_px": 11,
+            "x_min": 99,
+            "x_max": 321,
+            "centre_x": 210.0
+          },
+          {
+            "target": 223,
+            "width": 225,
+            "error_px": 2,
+            "x_min": 550,
+            "x_max": 774,
+            "centre_x": 662.0
+          }
+        ]
+      },
+      "vertical_bounds": [
+        [
+          19,
+          1732
+        ],
+        [
+          19,
+          1732
+        ]
+      ],
+      "most_common_background_rgb": [
+        24,
+        241,
+        24
+      ],
+      "most_common_background_count": 79124,
+      "requested_background_pixel_count": 1
+    }
+  },
+  "remaining_issues": [
+    "Some requested widths differ by up to 24 pixels in selected draft.",
+    "Cuff tops shifted down approximately 8 pixels.",
+    "Background is not a flat RGB(18,240,14).",
+    "Unrequested artwork is visually similar but not pixel-identical."
+  ],
+  "sha256": "03df4a82e51bf3ef9eecb69ec2118801f6ff58166b2c9dd718fcbf5065fb8ced",
+  "post_process": "Background flattened after generation: keyed with the cutout tool, then recomposited over the texture's chroma value. Subject pixels unchanged; the sha256 here is the flattened file in the repo."
+}

@@ -1,0 +1,24 @@
+Use case: precise-object-edit.
+Refine the geometric conformance of the edited leg atlas, with no redesign.
+
+Image 1 is the CURRENT EDIT TARGET: the previous edited 873x1801 green atlas.
+Image 2 is the ORIGINAL 873x1801 atlas and is the absolute authority for every vertical position, existing centreline, accessory design, leg-warmer fold, and sneaker detail.
+Image 3 is the original front-view character template, reference only for the natural leg build and tight cuff versus loose warmer fit. Do not add its skirt, white background, or crop.
+
+The current edit successfully improves cuff grip and garter contact, but its widths and some vertical positions still miss the exact requirements. Make the following small horizontal contour corrections on the current edit. Work in original canvas pixels. At each row the target silhouette span is:
+y=90: viewer-left x=96..395 (300 pixels); viewer-right x=470..784 (315 pixels).
+y=260: viewer-left x=122..371 (250 pixels); viewer-right x=495..759 (265 pixels).
+y=450: viewer-left x=143..356 (214 pixels); viewer-right x=511..738 (228 pixels).
+y=570: viewer-left x=138..346 (209 pixels); viewer-right x=520..740 (221 pixels).
+y=740: viewer-left x=109..322 (214 pixels); viewer-right x=551..769 (219 pixels).
+y=808: viewer-left x=106..317 (212 pixels); viewer-right x=553..775 (223 pixels).
+Join these endpoints with smooth gently tapered outlines, nearly straight in the calves. The current left calf is slightly too wide near y=808; the current right thigh and knee remain too thin. Preserve natural child-character build, with no bulging calf muscles. Widen the hidden top tabs and the stocking top in place as needed.
+
+Restore the ribbed cuff TOPS to the exact heights in Image 2, around y=910: the current edit dropped their tops roughly 8 pixels. Keep the cuff bottoms and hanging angular loops at their original y coordinates. Both cuffs should be about 232 pixels wide, centered around x=211 and x=663. Keep their lavender stripe and ribbing intact. Directly below, retain the original loose warmer widths of roughly 270 pixels left and 264 pixels right, flaring immediately below the cuffs; keep all fabric folds, decorations, colours, and positions as Image 2.
+
+Keep the original thigh garter, silver X buckle and connector at the original heights and sizes; retain the subtle local skin pinch from the current edit, with a little natural fullness above and below the band. Adapt only the band's horizontal ends to fit the wider leg, with no buckle enlargement. Keep both bandages and thigh pixels, and the stocking's pixel heart, at their exact original heights.
+
+CRITICAL INVARIANTS: exactly 873x1801. Do not move any y coordinate. Top skin tabs around y=21, cuff tops around y=910, sole baselines at y=1732, all as original Image 2. Both legs remain on their original centrelines and in their original positions. Retain the full unbroken green gutter. Preserve the original sneakers and all warmer artwork below the cuffs from Image 2. Preserve the refined soft anime cel shading and restrained purple outlines.
+
+The entire empty background must be perfectly flat opaque chroma green #12F00E, RGB(18,240,14), with absolutely no noise, colour variation, light spill, texture, gradients, or shadows.
+No reframing, rescaling, rotation, skirt, pelvis, torso, new accessories, text, labels, guides, checkerboard, or transparency. Exactly two isolated complete legs. Apply only the necessary conformance corrections and change nothing else.
