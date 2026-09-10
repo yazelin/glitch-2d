@@ -1,0 +1,53 @@
+{
+  "mode": "built-in image_gen",
+  "use_case": "precise-object-edit",
+  "source_image": "character/glitch/sleeve-left-v4.png",
+  "output_image": "character/glitch/sleeve-left-v5.png",
+  "status": "generated candidate; exact preservation requirements not met",
+  "prompt_set": [
+    {
+      "stage": "repair from original",
+      "prompt": "Use case: precise-object-edit.\nInput image 1 is the ONLY edit target: the original 1024x1536 sleeve-and-hand sprite.\n\nMake ONE local repair: replace the broken upper shoulder stripe and its hooked tab with a single NARROW purple stripe. The repaired upper stripe must have the SAME 30-pixel thickness as the second stripe below it, measured perpendicular to its direction, from one edge of the sleeve to the other. This equal width is essential. The current upper stripe is too broad. The two stripes must look like a matching pair of narrow, parallel stripes, with the same gentle curvature, purple color, and soft shading. Use the unchanged second stripe as the visual template for the repaired upper stripe's path, width and shading. Keep the original tiny pink and lilac squares in their original positions on the upper stripe.\n\nRemove the rectangular bite and hook/loop entirely at approximately x650-760,y310-415; seamlessly restore pale blue sleeve fabric there and restore the smooth outer sleeve edge across that tiny damaged section. Restore surplus broad-band pixels to the original surrounding pale blue fabric. No buckle, loop, gap, dent, extra outline, seam, or extra stripe.\n\nPreserve everything outside the upper stripe and damaged notch: exact canvas 1024x1536, original sleeve silhouette except the repaired notch, exact position, size, rotation, folds, cuff, hand, all five fingers, pixel-glitch specks, original colours and original green background intended as RGB(18,240,14). Keep the second stripe unchanged. Preserve the refined soft 2D anime cel shading and restrained purple linework. No reframing, rescaling, restyling, extra shadows, text, accessories, transparency, or checkerboard. Return the same sprite with only this repair."
+    },
+    {
+      "stage": "narrow stripe on repaired intermediate",
+      "prompt": "Use case: precise-object-edit.\nImage 1 is the edit target, an intermediate repair of the user's original isolated sleeve sprite.\n\nMake exactly ONE change: make the upper purple stripe HALF AS WIDE as it currently is. At present it is visibly about twice the width of the lower purple stripe. Reduce the upper stripe to one half its present width throughout its length, so it looks just as thin as the lower stripe. Its two edges must run parallel to the lower stripe, with the same gentle diagonal curve. Keep the little pink/lilac squares on it. Replace the removed purple edges with matching adjacent pale blue sleeve fabric. The result must show TWO equally THIN purple stripes. Do not leave the top stripe broad, widening, or bulging toward its right end.\n\nEverything else is already correct and must remain unchanged: exact 1024x1536 canvas, green background, sleeve silhouette, sleeve pose and rotation, all fabric folds and pale blue shading, second stripe, cuff, hand, all five fingers, and glitch pixel accents. Preserve the current smooth sleeve edge; do not reintroduce any notch, hook, buckle, loop, or seam. No new objects or features."
+    }
+  ],
+  "validation": {
+    "canvas": [
+      1024,
+      1536
+    ],
+    "mode": "RGB",
+    "notch_and_hook_removed": true,
+    "sampled_stripe_widths_pixels": {
+      "upper": 24,
+      "lower": 23,
+      "original_lower": 31
+    },
+    "outside_repair_identical_pixel_percent": 0.1526,
+    "outside_repair_mean_channel_difference": 4.4778,
+    "background_corner_samples": [
+      [
+        28,
+        229,
+        19
+      ],
+      [
+        17,
+        237,
+        17
+      ],
+      [
+        18,
+        233,
+        10
+      ]
+    ],
+    "exact_pixel_preservation": false,
+    "exact_background_rgb_18_240_14": false
+  },
+  "sha256": "3ec6c158e65790c290712b935731976a1f65b851a790ed4843a7c7383933e9bd",
+  "post_process": "Background flattened after generation: keyed with the cutout tool, then recomposited over the rig's chroma value. Subject pixels unchanged; the sha256 above is the flattened file now in the repo."
+}

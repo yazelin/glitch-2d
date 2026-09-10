@@ -1,0 +1,25 @@
+Use case: precise-object-edit
+Asset type: production 2D character leg atlas
+Input images:
+Image 1: /home/ct/glitch-l2d/character/glitch/legs-v3.png — the ONLY edit target.
+Image 2: /home/ct/glitch-l2d/test-results/sleeve-v4/legs-front-template.png — reference ONLY, authoritative for slim front-view proportions and the fabric-to-shoe construction. Do not edit or reproduce its skirt, white background, or framing.
+
+Primary request:
+Apply exactly two localized corrections to Image 1. It is an 873x1801 chroma-green atlas with two separate complete legs, viewer-left bare leg and viewer-right garter-and-stocking leg, extending from hidden upper-thigh tabs to grounded sneakers.
+
+ABSOLUTE LOCK:
+Keep the exact 873x1801 canvas and original pixel-coordinate system. Both legs must stay at their existing positions and centrelines, with the green gutter between them. Do not reframe, crop, rescale, rotate, or shift any y coordinate. Preserve every vertical landmark and every costume detail: hidden skin tabs at the top; thigh garter with its square silver X buckle and vertical connector; dark-purple thigh-high stocking and pixel heart; two pastel knee bandages; cyan and lilac thigh pixels; ribbed purple cuff tops around y=940; sneaker sole baselines around y=1732. Keep the flat chroma-green background RGB(18,240,14), refined soft 2D anime cel shading, and restrained purple linework.
+
+CORRECTION 1 — slimmer upper thighs:
+This is a small child character. Narrow ONLY the upper thighs horizontally and symmetrically around each leg's own EXISTING centreline. The current roots flare outward and are too thick. Make the upper outline almost straight with a soft taper and no rounded outer bulge. Taper the correction smoothly to zero by y=500; leave the knees, calves, and everything lower unchanged except the separate warmer-hem edit.
+Exact foreground widths, measured in pixels on the SAME 873x1801 canvas:
+Viewer-left: y=100 width 272 (currently 306); y=150 width 270 (currently 304); y=200 width 262 (currently 292); y=300 width 240 (currently 252); y=500 width 191, unchanged.
+Viewer-right: y=100 width 264 (currently 295); y=150 width 260 (currently 289); y=200 width 252 (currently 278); y=300 width 232 (currently 241); y=500 width 192, unchanged.
+Shrink the hidden skin tabs, garter band, buckle strap, and stocking top horizontally just enough to sit correctly on the narrower thighs. Keep their heights, colours, design, and y positions identical. Do not alter the bandages or move decorative pixels vertically.
+
+CORRECTION 2 — leg-warmer lower hems:
+Only redraw the bottom fabric of each pale mint leg warmer where it meets the sneaker. Follow Image 2: soft slouched knitted fabric with a lower hem that folds and gathers over the sneaker collar and tucks in behind it. Add two or three natural crease folds and a soft irregular fabric edge so there is no hard flat horizontal cut, blank pasted-looking band, or gap between warmer and shoe. Keep the warmers' existing width, colour, ribbed top cuffs, dark angular cuff loops, and overall height.
+Keep BOTH SNEAKERS COMPLETELY UNCHANGED, including their exact silhouettes and locations, collars with small cyan outline hearts, laces, straps, panels, sole thickness, and sole baselines. The hem correction changes only the fabric behind/around the existing collar.
+
+Final constraints:
+Change nothing else. Preserve pixels outside the upper-thigh and lower-warmer-hem edit regions as exactly as possible. Exactly two isolated complete legs on flat green. No new accessories, skirt, pelvis, torso, text, labels, guide lines, shadows, checkerboard, or transparency. Output only the edited Image 1 on its exact original 873x1801 canvas.

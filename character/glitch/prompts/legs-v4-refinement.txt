@@ -1,0 +1,26 @@
+Use case: precise-object-edit
+Asset type: 873x1801 production 2D character leg atlas
+Input roles:
+Image 1: the first edited draft, /home/ct/.codex/generated_images/01a08bbd-ca91-7b12-8572-1b45b692d2df/exec-9e2b3d4c-57ee-48f7-a9bb-209d38b3bf63.png. EDIT TARGET for this correction pass.
+Image 2: /home/ct/glitch-l2d/character/glitch/legs-v3.png. ORIGINAL MASTER and exact authority for positions, y coordinates, colours, and all content outside the two authorized edit areas.
+Image 3: /home/ct/glitch-l2d/test-results/sleeve-v4/legs-front-template.png. Reference only for proportions and the warmer hems tucking behind the sneaker collar.
+
+Primary request: Correct the thigh geometry of the draft. The first pass is too narrow below the thigh root, and the right thigh drifted horizontally. WIDEN these parts of the draft to the exact target contours below, restoring the source geometry by y=500. This is a minor geometry correction; retain the new soft gathered warmer hems from Image 1.
+
+The canvas MUST remain exactly 873x1801. Coordinates below are absolute pixels, never percentages. Do not shift, rescale, reframe, crop, or rotate either leg. All y coordinates must match original Image 2. Only the upper-thigh x contours are altered, symmetrically about each ORIGINAL centreline. Do not create round bulging roots.
+
+EXACT ROW ANCHORS for final upper thighs:
+At y=100: viewer-left width 272 with edges about x=111 and 382, centre x=246.5; viewer-right width 264 centred x=627, edges about 495.5 and 758.5.
+At y=150: viewer-left width 270 with edges x=111 and 380, centre x=245.5; viewer-right width 260 centred x=628, edges about 498.5 and 757.5.
+At y=200: viewer-left width 262 with edges x=115 and 376, centre x=245.5; viewer-right width 252 with edges x=502 and 753, centre x=627.5.
+At y=300: viewer-left width 240 with edges x=128 and 367, centre x=247.5; viewer-right width 232 centred x=626, edges about 510.5 and 741.5.
+At y=500: restore ORIGINAL Image 2 contours exactly: left leg about x=160 through 351; right leg about x=523 through 715. The requested width convention is 191 and 192 respectively. The correction has completely tapered to zero here.
+Use smooth almost-straight gently tapering curves between these anchors. Specifically, compared to the EDIT DRAFT Image 1, the left leg needs +4 pixels total width at y=100, +14 at y=150, +18 at y=200, +25 at y=300, +13 at y=500. The right leg needs +1, +9, +7, +19, +12 pixels total width at those same rows. These are WIDENING corrections to the draft, while remaining slimmer than the original.
+
+Restore all knee and calf geometry to Image 2 exactly. Keep knee bandages at precisely their original x/y coordinates. Restore the stocking top, garter, square silver X buckle, vertical connector and pixel heart to their ORIGINAL y coordinates; only fit their horizontal extent to the corrected thighs. Keep cyan/lilac thigh pixel decorations, all colours and costume designs intact. Keep the hidden top tabs at the same y positions, scaled only horizontally enough to fit the slimmer roots.
+
+PIXEL AND LANDMARK LOCK:
+Preserve original Image 2 everywhere outside the upper thighs y<500 and the small lower-warmer fabric-hem zones. Use original knees, calves, cuffs around y=940, angular purple cuff loops and both complete sneakers. Their shape, detail and position must not be regenerated or subtly restyled. The sneakers' collars with cyan outline hearts, straps, laces, panels, soles and baselines around y=1732 must remain exactly as in Image 2.
+Keep the soft irregular gathered lower-warmer fabric from Image 1, with two or three natural folds tucking behind the unchanged shoe collars, no flat cut and no gap. Maintain the original warmers' widths and total heights.
+
+Background must be one perfectly uniform flat chroma-green RGB(18,240,14), including the original gutter between the legs. Preserve refined soft anime cel shading and restrained purple linework. Exactly two isolated complete legs, viewer-left bare and viewer-right stocking. No extra accessories, skirt, pelvis, torso, labels, text, guides, shadows, checkerboard, transparency or other changes. Output one exact 873x1801 image.

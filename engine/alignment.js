@@ -1,5 +1,5 @@
-import { around, buildScene, deformPoint, identity, multiply, nodeMatrices, point } from './geometry.js?v=0.4.1';
-import { Motion } from './motion.js?v=0.4.1';
+import { around, buildScene, deformPoint, identity, multiply, nodeMatrices, point } from './geometry.js?v=0.4.2';
+import { Motion } from './motion.js?v=0.4.2';
 
 export const restPose = () => ({ ...new Motion().values, hair: 0 });
 
@@ -140,21 +140,25 @@ export class Alignment {
   exportRig() { return structuredClone(this.rig); }
   importRig(candidate) {
     if (!candidate || candidate.format !== 'glitch2d.rig' || !Array.isArray(candidate.parts)) throw new Error('請選擇本工具匯出的角色設定。');
+    // Key order is not part of the model: a corrected shape may arrive appended.
+    const canonical = (key, value) => value && typeof value === 'object' && !Array.isArray(value)
+      ? Object.fromEntries(Object.keys(value).sort().map(name => [name, value[name]])) : value;
     const stripped = rig => {
       const copy = structuredClone(rig);
       for (const p of copy.parts) delete p.adjustment;
-      return JSON.stringify(copy);
+      return JSON.stringify(copy, canonical);
     };
     let imported = candidate, replaced = [], recalibrated = [];
     if (stripped(candidate) !== stripped(this.original)) {
       // Art replacements keep edits to every unchanged part. A shared atlas
       // migrates as one unit; imported texture URLs are never used or loaded.
       imported = structuredClone(candidate);
-      const torso = imported.parts.find(p => p.id === 'torso');
-      const currentTorso = this.original.parts.find(p => p.id === 'torso');
-      if (torso && currentTorso && JSON.stringify(torso.neck) !== JSON.stringify(currentTorso.neck)) {
-        torso.neck = structuredClone(currentTorso.neck);
-        recalibrated.push('torso');
+      // Local shape corrections travel with the model, not with the user's edits.
+      for (const [id, key] of [['torso', 'neck'], ['face', 'jaw']]) {
+        const part = imported.parts.find(p => p.id === id), current = this.original.parts.find(p => p.id === id);
+        if (!part || !current || JSON.stringify(part[key]) === JSON.stringify(current[key])) continue;
+        if (current[key] === undefined) delete part[key]; else part[key] = structuredClone(current[key]);
+        recalibrated.push(id);
       }
       const groups = [
         { texture: 'sleeveLeft', parts: ['arm-left'], nodes: ['arm-left'] },

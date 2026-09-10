@@ -1,6 +1,6 @@
-import { Alignment, hitTest, skeleton } from '../engine/alignment.js?v=0.4.1';
-import { fitView } from '../engine/geometry.js?v=0.4.1';
-import { CanvasRenderer, WebGLRenderer, loadTextures } from '../engine/renderer.js?v=0.4.1';
+import { Alignment, hitTest, skeleton } from '../engine/alignment.js?v=0.4.2';
+import { fitView } from '../engine/geometry.js?v=0.4.2';
+import { CanvasRenderer, WebGLRenderer, loadTextures } from '../engine/renderer.js?v=0.4.2';
 
 const $ = id => document.getElementById(id);
 const feedback = (message, error = false) => { $('feedback').textContent = message; $('feedback').classList.toggle('error', error); };
@@ -11,7 +11,7 @@ const download = (blob, name) => {
 const makeCanvas = (w, h) => { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; };
 
 async function start() {
-  const rigURL = new URL('../character/glitch/rig.json?v=0.4.1', location.href);
+  const rigURL = new URL('../character/glitch/rig.json?v=0.4.2', location.href);
   const response = await fetch(rigURL, { signal: AbortSignal.timeout(25000) });
   if (!response.ok) throw new Error('角色設定載入失敗，請重新整理。');
   const editor = new Alignment(await response.json());

@@ -1,0 +1,18 @@
+Use case: precise-object-edit.
+Asset type: 1024x1536 chroma-green anime sleeve sprite for a character rig.
+
+Input images:
+Image 1 (/home/ct/glitch-l2d/character/glitch/sleeve-right-v4.png) is the ONLY edit target. Preserve its entire image as a locked plate except for the bare hand.
+Image 2 (/home/ct/glitch-l2d/test-results/sleeve-v4/right-front-template.png) is a reference for HAND SHAPE AND SIZE RELATIVE TO THE CUFF ONLY. Do not import its body, clothing, background, blur, or composition.
+
+Primary request:
+Make ONE local correction to Image 1: redraw only the bare hand at the lower right to match the small relaxed hand in Image 2. The current hand is too large, too flat and too splayed, with long spidery fingers and a webbed look between them. It must become a noticeably smaller child's hand hanging relaxed: a short rounded palm; exactly four short, slightly tapered fingers held close together with only small gaps; a clearly separate shorter thumb; softly rounded fingertips with natural colourless nails; gentle knuckle shading. Use Image 2 as the authority for the hand's relaxed pose, silhouette and size relative to the cuff. Preserve the refined rendering quality of Image 1.
+
+Attachment:
+Shrink the hand around its existing wrist attachment. Keep the wrist attached at exactly the current wrist position and angle inside the cuff. Keep the original cuff opening and device untouched. The hand must meet that opening cleanly with no gap, overlap, exposed extra forearm, or change to the cuff. Fill the portions vacated by the old larger hand with the same flat chroma-green background RGB(18,240,14).
+
+Strict invariants:
+Keep all pixels outside the local hand correction unchanged. Keep the canvas exactly 1024x1536 and the full sleeve at its original size, rotation and position. Preserve the sleeve silhouette, all folds, both dark-purple stripes, all pixel-glitch specks, the dark wrist-screen cuff device and cyan display, cuff stripes, colours, and flat background RGB(18,240,14). Do not redraw, reframe, rescale, rotate or restyle the sleeve or cuff device. Preserve the same refined soft 2D anime cel shading and restrained purple linework.
+
+Output:
+Exactly one isolated sleeve and one attached hand, nothing else. No text, labels, added shadows, checkerboard, transparency, new objects or extra limbs.

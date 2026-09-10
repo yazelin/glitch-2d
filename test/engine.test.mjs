@@ -49,6 +49,24 @@ test('head movement preserves torso attachment and moving gaze preserves eye ape
   assert.deepEqual(base.find(x => x.part.id === 'iris-left').clip, gaze.find(x => x.part.id === 'iris-left').clip);
   assert.notDeepEqual(base.find(x => x.part.id === 'iris-left').positions, gaze.find(x => x.part.id === 'iris-left').positions);
 });
+test('neck rest shrink lowers and thins the choker, and the jaw fills out the chin only', () => {
+  const pose = neutral();
+  const torso = rig.parts.find(part => part.id === 'torso');
+  const unshrunk = { ...torso, neck: { ...torso.neck, rest: { ...torso.neck.rest, shrink: 0 } } };
+  const band = part => [560, 590].map(y => deformPoint(part, torso.neck.center, y, pose, rig)[1]);
+  const [top, bottom] = band(torso), [flatTop, flatBottom] = band(unshrunk);
+  assert(top > flatTop, 'The choker sits lower, so more throat shows under the chin');
+  assert(bottom - top < flatBottom - flatTop, 'The choker renders thinner than the hoodie scale');
+  const outside = torso.neck.center + torso.neck.rest.outer + 5;
+  assert.deepEqual(deformPoint(torso, outside, 660, pose, rig), deformPoint(unshrunk, outside, 660, pose, rig),
+    'The outer hoodie keeps its own scale');
+  const face = rig.parts.find(part => part.id === 'face');
+  const plain = { ...face, jaw: undefined };
+  const chin = deformPoint(face, 560, 530, pose, rig), sharp = deformPoint(plain, 560, 530, pose, rig);
+  assert(chin[0] > sharp[0] && chin[1] > sharp[1], 'The lower face widens and reaches a little further down');
+  assert.deepEqual(deformPoint(face, 560, 300, pose, rig), deformPoint(plain, 560, 300, pose, rig),
+    'Eyes and brows keep their place');
+});
 test('voice energy opens mouth only above silence floor and release closes it', () => {
   assert.equal(mouthFromRms(rms(new Float32Array(512))), 0);
   assert(Math.abs(rms([.5, -.5, .5, -.5]) - .5) < 1e-6);

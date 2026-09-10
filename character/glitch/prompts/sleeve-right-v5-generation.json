@@ -1,0 +1,33 @@
+{
+  "mode": "built-in image_gen",
+  "use_case": "precise-object-edit",
+  "edit_target": "character/glitch/sleeve-right-v4.png",
+  "hand_reference": "test-results/sleeve-v4/right-front-template.png",
+  "output": "character/glitch/sleeve-right-v5.png",
+  "status": "Hand edit candidate; exact preservation outside the hand not achieved.",
+  "output_size": [
+    1024,
+    1536
+  ],
+  "output_mode": "RGB",
+  "prompts": [
+    "character/glitch/prompts/sleeve-right-v5.txt",
+    "character/glitch/prompts/sleeve-right-v5-preservation.txt"
+  ],
+  "selected_attempt": 2,
+  "generated_source": "/home/ct/.codex/generated_images/01a08bb7-eb70-7260-a01c-82ae978d083c/exec-5b9ffb84-817f-4fdd-a666-c7d90b637487.png",
+  "verification": {
+    "visual": "Smaller hand with closely held fingers and separate thumb; continuous attachment at original cuff.",
+    "pixel_preservation": "Failed: image generation introduced colour differences outside the hand.",
+    "mean_absolute_rgb_channel_difference_outside_hand_rectangle": 3.7802,
+    "excluded_hand_rectangle_xyxy": [
+      640,
+      1150,
+      970,
+      1400
+    ],
+    "source_background_note": "The original source background itself varies in RGB and is not uniformly RGB(18,240,14)."
+  },
+  "sha256": "9366e1bfac2dd831d0d3f022e1141ca7290c21bed53979ae261f0bee369968d8",
+  "post_process": "Background flattened after generation: keyed with the cutout tool, then recomposited over the rig's chroma value. Subject pixels unchanged; the sha256 above is the flattened file now in the repo."
+}

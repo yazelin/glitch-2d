@@ -1,0 +1,15 @@
+Use case: precise-object-edit.
+Asset type: 1024x1536 anime rig-part sprite.
+Input roles:
+Image 1 is the ORIGINAL and ONLY base/edit target: sleeve-right-v4.png.
+Image 2 is the original front-view reference and is the authority for HAND SHAPE AND SIZE ONLY.
+Image 3 is the first hand-edit candidate. Its hand is smaller and its fingers are closer together, but it introduced unwanted colour changes across the image.
+
+Primary request: Return Image 1 with ONLY its bare hand locally replaced by the smaller relaxed child's hand from Image 3, guided by the hand proportions in Image 2. Correct the first candidate's unwanted changes to the rest of the image by preserving the original pixels from Image 1. Do not redraw the full image. Treat all sleeve fabric, sleeve outlines, folds, purple stripes, cyan and pink glitch specks, cuff, wrist-screen device, cyan display and existing green background as protected source pixels from Image 1. Copy those protected pixels exactly without colour shifts, changes in contrast, retouching, resampling or repainting.
+
+The corrected bare hand must have a short rounded palm, four short slightly tapered fingers held close together with only small gaps, and a clearly separate shorter thumb. Keep soft rounded fingertips, natural colourless nails and gentle knuckle shading. Hand size relative to cuff must follow Image 2 and remain noticeably smaller than the old large splayed hand in Image 1.
+The wrist attachment must remain at its exact original position and angle inside the unchanged cuff opening, with no gap or overlap. Preserve the original soft refined 2D anime shading and restrained purple linework for the new hand.
+
+Preserve the entire 1024x1536 canvas, framing, original sleeve size, silhouette, rotation, position, folds, decorations, cuff device and all colours in Image 1 exactly. Preserve Image 1's chroma-green background; where the smaller hand exposes newly empty space, fill it seamlessly with that same green (requested chroma key RGB 18,240,14). No gradients or new background effects.
+Exactly one sleeve and one bare hand. No text, labels, added shadows, checkerboard, transparency, other body parts, objects or extra fingers.
+The only permitted final-image difference from Image 1 is the local bare hand and the green area exposed by reducing that hand.

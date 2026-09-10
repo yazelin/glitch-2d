@@ -1,0 +1,66 @@
+{
+  "release": "0.4.2",
+  "mode": "Built-in imagegen; no CLI or separate image API",
+  "reference": "turnaround-reference.png",
+  "userAlignment": "calibration/user-alignment-v0.4.1.json",
+  "corrects": "0.4.1",
+  "assets": [
+    {
+      "src": "sleeve-left-v5.png",
+      "fixes": "Broken upper shoulder stripe with a bitten-out notch and hook tab",
+      "prompts": [
+        "prompts/sleeve-left-v5.json"
+      ],
+      "sha256": "3ec6c158e65790c290712b935731976a1f65b851a790ed4843a7c7383933e9bd"
+    },
+    {
+      "src": "sleeve-right-v5.png",
+      "fixes": "Oversized splayed hand with long webbed fingers",
+      "prompts": [
+        "prompts/sleeve-right-v5.txt",
+        "prompts/sleeve-right-v5-preservation.txt",
+        "prompts/sleeve-right-v5-generation.json"
+      ],
+      "sha256": "9366e1bfac2dd831d0d3f022e1141ca7290c21bed53979ae261f0bee369968d8"
+    },
+    {
+      "src": "legs-v4.png",
+      "fixes": "Upper thighs too heavy at the root; leg-warmer hem cut flat above the sneaker",
+      "prompts": [
+        "prompts/legs-v4.txt",
+        "prompts/legs-v4-contours.txt",
+        "prompts/legs-v4-refinement.txt",
+        "prompts/legs-v4-validation.json"
+      ],
+      "sha256": "7e6d97157ca34ad31269217321d72197929184f1f794c42281a9c20eecfec1e4"
+    }
+  ],
+  "postProcess": "Backgrounds flattened with the cutout keyer, then recomposited over each texture's own chroma value; subject pixels untouched (legs opaque pixels 778686 before, 777407 after)",
+  "neckRest": {
+    "top": 608,
+    "bottom": 680,
+    "inner": 52,
+    "outer": 100,
+    "pinch": 0.1,
+    "drop": 44,
+    "shrink": 0.24
+  },
+  "jaw": {
+    "top": 440,
+    "bottom": 540,
+    "widen": 0.06,
+    "drop": 4
+  },
+  "invariants": [
+    "Five digits on each hand; natural unpainted nails",
+    "Wrist screen only on viewer-right",
+    "Original torso and face PNGs unchanged; the choker and chin are corrected by rig warps",
+    "Sole baselines unchanged: 1732 and 1732 in the leg atlas, reference y954 assembled",
+    "Part rectangles and UV windows unchanged from 0.4.1; only the texture sources were replaced"
+  ],
+  "limitations": [
+    "Upper thighs now measure 68 and 59 where the turnaround samples 78 and 68; the correction favours the assembled silhouette over the sampled width",
+    "The bare interval between the garter and the stocking top is wider than the turnaround",
+    "Art contours and garment folds are not pixel-identical to the reference"
+  ]
+}

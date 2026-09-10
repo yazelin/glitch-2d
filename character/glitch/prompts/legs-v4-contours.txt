@@ -1,0 +1,18 @@
+Use case: precise-object-edit
+Image 1 is the ONLY edit target: the attached 873x1801 green leg atlas. Make ONE very small localized correction: the thighs taper inward too much between y=150 and y=500. Widen only those thigh contours modestly while keeping their tops almost unchanged. Keep the current soft gathered leg-warmer hems.
+
+Canvas: EXACTLY 873 pixels wide by 1801 pixels high. Preserve the entire original coordinate system. Never remove even one row. No resizing, shifting, rotation, cropping, reframing, or vertical stretching.
+
+Use these final left/right outline anchors in absolute pixels, interpolate smoothly between rows:
+                   VIEWER-LEFT LEG         VIEWER-RIGHT LEG
+y=100              x=111 to 382             x=496 to 759
+y=150              x=111 to 380             x=499 to 758
+y=200              x=115 to 376             x=502 to 753
+y=300              x=128 to 367             x=511 to 742
+y=500              x=160 to 351             x=523 to 715
+
+This means very slightly widening the current left thigh by roughly 7–13 pixels on each side between y=150 and 500, without widening its root. The right thigh moves about 3 pixels right at the root and widens by only about 4–10 pixels per side lower down. Keep the upper outline close to straight with a gentle taper. These are slim child-character legs, so avoid exaggerated bulging at the top. By y=500 the contour connects smoothly to the original knees and calves. Keep all y coordinates and all bandages, pixels, the garter's square silver X buckle, vertical connector, and stocking pixel heart at their current heights. Only refit the garter and stocking horizontally to the modest contour correction. Do not lengthen any body part.
+
+HARD PRESERVATION: every area other than the upper-thigh contour correction remains unchanged. In particular, keep the ribbed purple cuffs at their current heights around y=940, both pale mint warmers, angular cuff loops, softly slouched lower fabric hems, and both complete sneakers exactly as they currently appear. Keep sneaker collars, cyan outline hearts, straps, laces, panels, sole thickness, and the grounded sole baselines around y=1732. No new seams, ornamentation, or costume changes. Keep both separate legs' positions and the green gutter.
+
+Keep refined soft 2D anime cel shading, restrained purple linework, and a uniform flat chroma-green background RGB(18,240,14). Exactly two isolated legs from hidden top tabs to sneakers. No skirt, pelvis, torso, accessories, text, labels, guides, ground shadows, transparency or checkerboard. Output only the corrected 873x1801 image.
