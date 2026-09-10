@@ -1,4 +1,4 @@
-import { clamp } from './motion.js';
+import { clamp } from './motion.js?v=0.3.0';
 
 export const identity = () => [1, 0, 0, 1, 0, 0];
 export function multiply(a, b) {
@@ -12,6 +12,32 @@ export function around([x, y], angle = 0, sx = 1, sy = 1, tx = 0, ty = 0) {
   return [c*sx, s*sx, -s*sy, c*sy, x-c*sx*x+s*sy*y+tx, y-s*sx*x-c*sy*y+ty];
 }
 
+function nodeTransform(node, pose) {
+  let angle = node.restAngle || 0, sx = 1, sy = 1, tx = 0, ty = 0;
+  if (node.drive === 'body') {
+    angle += pose.headZ * .006;
+    sy = 1 + pose.breath * .003;
+    ty = -pose.breath * .5;
+  }
+  if (node.drive === 'head') {
+    angle += pose.headZ * .075;
+    sx = 1 - Math.abs(pose.headX) * .012;
+    tx = pose.headX * 8;
+    ty = pose.headY * 4;
+  }
+  if (node.drive === 'arm') angle += pose.arm * .07 * (node.side || 1);
+  tx += node.offset?.[0] || 0; ty += node.offset?.[1] || 0;
+  return around(node.pivot, angle, sx, sy, tx, ty);
+}
+
+// One affine face plane keeps skin, eyes, lips and eye apertures registered.
+// The small shear suggests a turn without letting features slide independently.
+export function facePoint(rig, pose, x, y) {
+  const { center: [cx, cy] = [500, 410], yaw = 10, shear = .025 } = rig.facePlane || {};
+  return [cx + (x - cx) * (1 - Math.abs(pose.headX) * .035) + pose.headX * (yaw - (y - cy) * shear),
+    y + pose.headY * 2];
+}
+
 export function nodeMatrices(rig, pose) {
   const matrices = { root: identity() };
   const visiting = new Set();
@@ -22,22 +48,7 @@ export function nodeMatrices(rig, pose) {
     const node = byId.get(id);
     if (!node) throw new Error(`Missing rig node: ${id}`);
     visiting.add(id);
-    let angle = 0, sx = 1, sy = 1, tx = 0, ty = 0;
-    if (node.drive === 'body') {
-      angle = pose.headZ * .012;
-      sy = 1 + pose.breath * .006;
-      ty = -pose.breath * 1.5;
-    }
-    if (node.drive === 'head') {
-      angle = pose.headZ * .105;
-      sx = 1 - Math.abs(pose.headX) * .025;
-      tx = pose.headX * 12;
-      ty = pose.headY * 6;
-    }
-    if (node.drive === 'arm') angle = pose.arm * .09 * (node.side || 1);
-    tx += node.offset?.[0] || 0;
-    ty += node.offset?.[1] || 0;
-    matrices[id] = multiply(resolve(node.parent || 'root'), around(node.pivot, angle, sx, sy, tx, ty));
+    matrices[id] = multiply(resolve(node.parent || 'root'), nodeTransform(node, pose));
     visiting.delete(id);
     return matrices[id];
   }
@@ -53,13 +64,23 @@ export function deformPoint(part, x, y, pose, rig, explode = 0) {
     const weight = clamp((part.neck.bottom - y) / (part.neck.bottom - part.neck.top), 0, 1);
     x = part.neck.center + (x - part.neck.center) * (1 - weight * part.neck.pinch);
     y -= weight * (part.neck.extend || 0);
+    if (part.neck.follow) {
+      const head = rig.nodes.find(node => node.drive === 'head');
+      if (head) {
+        const moved = point(nodeTransform(head, pose), ...facePoint(rig, pose, x, y));
+        const rest = point(nodeTransform(head, { headX: 0, headY: 0, headZ: 0 }), x, y);
+        const blend = weight * part.neck.follow * clamp((80 - Math.abs(x - part.neck.center)) / 25, 0, 1);
+        x += (moved[0] - rest[0]) * blend; y += (moved[1] - rest[1]) * blend;
+      }
+    }
   }
   if (type === 'hair') {
     const weight = clamp((y - ry) / h, 0, 1);
     x += pose.hair * (part.sway ?? 16) * weight * weight;
   }
   if (type === 'eye' || type === 'lash') {
-    y = cy + (y - cy) * Math.max(.025, pose.eyeOpen);
+    const apertureY = part.apertureY ?? cy;
+    y = apertureY + (y - apertureY) * Math.max(.025, pose.eyeOpen);
   }
   if (type === 'iris') {
     x += pose.gazeX * (part.travel?.[0] ?? 9);
@@ -76,10 +97,7 @@ export function deformPoint(part, x, y, pose, rig, explode = 0) {
   if (type === 'lip') {
     y -= pose.smile * 3 * Math.pow((x - cx) / (w / 2), 2);
   }
-  if (part.face) {
-    x += pose.headX * (part.depth ?? 9);
-    y += pose.headY * (part.depth ?? 9) * .3;
-  }
+  if (part.face) [x, y] = facePoint(rig, pose, x, y);
   const shift = part.explode || [0, 0];
   return [x + shift[0] * explode, y + shift[1] * explode];
 }
@@ -120,19 +138,40 @@ export function buildScene(rig, pose, { explode = 0, hidden = new Set() } = {}) 
     let clip = null;
     if (part.clip) {
       const [ex, ey, ew, eh] = part.clip;
-      const cx = ex + ew / 2 + (part.face ? pose.headX * (part.depth ?? 9) : 0);
-      const cy = ey + eh / 2 + (part.face ? pose.headY * (part.depth ?? 9) * .3 : 0);
       const shift = part.explode || [0, 0];
-      clip = { center: point(matrix, cx + shift[0] * explode, cy + shift[1] * explode),
-        axisX: [matrix[0] * ew / 2, matrix[1] * ew / 2],
-        axisY: [matrix[2] * eh / 2 * Math.max(.01, displayPose.eyeOpen), matrix[3] * eh / 2 * Math.max(.01, displayPose.eyeOpen)] };
+      const project = (x, y) => {
+        if (part.face) [x, y] = facePoint(rig, displayPose, x, y);
+        return point(matrix, x + shift[0] * explode, y + shift[1] * explode);
+      };
+      const cx = ex + ew / 2, cy = ey + eh / 2;
+      const center = project(cx, cy), edgeX = project(cx + ew / 2, cy);
+      const edgeY = project(cx, cy + eh / 2 * Math.max(.01, displayPose.eyeOpen));
+      clip = { center, axisX: edgeX.map((n, i) => n - center[i]), axisY: edgeY.map((n, i) => n - center[i]) };
     }
     return { part, positions, texcoords, indices, opacity, clip };
   });
 }
 
-export function fitView(width, height, rig, explode = 0) {
-  const [rw, rh] = rig.size;
+export function fitView(width, height, rig, explode = 0, framing = 'full') {
+  const [rx, ry, rw, rh] = rig.views?.[framing] || [0, 0, ...rig.size];
   const scale = Math.min(width / rw, height / rh) * (1 - explode * .22);
-  return { scale, x: (width - rw * scale) / 2, y: (height - rh * scale) / 2 };
+  return { scale, x: (width - rw * scale) / 2 - rx * scale, y: (height - rh * scale) / 2 - ry * scale };
+}
+
+export function editPartRect(part, index, value, lockAspect = true) {
+  if (!Number.isFinite(value) || index < 0 || index > 3 || !Number.isInteger(index)) return;
+  if (index > 1 && value <= 0) return;
+  const before = [...part.rect];
+  part.rect[index] = value;
+  if (lockAspect && index > 1) {
+    const other = index === 2 ? 3 : 2;
+    part.rect[other] = before[other] * value / before[index];
+  }
+  if (part.lockAspect !== undefined && index > 1) part.lockAspect = lockAspect && Math.abs(part.rect[2] / part.rect[3] - part.uv[2] / part.uv[3]) < 1e-8;
+  if (part.apertureY !== undefined) part.apertureY = part.rect[1] + (part.apertureY - before[1]) * part.rect[3] / before[3];
+  if (part.clip) {
+    const [x, y, w, h] = before, [nx, ny, nw, nh] = part.rect;
+    part.clip = [nx + (part.clip[0] - x) * nw / w, ny + (part.clip[1] - y) * nh / h,
+      part.clip[2] * nw / w, part.clip[3] * nh / h];
+  }
 }

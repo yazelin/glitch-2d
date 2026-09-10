@@ -2,8 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { Motion, Spring, rms, mouthFromRms } from '../engine/motion.js';
-import { buildScene, around, point, nodeMatrices } from '../engine/geometry.js';
-import { removeChroma } from '../engine/renderer.js';
+import { buildScene, around, point, nodeMatrices, facePoint, fitView, editPartRect } from '../engine/geometry.js';
+import { removeChroma, prepareTexture } from '../engine/renderer.js';
+import { createCanvas, loadImage } from '@napi-rs/canvas';
 
 const rig = JSON.parse(await readFile(new URL('../character/glitch/rig.json', import.meta.url), 'utf8'));
 const neutral = () => ({ ...new Motion().values, hair: 0 });
@@ -34,7 +35,10 @@ test('blink closes geometry and aperture without squashing the iris', () => {
 test('head movement preserves torso attachment and moving gaze preserves eye aperture', () => {
   const base = buildScene(rig, neutral());
   const posed = buildScene(rig, { ...neutral(), headX: 1 });
-  assert.deepEqual(base.find(x => x.part.id === 'torso').positions, posed.find(x => x.part.id === 'torso').positions);
+  const restTorso = base.find(x => x.part.id === 'torso'), turnedTorso = posed.find(x => x.part.id === 'torso');
+  const firstFixedRow = (restTorso.part.mesh[0] + 1) * 2 * 3;
+  assert.deepEqual(restTorso.positions.slice(firstFixedRow), turnedTorso.positions.slice(firstFixedRow));
+  assert.notDeepEqual(restTorso.positions, turnedTorso.positions, 'The neck follows the jaw while the hoodie stays anchored');
   assert.notDeepEqual(base.find(x => x.part.id === 'face').positions, posed.find(x => x.part.id === 'face').positions);
   const gaze = buildScene(rig, { ...neutral(), gazeX: 1 });
   assert.deepEqual(base.find(x => x.part.id === 'iris-left').clip, gaze.find(x => x.part.id === 'iris-left').clip);
@@ -85,4 +89,54 @@ test('exploded view reveals dormant mouth and eyelid artwork while respecting hi
   assert(scene.every(item => item.opacity === 1));
   const modified = structuredClone(rig); modified.parts[0].visible = false;
   assert.equal(buildScene(modified, neutral(), { explode: 1 })[0].opacity, 0);
+});
+
+test('skin, facial features and eye aperture share one face transform at extreme turns', () => {
+  const iris = rig.parts.find(p => p.id === 'iris-left');
+  for (const headX of [-1, 1]) for (const headZ of [-1, 1]) {
+    const pose = { ...neutral(), headX, headZ, headY: .7, eyeOpen: .2 };
+    const scene = buildScene(rig, pose), matrix = nodeMatrices(rig, pose).head;
+    const [x, y, w, h] = iris.clip;
+    const center = point(matrix, ...facePoint(rig, pose, x + w / 2, y + h / 2));
+    assert.deepEqual(scene.find(p => p.part.id === iris.id).clip.center, center);
+    const expectedEdge = point(matrix, ...facePoint(rig, pose, x + w / 2, y + h / 2 + h / 2 * pose.eyeOpen));
+    const actual = scene.find(p => p.part.id === iris.id).clip;
+    expectedEdge.forEach((n, i) => assert(Math.abs(n - actual.center[i] - actual.axisY[i]) < 1e-8));
+  }
+});
+
+test('resizing preserves art proportions and moves the aperture with its part', () => {
+  const part = { rect: [10, 20, 80, 160], clip: [30, 60, 40, 60] };
+  editPartRect(part, 2, 120);
+  assert.deepEqual(part.rect, [10, 20, 120, 240]);
+  assert.deepEqual(part.clip, [40, 80, 60, 90]);
+  editPartRect(part, 1, 50);
+  assert.deepEqual(part.clip, [40, 110, 60, 90]);
+  editPartRect(part, 3, 0); editPartRect(part, 2, NaN);
+  assert.deepEqual(part.rect, [10, 50, 120, 240]);
+  for (const p of rig.parts.filter(p => p.lockAspect)) assert(Math.abs(p.rect[2] / p.rect[3] - p.uv[2] / p.uv[3]) < 1e-8, p.id);
+});
+
+test('full and bust framing contain their art bounds and can map pointers back to the same face', () => {
+  for (const framing of ['full', 'bust']) for (const [width, height] of [[390, 600], [1100, 800]]) {
+    const [x, y, w, h] = rig.views[framing];
+    const view = fitView(width, height, rig, 0, framing);
+    assert(x * view.scale + view.x >= -1e-8);
+    assert(y * view.scale + view.y >= -1e-8);
+    assert((x + w) * view.scale + view.x <= width + 1e-8);
+    assert((y + h) * view.scale + view.y <= height + 1e-8);
+    const screen = [500 * view.scale + view.x, 430 * view.scale + view.y];
+    assert(Math.abs((screen[0] - view.x) / view.scale - 500) < 1e-8);
+    assert(Math.abs((screen[1] - view.y) / view.scale - 430) < 1e-8);
+  }
+});
+
+test('atlas crops exclude neighboring pieces and source art is untouched', async () => {
+  const source = await loadImage(await readFile(new URL('../character/glitch/sleeves-v2.png', import.meta.url)));
+  const spec = rig.textures.sleeveLeft;
+  const result = prepareTexture(source, spec, createCanvas);
+  assert.equal(source.width, 1254); assert.equal(result.width, 423); assert.equal(result.height, 617);
+  const ctx = result.getContext('2d');
+  assert.equal(ctx.getImageData(220, 601, 1, 1).data[3], 0, 'Neighbor shoulder must not leak into the left hand crop');
+  assert(ctx.getImageData(345, 220, 1, 1).data[3] > 200, 'Sleeve paint must survive the extraction');
 });

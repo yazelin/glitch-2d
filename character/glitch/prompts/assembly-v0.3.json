@@ -1,0 +1,390 @@
+{
+  "release": "0.3.0",
+  "tool": "Built-in image_gen; no CLI or direct image API calls",
+  "references": [
+    "design-reference.png",
+    "turnaround-reference.png",
+    "../../pet-plain.webp"
+  ],
+  "invariants": [
+    "Keep the original torso PNG.",
+    "Natural unpainted fingernails.",
+    "Single cyan wrist display on viewer-right.",
+    "Loose oversized sleeves; preserve source aspect ratio.",
+    "Viewer-left bare leg and knee bandages; viewer-right purple stocking and thigh garter."
+  ],
+  "sourceTorsoSha256": "037d3b61107bf81e8e0cbe1ab8b00e5c625a4390045a9381898bb5f42351ac9f",
+  "assets": {
+    "sleeves-v2.png": {
+      "prompts": [
+        "sleeves-v2.txt"
+      ],
+      "used": "Only the two sleeve and hand islands; the newly generated torso is unused."
+    },
+    "hair-v2.png": {
+      "prompts": [
+        "hair-v2-generation.txt",
+        "hair-v2-correction.txt"
+      ],
+      "used": "Shortened front fringe plus independent back hair and two side locks."
+    },
+    "skirt-v1.png": {
+      "prompts": [
+        "lower-body-v1.txt"
+      ]
+    },
+    "legs-v1.png": {
+      "prompts": [
+        "lower-body-v1.txt"
+      ]
+    }
+  },
+  "coordinateContract": "All source atlas crop/exclusion coordinates are pixels; UVs are local to the cropped texture. rect and views use global character coordinates. The rig is authoritative for final placement.",
+  "assembly": [
+    {
+      "id": "back-hair",
+      "texture": "hair",
+      "uv": [
+        667,
+        148,
+        560,
+        474
+      ],
+      "rect": [
+        240,
+        138,
+        520.8000000000001,
+        440.82000000000005
+      ],
+      "lockAspect": true
+    },
+    {
+      "id": "leg-left",
+      "texture": "legs",
+      "uv": [
+        192,
+        31,
+        247,
+        1380
+      ],
+      "rect": [
+        282,
+        1345,
+        197.6,
+        1104
+      ],
+      "lockAspect": true
+    },
+    {
+      "id": "leg-right",
+      "texture": "legs",
+      "uv": [
+        636,
+        31,
+        258,
+        1380
+      ],
+      "rect": [
+        519,
+        1345,
+        206.4,
+        1104
+      ],
+      "lockAspect": true
+    },
+    {
+      "id": "skirt",
+      "texture": "skirt",
+      "uv": [
+        106,
+        332,
+        1042,
+        637
+      ],
+      "rect": [
+        245,
+        1162,
+        510,
+        311.77543186180424
+      ],
+      "lockAspect": true
+    },
+    {
+      "id": "arm-left",
+      "texture": "sleeveLeft",
+      "uv": [
+        0,
+        0,
+        423,
+        617
+      ],
+      "rect": [
+        -62.12,
+        637.36,
+        439.92,
+        641.68
+      ],
+      "lockAspect": true
+    },
+    {
+      "id": "arm-right",
+      "texture": "sleeveRight",
+      "uv": [
+        0,
+        0,
+        386,
+        630
+      ],
+      "rect": [
+        614.72,
+        640.48,
+        401.44,
+        655.2
+      ],
+      "lockAspect": true
+    },
+    {
+      "id": "torso",
+      "texture": "torso",
+      "uv": [
+        215,
+        25,
+        825,
+        1205
+      ],
+      "rect": [
+        252,
+        525,
+        496,
+        724
+      ]
+    },
+    {
+      "id": "face",
+      "texture": "skin",
+      "uv": [
+        150,
+        75,
+        950,
+        1030
+      ],
+      "rect": [
+        325,
+        170,
+        350,
+        380
+      ]
+    },
+    {
+      "id": "eye-left",
+      "texture": "face",
+      "uv": [
+        14,
+        178,
+        282,
+        208
+      ],
+      "rect": [
+        372.52,
+        353.68,
+        120.96000000000001,
+        89.64
+      ]
+    },
+    {
+      "id": "eye-right",
+      "texture": "face",
+      "uv": [
+        355,
+        178,
+        290,
+        208
+      ],
+      "rect": [
+        506.52,
+        353.68,
+        120.96000000000001,
+        89.64
+      ]
+    },
+    {
+      "id": "iris-left",
+      "texture": "face",
+      "uv": [
+        693,
+        174,
+        180,
+        221
+      ],
+      "rect": [
+        407,
+        370.5,
+        59,
+        61
+      ]
+    },
+    {
+      "id": "iris-right",
+      "texture": "face",
+      "uv": [
+        989,
+        174,
+        183,
+        221
+      ],
+      "rect": [
+        534,
+        370.5,
+        59,
+        61
+      ]
+    },
+    {
+      "id": "lid-left",
+      "texture": "face",
+      "uv": [
+        647,
+        626,
+        264,
+        102
+      ],
+      "rect": [
+        377,
+        388,
+        112,
+        36
+      ]
+    },
+    {
+      "id": "lid-right",
+      "texture": "face",
+      "uv": [
+        976,
+        626,
+        257,
+        102
+      ],
+      "rect": [
+        511,
+        388,
+        112,
+        36
+      ]
+    },
+    {
+      "id": "brow-left",
+      "texture": "face",
+      "uv": [
+        25,
+        586,
+        265,
+        94
+      ],
+      "rect": [
+        380,
+        336,
+        108,
+        30
+      ]
+    },
+    {
+      "id": "brow-right",
+      "texture": "face",
+      "uv": [
+        356,
+        586,
+        275,
+        94
+      ],
+      "rect": [
+        512,
+        336,
+        108,
+        30
+      ]
+    },
+    {
+      "id": "mouth",
+      "texture": "face",
+      "uv": [
+        714,
+        923,
+        118,
+        138
+      ],
+      "rect": [
+        485,
+        467,
+        30,
+        34
+      ]
+    },
+    {
+      "id": "lip",
+      "texture": "face",
+      "uv": [
+        375,
+        948,
+        197,
+        65
+      ],
+      "rect": [
+        477,
+        475,
+        46,
+        15
+      ]
+    },
+    {
+      "id": "side-hair-left",
+      "texture": "hair",
+      "uv": [
+        229,
+        790,
+        168,
+        318
+      ],
+      "rect": [
+        288,
+        312,
+        151.20000000000002,
+        286.2
+      ],
+      "lockAspect": true
+    },
+    {
+      "id": "side-hair-right",
+      "texture": "hair",
+      "uv": [
+        859,
+        791,
+        206,
+        314
+      ],
+      "rect": [
+        568,
+        313,
+        185.4,
+        282.6
+      ],
+      "lockAspect": true
+    },
+    {
+      "id": "front-hair",
+      "texture": "hair",
+      "uv": [
+        65,
+        49,
+        514,
+        447
+      ],
+      "rect": [
+        269,
+        23,
+        462.6,
+        402.3
+      ],
+      "lockAspect": true
+    }
+  ]
+}

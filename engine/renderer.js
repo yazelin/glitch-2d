@@ -1,4 +1,4 @@
-import { fitView } from './geometry.js';
+import { fitView } from './geometry.js?v=0.3.0';
 
 // Color-difference matting is performed at load time. The generated source atlas
 // is kept intact, including its chroma backing, so art can always be replaced.
@@ -21,21 +21,35 @@ export function removeChroma(data, key = [18, 240, 14]) {
 }
 
 export function prepareTexture(image, spec, makeCanvas) {
-  if (!spec.chroma) return image;
-  const surface = makeCanvas(image.width, image.height);
+  if (!spec.chroma && !spec.crop && !spec.clearRects?.length && !spec.clearPolygons?.length) return image;
+  const [x, y, width, height] = spec.crop || [0, 0, image.width, image.height];
+  const surface = makeCanvas(width, height);
   const context = surface.getContext('2d', { willReadFrequently: true });
-  context.drawImage(image, 0, 0);
-  const pixels = context.getImageData(0, 0, image.width, image.height);
-  removeChroma(pixels.data, spec.chroma);
-  context.putImageData(pixels, 0, 0);
+  context.drawImage(image, x, y, width, height, 0, 0, width, height);
+  if (spec.chroma) {
+    const pixels = context.getImageData(0, 0, width, height);
+    removeChroma(pixels.data, spec.chroma);
+    context.putImageData(pixels, 0, 0);
+  }
+  // Atlas-space exclusions remove neighboring islands, never the selected art.
+  for (const [rx, ry, rw, rh] of spec.clearRects || []) context.clearRect(rx - x, ry - y, rw, rh);
+  // Hidden attachment openings can be masked without repainting the source.
+  for (const polygon of spec.clearPolygons || []) {
+    context.save(); context.globalCompositeOperation = 'destination-out'; context.beginPath();
+    polygon.forEach(([px, py], i) => { if (i) context.lineTo(px - x, py - y); else context.moveTo(px - x, py - y); });
+    context.closePath(); context.fill(); context.restore();
+  }
   return surface;
 }
 
 export async function loadTextures(rig, baseURL) {
+  const sources = new Map();
   const entries = await Promise.all(Object.entries(rig.textures).map(async ([id, spec]) => {
-    const image = new Image();
-    image.src = new URL(spec.src, baseURL).href;
-    await image.decode();
+    if (!sources.has(spec.src)) sources.set(spec.src, (async () => {
+      const image = new Image(); image.src = new URL(spec.src, baseURL).href;
+      await image.decode(); return image;
+    })());
+    const image = await sources.get(spec.src);
     return [id, prepareTexture(image, spec, (w, h) => {
       const canvas = document.createElement('canvas'); canvas.width = w; canvas.height = h; return canvas;
     })];
@@ -108,9 +122,9 @@ export class WebGLRenderer {
     }
     gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   }
-  render(scene, rig, { explode = 0 } = {}) {
+  render(scene, rig, { explode = 0, framing = 'full' } = {}) {
     const gl = this.gl, canvas = this.canvas;
-    const view = fitView(canvas.width, canvas.height, rig, explode);
+    const view = fitView(canvas.width, canvas.height, rig, explode, framing);
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
     gl.useProgram(this.program);
@@ -152,9 +166,9 @@ export class CanvasRenderer {
   constructor(canvas, textures) {
     this.canvas = canvas; this.context = canvas.getContext('2d'); this.textures = textures; this.kind = 'Canvas 2D';
   }
-  render(scene, rig, { explode = 0 } = {}) {
+  render(scene, rig, { explode = 0, framing = 'full' } = {}) {
     const ctx = this.context, canvas = this.canvas;
-    const view = fitView(canvas.width, canvas.height, rig, explode);
+    const view = fitView(canvas.width, canvas.height, rig, explode, framing);
     ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.setTransform(view.scale, 0, 0, view.scale, view.x, view.y);
     for (const item of scene) {
@@ -202,10 +216,10 @@ export class CanvasRenderer {
   dispose() {}
 }
 
-export function drawMesh(canvas, scene, rig, { explode = 0, selected = '' } = {}) {
+export function drawMesh(canvas, scene, rig, { explode = 0, selected = '', framing = 'full' } = {}) {
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  const view = fitView(canvas.width, canvas.height, rig, explode);
+  const view = fitView(canvas.width, canvas.height, rig, explode, framing);
   ctx.save(); ctx.translate(view.x, view.y); ctx.scale(view.scale, view.scale);
   for (const item of scene) {
     if (item.opacity < .1 || (selected && item.part.id !== selected)) continue;

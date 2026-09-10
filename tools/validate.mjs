@@ -17,7 +17,16 @@ for (const [id, spec] of Object.entries(rig.textures)) {
   assert.equal(png.subarray(1, 4).toString(), 'PNG');
   dimensions[id] = [png.readUInt32BE(16), png.readUInt32BE(20)];
   if (spec.chroma) assert(spec.chroma.length === 3 && spec.chroma.every(n => n >= 0 && n <= 255));
+  const [sourceWidth, sourceHeight] = dimensions[id];
+  const validRect = rect => rect.length === 4 && rect.every(Number.isFinite) && rect[0] >= 0 && rect[1] >= 0 && rect[2] > 0 && rect[3] > 0 && rect[0] + rect[2] <= sourceWidth && rect[1] + rect[3] <= sourceHeight;
+  if (spec.crop) { assert(validRect(spec.crop), `Invalid texture crop: ${id}`); dimensions[id] = spec.crop.slice(2); }
+  for (const rect of spec.clearRects || []) {
+    // Exclusions may extend beyond the crop and are clipped by the texture canvas.
+    assert(rect.length === 4 && rect.every(Number.isFinite) && rect[2] > 0 && rect[3] > 0, `Invalid exclusion: ${id}`);
+  }
+  for (const polygon of spec.clearPolygons || []) assert(polygon.length >= 3 && polygon.every(p => p.length === 2 && p.every(Number.isFinite) && p[0] >= 0 && p[0] <= sourceWidth && p[1] >= 0 && p[1] <= sourceHeight), `Invalid attachment mask: ${id}`);
 }
+for (const frame of Object.values(rig.views || {})) assert(frame.length === 4 && frame.every(Number.isFinite) && frame[2] > 0 && frame[3] > 0);
 for (const node of rig.nodes) { assert(!ids.has(node.id)); ids.add(node.id); }
 ids.clear();
 for (const part of rig.parts) {
@@ -28,6 +37,7 @@ for (const part of rig.parts) {
   const [w, h] = dimensions[part.texture] || [];
   const [u, v, uw, vh] = part.uv;
   assert(u >= 0 && v >= 0 && uw > 0 && vh > 0 && u + uw <= w && v + vh <= h, `UV outside atlas: ${part.id}`);
+  if (part.lockAspect) assert(Math.abs(part.rect[2] / uw - part.rect[3] / vh) < 1e-6, `Stretched reference art: ${part.id}`);
 }
 const motion = new Motion(() => .5);
 for (const scene of [buildScene(rig, { ...motion.values, hair: 0 }), buildScene(rig, { ...motion.values, eyeOpen: 0, headZ: 1, hair: .7 })]) {

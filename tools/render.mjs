@@ -14,19 +14,23 @@ for (const [id, spec] of Object.entries(rig.textures)) {
 }
 await mkdir(new URL('test-results/', root), { recursive: true });
 const states = [
-  ['neutral', {}], ['blink', { eyeOpen: 0 }],
+  ['full', {}], ['neutral', {}], ['blink', { eyeOpen: 0 }],
   ['happy', { smile: 1, brow: .25, eyeOpen: .86, mouthWide: .45, mouthOpen: .55 }],
   ['look-left', { gazeX: -1, headX: -.6, headZ: -.6, hair: .5 }],
   ['look-right', { gazeX: 1, gazeY: -.8, headX: .6, headZ: .6, hair: -.5 }],
   ['sleepy', { eyeOpen: .5, brow: -.4, smile: -.2 }],
   ['exploded', { eyeOpen: 1 }],
+  ['turn-left', { headX: -1, headY: .5, headZ: -1 }],
+  ['turn-right', { headX: 1, headY: -.5, headZ: 1 }],
+  ['arm-out', { arm: .75, headY: .3 }],
+  ['arm-in', { arm: -.75 }],
 ];
 for (const [name, parameters] of states) {
   const motion = new Motion(() => .5);
   const pose = { ...motion.values, hair: 0, ...parameters };
-  const canvas = createCanvas(1000, 1320);
+  const canvas = createCanvas(name === 'full' ? 1120 : 1060, name === 'full' ? 2520 : 1390);
   const renderer = new CanvasRenderer(canvas, textures);
-  const options = { explode: name === 'exploded' ? 1 : 0 };
+  const options = { explode: name === 'exploded' ? 1 : 0, framing: name === 'full' ? 'full' : 'bust' };
   renderer.render(buildScene(rig, pose, options), rig, options);
   const out = new URL(`test-results/${name}.png`, root);
   await writeFile(out, canvas.toBuffer('image/png'));

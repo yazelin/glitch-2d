@@ -22,6 +22,12 @@ try {
       const api = await window.Glitch2D.ready;
       const frames = async count => { for (let i = 0; i < count; i++) await new Promise(requestAnimationFrame); };
       api.setIdle(false); api.setFollow(false);
+      api.setView('bust'); await frames(3);
+      const bust = api.getInfo().view;
+      api.setView('full'); await frames(3);
+      const full = api.getInfo().view;
+      let rejectedView = false;
+      try { api.setView('__proto__'); } catch (error) { rejectedView = error instanceof RangeError; }
       api.setParameters({ headX: .7, gazeX: -.8, eyeOpen: .3, mouthOpen: .6 });
       await frames(35);
       const posed = api.getParameters();
@@ -33,11 +39,12 @@ try {
         for (let i = 0; i < 120; i++) { await frames(1); peak = Math.max(peak, api.getParameters().mouthOpen); }
         api.stopAudio(); await frames(40);
       }
-      return { info: api.getInfo(), posed, sleepy, peak, stopped: api.getParameters().mouthOpen, rigParts: api.exportRig().parts.length };
+      return { info: api.getInfo(), bust, full, rejectedView, posed, sleepy, peak, stopped: api.getParameters().mouthOpen, rigParts: api.exportRig().parts.length };
     }, mode);
     assert.equal(result.info.renderer, mode === 'webgl' ? 'WebGL' : 'Canvas 2D');
     assert.equal(result.info.graphicsError, 0);
-    assert.equal(result.rigParts, 18);
+    assert.equal(result.rigParts, 21);
+    assert.equal(result.bust, 'bust'); assert.equal(result.full, 'full'); assert(result.rejectedView);
     assert(Math.abs(result.posed.headX - .7) < .03);
     assert(Math.abs(result.posed.gazeX + .8) < .03);
     assert(Math.abs(result.posed.eyeOpen - .3) < .03);

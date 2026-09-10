@@ -1,7 +1,7 @@
-import { Motion, PARAMS, clamp } from './engine/motion.js';
-import { buildScene } from './engine/geometry.js';
-import { WebGLRenderer, CanvasRenderer, loadTextures, drawMesh } from './engine/renderer.js';
-import { VoicePlayer } from './engine/audio.js';
+import { Motion, PARAMS, clamp } from './engine/motion.js?v=0.3.0';
+import { buildScene, fitView, editPartRect } from './engine/geometry.js?v=0.3.0';
+import { WebGLRenderer, CanvasRenderer, loadTextures, drawMesh } from './engine/renderer.js?v=0.3.0';
+import { VoicePlayer } from './engine/audio.js?v=0.3.0';
 
 const $ = selector => document.querySelector(selector);
 const query = new URLSearchParams(location.search);
@@ -34,7 +34,7 @@ function showError(error) {
 $('#retry').addEventListener('click', () => location.reload());
 
 async function start() {
-  const rigURL = new URL('character/glitch/rig.json?v=0.2.0', location.href);
+  const rigURL = new URL('character/glitch/rig.json?v=0.3.0', location.href);
   const response = await fetch(rigURL, { signal: AbortSignal.timeout(25000) });
   if (!response.ok) throw new Error(`角色設定讀取失敗（${response.status}）`);
   const rig = await response.json();
@@ -55,6 +55,17 @@ async function start() {
     renderer = new CanvasRenderer(canvas, textures);
   }
   let playingDemo = false, selected = '', explode = 0, expression = 'neutral', running = true;
+  let framing = query.get('view') === 'bust' ? 'bust' : 'full';
+  const setView = name => {
+    if (!Object.hasOwn(rig.views, name)) throw new RangeError(`Unknown view: ${name}`);
+    framing = name;
+    for (const button of document.querySelectorAll('[data-view]')) button.setAttribute('aria-pressed', String(button.dataset.view === name));
+    const url = new URL(location.href); url.searchParams.set('view', name);
+    history.replaceState(null, '', url);
+    $('#overlay-link').href = `?overlay=1&view=${name}`;
+  };
+  for (const button of document.querySelectorAll('[data-view]')) button.addEventListener('click', () => setView(button.dataset.view));
+  setView(framing);
   const voice = new VoicePlayer(motion, state => {
     const playing = state === 'playing';
     $('#voice-demo').textContent = playing ? '停止播放' : '▷ 聽她自我介紹';
@@ -108,7 +119,10 @@ async function start() {
   $('#stage').addEventListener('pointermove', event => {
     if (!motion.follow) return;
     const rect = $('#stage').getBoundingClientRect();
-    motion.pointer = { x: clamp((event.clientX - rect.left) / rect.width * 2 - 1, -1, 1), y: clamp((event.clientY - rect.top) / rect.height * 2 - .65, -1, 1) };
+    const view = fitView(rect.width, rect.height, rig, explode, framing);
+    const x = (event.clientX - rect.left - view.x) / view.scale;
+    const y = (event.clientY - rect.top - view.y) / view.scale;
+    motion.pointer = { x: clamp((x - 500) / 450, -1, 1), y: clamp((y - 430) / 420, -1, 1) };
   });
   $('#stage').addEventListener('pointerleave', () => { motion.pointer = { x: 0, y: 0 }; });
   $('#reset').addEventListener('click', () => {
@@ -137,12 +151,12 @@ async function start() {
     if (!selected) return;
     const part = rig.parts.find(part => part.id === selected);
     $('#part-visible').checked = part.visible !== false;
-    for (const [index, label, min, max] of [[0, '水平位置', -150, 1100], [1, '垂直位置', -200, 1320], [2, '寬度', 5, 850], [3, '高度', 5, 1100]]) {
-      slider($('#part-sliders'), `part-${index}`, label, min, max, part.rect[index], 1, value => {
-        const delta = value - part.rect[index];
-        if (part.clip && index < 2) part.clip[index] += delta;
-        part.rect[index] = value;
-      });
+    const controls = [];
+    for (const [index, label, min, max] of [[0, '水平位置', -400, 1400], [1, '垂直位置', -200, 2530], [2, '寬度', 5, 1400], [3, '高度', 5, 2530]]) {
+      controls.push(slider($('#part-sliders'), `part-${index}`, label, min, max, part.rect[index], 1, value => {
+        editPartRect(part, index, value, $('#part-aspect').checked);
+        controls.forEach((control, i) => control.update(part.rect[i]));
+      }));
     }
   };
   $('#part-select').addEventListener('change', event => { selected = event.target.value; refreshPart(); });
@@ -166,7 +180,7 @@ async function start() {
       lastPose = motion.step(dt);
       const target = $('#explode').checked ? 1 : 0;
       explode += (target - explode) * (reducedMotion ? 1 : 1 - Math.exp(-dt * 9));
-      const options = { explode, selected };
+      const options = { explode, selected, framing };
       const scene = buildScene(rig, lastPose, options);
       renderer.render(scene, rig, options);
       if ($('#show-mesh').checked || selected) drawMesh(meshCanvas, scene, rig, options);
@@ -181,14 +195,14 @@ async function start() {
     frameID = requestAnimationFrame(frame);
   }
   const api = {
-    version: '0.2.0',
+    version: '0.3.0',
     setParameters(values) { motion.setParameters(values); syncSliders(); },
-    setExpression, setIdle, setFollow, blink: () => motion.blink(), gesture,
+    setExpression, setIdle, setFollow, setView, blink: () => motion.blink(), gesture,
     async playAudio(url) { playingDemo = false; return voice.play(url); },
     stopAudio: () => voice.stop(),
     getParameters: () => ({ ...lastPose }),
     exportRig: () => structuredClone(rig),
-    getInfo: () => ({ renderer: renderer.kind, parts: rig.parts.length, expression, format: rig.format, version: rig.version, graphicsError: renderer.gl?.getError() ?? 0 }),
+    getInfo: () => ({ renderer: renderer.kind, parts: rig.parts.length, expression, view: framing, format: rig.format, version: rig.version, graphicsError: renderer.gl?.getError() ?? 0 }),
   };
   Object.assign(window.Glitch2D, api);
   for (const button of document.querySelectorAll('button[disabled]')) button.disabled = false;
@@ -202,6 +216,6 @@ async function start() {
   return api;
 }
 
-window.Glitch2D = { version: '0.2.0' };
+window.Glitch2D = { version: '0.3.0' };
 window.Glitch2D.ready = start();
 window.Glitch2D.ready.catch(showError);
