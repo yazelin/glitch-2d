@@ -5,7 +5,7 @@
 import { readFile, writeFile, mkdir, rm } from 'node:fs/promises';
 import { createCanvas, loadImage } from '@napi-rs/canvas';
 import { Motion, WAVE_DURATION } from '../engine/motion.js';
-import { buildScene } from '../engine/geometry.js';
+import { buildScene, deformPoint, nodeMatrices, point, multiply } from '../engine/geometry.js';
 import { CanvasRenderer, prepareTexture } from '../engine/renderer.js';
 
 const base = new URL('../character/glitch/', import.meta.url);
@@ -129,6 +129,40 @@ for (let n = 0, t = 0; t <= WAVE_DURATION + .1; t += 1 / 30, n++) {
 }
 
 let failures = 0;
+
+// The hand is a separate part riding the sleeve, so its wrist has to sit on the
+// sleeve's wrist joint at every moment, not only at the pose it was placed in.
+// A fixed adjustment matrix scaling about a fixed point pins the wrist for one
+// frame and lets it drift for the rest, which is how this broke: the gap swung
+// between 8 and 102 pixels across a wave and nothing noticed.
+const jointAt = (part, u, v, pose) => {
+  const [px, py, pw, ph] = part.rect;
+  const local = deformPoint(part, px + pw * u, py + ph * v, pose, rig);
+  const m = nodeMatrices(rig, pose)[part.node];
+  return point(part.adjustment ? multiply(m, part.adjustment) : m, ...local);
+};
+const sleeve = rig.parts.find(p => p.id === 'arm-left');
+let worstJoin = { gap: 0, t: 0 };
+{
+  const probe = new Motion(() => .5);
+  probe.idle = true; probe.follow = false;
+  probe.step(1 / 30); probe.wave();
+  for (let t = 0; t <= WAVE_DURATION; t += 1 / 30) {
+    const pose = probe.step(1 / 30);
+    const held = rig.parts.find(p => p.slot === 'leftHand' && p.variant === (pose.slots?.leftHand ?? 'default'));
+    if (!held) continue;
+    const a = jointAt(sleeve, sleeve.joints.wrist[0], sleeve.joints.wrist[1], pose);
+    const b = jointAt(held, held.hand.anchor[0], held.hand.anchor[1], pose);
+    const gap = Math.hypot(a[0] - b[0], a[1] - b[1]);
+    if (gap > worstJoin.gap) worstJoin = { gap, t, id: held.id };
+  }
+}
+console.log(`wrist join     worst ${worstJoin.gap.toFixed(1)}px at t=${worstJoin.t.toFixed(2)}s${worstJoin.id ? ` (${worstJoin.id})` : ''}`);
+if (worstJoin.gap > 4) {
+  console.error(`FAIL the hand comes off the cuff: ${worstJoin.gap.toFixed(1)}px at t=${worstJoin.t.toFixed(2)}s`);
+  failures++;
+} else console.log('OK the wrist stays on the cuff all the way through');
+
 // Signed, because which way the body leans is the whole question. Negative is
 // toward the raised arm, which reads as the body chasing the hand.
 const drift = rows.map(r => (r.chest && rest.chest ? r.chest[0] - rest.chest[0] : 0));
