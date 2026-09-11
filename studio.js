@@ -1,7 +1,7 @@
-import { Motion, PARAMS, clamp } from './engine/motion.js?v=0.4.9';
-import { buildScene, fitView, editPartRect } from './engine/geometry.js?v=0.4.9';
-import { WebGLRenderer, CanvasRenderer, loadTextures, drawMesh } from './engine/renderer.js?v=0.4.9';
-import { VoicePlayer } from './engine/audio.js?v=0.4.9';
+import { Motion, PARAMS, clamp } from './engine/motion.js?v=0.5.0';
+import { buildScene, fitView, editPartRect } from './engine/geometry.js?v=0.5.0';
+import { WebGLRenderer, CanvasRenderer, loadTextures, drawMesh } from './engine/renderer.js?v=0.5.0';
+import { VoicePlayer } from './engine/audio.js?v=0.5.0';
 
 const $ = selector => document.querySelector(selector);
 const query = new URLSearchParams(location.search);
@@ -34,7 +34,7 @@ function showError(error) {
 $('#retry').addEventListener('click', () => location.reload());
 
 async function start() {
-  const rigURL = new URL('character/glitch/rig.json?v=0.4.9', location.href);
+  const rigURL = new URL('character/glitch/rig.json?v=0.5.0', location.href);
   const response = await fetch(rigURL, { signal: AbortSignal.timeout(25000) });
   if (!response.ok) throw new Error(`角色設定讀取失敗（${response.status}）`);
   const rig = await response.json();
@@ -195,7 +195,7 @@ async function start() {
     frameID = requestAnimationFrame(frame);
   }
   const api = {
-    version: '0.4.9',
+    version: '0.5.0',
     setParameters(values) { motion.setParameters(values); syncSliders(); },
     setExpression, setIdle, setFollow, setView, blink: () => motion.blink(), gesture,
     async playAudio(url) { playingDemo = false; return voice.play(url); },
@@ -216,6 +216,6 @@ async function start() {
   return api;
 }
 
-window.Glitch2D = { version: '0.4.9' };
+window.Glitch2D = { version: '0.5.0' };
 window.Glitch2D.ready = start();
 window.Glitch2D.ready.catch(showError);

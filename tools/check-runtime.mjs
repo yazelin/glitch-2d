@@ -33,13 +33,33 @@ try {
       const posed = api.getParameters();
       api.setExpression('sleepy'); await frames(30);
       const sleepy = api.getParameters();
+      // A wave has to reach full height, swing, and put the arm back down.
+      api.gesture();
+      const trail = [];
+      for (let i = 0; i < 230; i++) { await frames(1); trail.push(api.getParameters()); }
+      const wave = {
+        peakRaise: Math.max(...trail.map(p => p.armRaise ?? 0)),
+        endRaise: trail.at(-1).armRaise ?? 0,
+        shoulderLeads: trail.slice(0, 24).some(p => (p.armRaise ?? 0) > (p.armFold ?? 0) + .05),
+        overshoot: Math.max(...trail.map(p => p.armRaise ?? 0)),
+        still: trail.every(p => (p.tilt ?? 0) === 0 && (p.arm ?? 0) === 0),
+        arc: Math.max(...trail.map(p => Math.abs(p.lean ?? 0))),
+        wrist: Math.max(...trail.map(p => Math.abs(p.handAngle ?? 0))),
+        reversals: trail.reduce((count, p, i) => {
+          if (i < 2) return count;
+          const before = (trail[i - 1].armFold ?? 0) - (trail[i - 2].armFold ?? 0);
+          const after = (p.armFold ?? 0) - (trail[i - 1].armFold ?? 0);
+          return count + (before > 0 !== after > 0 ? 1 : 0);
+        }, 0),
+      };
+      await frames(20);
       let peak = 0;
       if (mode === 'webgl') {
         await api.playAudio(new URL('character/glitch/voice-intro.mp3', location.href).href);
         for (let i = 0; i < 120; i++) { await frames(1); peak = Math.max(peak, api.getParameters().mouthOpen); }
         api.stopAudio(); await frames(40);
       }
-      return { info: api.getInfo(), bust, full, rejectedView, posed, sleepy, peak, stopped: api.getParameters().mouthOpen, rigParts: api.exportRig().parts.length };
+      return { info: api.getInfo(), bust, full, rejectedView, posed, sleepy, wave, peak, stopped: api.getParameters().mouthOpen, rigParts: api.exportRig().parts.length };
     }, mode);
     assert.equal(result.info.renderer, mode === 'webgl' ? 'WebGL' : 'Canvas 2D');
     assert.equal(result.info.graphicsError, 0);
@@ -49,6 +69,14 @@ try {
     assert(Math.abs(result.posed.gazeX + .8) < .03);
     assert(Math.abs(result.posed.eyeOpen - .3) < .03);
     assert(Math.abs(result.sleepy.eyeOpen - .5) < .03);
+    assert(result.wave.peakRaise > .9, `wave never reached full height: ${result.wave.peakRaise}`);
+    assert(result.wave.endRaise < .05, `arm did not come back down: ${result.wave.endRaise}`);
+    assert(result.wave.reversals >= 3, `forearm did not swing: ${result.wave.reversals} reversals`);
+    assert(result.wave.shoulderLeads, 'the shoulder did not lead the elbow on the way up');
+    assert(result.wave.overshoot > 1.02, `the arm did not overshoot on arrival: ${result.wave.overshoot}`);
+    assert(result.wave.still, 'parts that should stay still moved during the wave');
+    assert(result.wave.arc > .1 && result.wave.arc < 1, `the body should take a small arc, got ${result.wave.arc}`);
+    assert(result.wave.wrist > .5, `wrist stayed welded to the forearm: ${result.wave.wrist}`);
     if (mode === 'webgl') { assert(result.peak > .08, `Voice did not drive mouth: ${result.peak}`); assert(result.stopped < .02); }
     assert.deepEqual(errors, []); assert.deepEqual(failed, []);
     assert.deepEqual([...hosts], [new URL(base).host]);

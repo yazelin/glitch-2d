@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { Motion, Spring, rms, mouthFromRms } from '../engine/motion.js';
-import { buildScene, deformPoint, around, point, multiply, identity, nodeMatrices, facePoint, fitView, editPartRect } from '../engine/geometry.js';
+import { Motion, Spring, rms, mouthFromRms, waveFrame, WAVE_DURATION } from '../engine/motion.js';
+import { buildScene, deformPoint, partOpacity, around, point, multiply, identity, nodeMatrices, facePoint, fitView, editPartRect } from '../engine/geometry.js';
 import { removeChroma, prepareTexture } from '../engine/renderer.js';
 import { createCanvas, loadImage } from '@napi-rs/canvas';
 
@@ -197,4 +197,90 @@ test('hidden thigh roots cover the skirt joint without moving knees or soles, in
       }
     }
   }
+});
+
+test('a wave unfolds the arm, swings it, and puts it back down', () => {
+  const start = waveFrame(0), peak = waveFrame(1.2), end = waveFrame(WAVE_DURATION);
+  assert.ok(start.armRaise < .01 && start.armFold < .01, 'starts from rest');
+  assert.ok(peak.armRaise > .9 && peak.armFold > .8, 'the arm is up at the peak');
+  assert.ok(end.armRaise < .01 && end.armFold < .01, 'and is back down when it ends');
+  // Overlapping action: the impulse travels out along the limb, so the
+  // shoulder moves first, the elbow follows, and the wrist trails both.
+  // Nothing in the chain arrives at the same moment as its parent.
+  const reaches = (key, fraction) => {
+    const peak = Math.max(...Array.from({ length: 300 }, (_, i) => Math.abs(waveFrame(i / 100)[key])));
+    for (let i = 0; i < 300; i++) if (Math.abs(waveFrame(i / 100)[key]) >= peak * fraction) return i / 100;
+    return Infinity;
+  };
+  assert.ok(waveFrame(.2).armRaise > waveFrame(.2).armFold, 'the shoulder leads the elbow');
+  assert.ok(reaches('armFold', .9) > reaches('armRaise', .9), 'the elbow arrives after the shoulder');
+  // Follow-through: a limb with mass overshoots and rocks back rather than
+  // stopping dead on its mark.
+  const top = Math.max(...Array.from({ length: 300 }, (_, i) => waveFrame(i / 100).armRaise));
+  assert.ok(top > 1.02, `the arm overshoots on arrival, peaked at ${top.toFixed(3)}`);
+  // The brow is dragged along late rather than snapping on with the arm.
+  assert.ok(reaches('brow', .9) > reaches('armRaise', .9), 'the face settles after the shoulder');
+  // The face warms up and the body takes its small arc, so the arm is not
+  // moving in isolation. The arc is small on purpose; the assertion is that it
+  // exists at all, not that it is large.
+  assert.notStrictEqual(peak.smile, 0, 'the face is coupled to the wave');
+  assert.ok(Math.abs(peak.lean) > .1 && Math.abs(peak.lean) < 1, `the body takes a small arc, got ${peak.lean}`);
+  // And the parts with no reason to move stay exactly still. Live2D's motion
+  // guide calls this keeping unnecessary parts stationary; moving all of them
+  // at once is what made an earlier version of this wave read as writhing.
+  // tilt turns the head against the shoulders, which puts a visible twist in
+  // a short neck wearing a choker. lean was tried twice, as a shear of the
+  // torso and as a rotation of the whole figure over the shoes, and both read
+  // as the hips and the neck twisting.
+  for (const key of ['arm', 'tilt', 'headZ', 'headY', 'headX']) {
+    for (const t of [0, .5, 1.2, 2, 2.8]) {
+      assert.strictEqual(waveFrame(t)[key], 0, `${key} stays still at t=${t}`);
+    }
+  }
+  // The forearm has to actually reverse direction, not just drift.
+  const folds = [];
+  for (let t = .7; t < 1.9; t += 1 / 60) folds.push(waveFrame(t).armFold);
+  let reversals = 0;
+  for (let i = 2; i < folds.length; i++) {
+    const before = folds[i - 1] - folds[i - 2], after = folds[i] - folds[i - 1];
+    if (before > 0 !== after > 0) reversals++;
+  }
+  assert.ok(reversals >= 3, `forearm reverses at least three times, saw ${reversals}`);
+});
+
+test('the wrist trails the forearm instead of being welded to it', () => {
+  // Peak fold and peak wrist angle must not land on the same frame.
+  let bestFold = 0, bestHand = 0;
+  for (let t = .7; t < 1.9; t += 1 / 120) {
+    if (waveFrame(t).armFold > waveFrame(bestFold || .7).armFold) bestFold = t;
+    if (waveFrame(t).handAngle > waveFrame(bestHand || .7).handAngle) bestHand = t;
+  }
+  assert.ok(Math.abs(bestFold - bestHand) > .01, 'the hand lags the forearm');
+});
+
+test('a slot shows one variant at a time and leaves other parts alone', () => {
+  const base = { id: 'eye-left', slot: 'eyes', variant: 'default', type: 'eye' };
+  const smile = { id: 'eye-smile-left', slot: 'eyes', variant: 'smile' };
+  const brow = { id: 'brow-left', type: 'brow' };
+  const open = { eyeOpen: 1 };
+  assert.ok(partOpacity(base, open) > 0, 'default shows when no slot is chosen');
+  assert.strictEqual(partOpacity(smile, open), 0, 'other variants stay hidden');
+  const swapped = { eyeOpen: 1, slots: { eyes: 'smile' } };
+  assert.strictEqual(partOpacity(base, swapped), 0, 'the default gives way');
+  assert.ok(partOpacity(smile, swapped) > 0, 'the chosen variant shows');
+  assert.strictEqual(partOpacity(brow, swapped), partOpacity(brow, open), 'parts outside the slot are untouched');
+});
+
+test('bending the arm keeps the shoulder still and carries the hand upward', () => {
+  const part = rig.parts.find(p => p.id === 'arm-left');
+  assert.ok(part.bend, 'the left arm carries bend angles');
+  const [rx, ry, w, h] = part.rect;
+  const at = ([u, v]) => [rx + w * u, ry + h * v];
+  const rest = { ...neutral(), armRaise: 0, armFold: 0 };
+  const up = { ...neutral(), armRaise: 1, armFold: 1 };
+  const shoulder = at(part.joints.shoulder), wrist = at(part.joints.wrist);
+  const pinned = deformPoint(part, ...shoulder, up, rig);
+  assert.ok(Math.hypot(pinned[0] - shoulder[0], pinned[1] - shoulder[1]) < 6, 'the shoulder stays put');
+  const before = deformPoint(part, ...wrist, rest, rig), after = deformPoint(part, ...wrist, up, rig);
+  assert.ok(after[1] < before[1] - 400, `the wrist rises, moved ${(before[1] - after[1]).toFixed(0)}px`);
 });

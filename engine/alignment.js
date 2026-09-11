@@ -1,5 +1,5 @@
-import { around, buildScene, deformPoint, identity, multiply, nodeMatrices, point } from './geometry.js?v=0.4.9';
-import { Motion } from './motion.js?v=0.4.9';
+import { around, buildScene, deformPoint, identity, multiply, nodeMatrices, point } from './geometry.js?v=0.5.0';
+import { Motion } from './motion.js?v=0.5.0';
 
 export const restPose = () => ({ ...new Motion().values, hair: 0 });
 
@@ -60,6 +60,11 @@ export function hitTest(scene, x, y, alphaAt) {
   }
   return null;
 }
+
+// What a saved setting owns: its own placement, and the geometry that
+// placement is relative to. Which node a part hangs off is the model's own
+// skeleton, so re-parenting a part does not invalidate a saved placement.
+const OWNED_BY_SETTING = new Set(['id', 'rect', 'uv', 'texture', 'mesh', 'adjustment', 'neck', 'jaw']);
 
 export class Alignment {
   constructor(rig) {
@@ -160,6 +165,27 @@ export class Alignment {
         if (current[key] === undefined) delete part[key]; else part[key] = structuredClone(current[key]);
         recalibrated.push(id);
       }
+      // Framing belongs to the model too. The tool has its own zoom and view
+      // controls, so a saved setting never carries authority over the views.
+      if (this.original.views) imported.views = structuredClone(this.original.views);
+      // The node hierarchy is the model's skeleton, not the user's placement,
+      // so a setting saved before a joint existed still loads.
+      if (this.original.nodes) imported.nodes = structuredClone(this.original.nodes);
+      // And so does every other field describing how a part behaves. Listing
+      // the model's fields one by one meant each new rig feature rejected every
+      // old setting, so the rule is inverted: the setting keeps what it owns
+      // and the model supplies the rest. What it owns is its adjustment plus
+      // the geometry that adjustment is measured against, which is left alone
+      // so a setting belonging to a different model is still rejected.
+      for (const current of this.original.parts) {
+        const part = imported.parts.find(p => p.id === current.id);
+        if (!part) continue;
+        for (const key of new Set([...Object.keys(current), ...Object.keys(part)])) {
+          if (OWNED_BY_SETTING.has(key)) continue;
+          if (current[key] === undefined) delete part[key];
+          else part[key] = structuredClone(current[key]);
+        }
+      }
       const groups = [
         { texture: 'sleeveLeft', parts: ['arm-left'], nodes: ['arm-left'] },
         { texture: 'sleeveRight', parts: ['arm-right'], nodes: ['arm-right'] },
@@ -174,7 +200,7 @@ export class Alignment {
           return part;
         }),
         nodes: group.nodes.map(id => rig.nodes?.find(n => n.id === id)),
-      });
+      }, canonical);   // Key order must not decide whether a group counts as changed.
       for (const group of groups) {
         if (base(imported, group) === base(this.original, group)) continue;
         for (const [list, ids] of [['parts', group.parts], ['nodes', group.nodes]]) for (const id of ids) {
