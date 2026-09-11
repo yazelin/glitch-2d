@@ -63,7 +63,7 @@ try {
     }, mode);
     assert.equal(result.info.renderer, mode === 'webgl' ? 'WebGL' : 'Canvas 2D');
     assert.equal(result.info.graphicsError, 0);
-    assert.equal(result.rigParts, 21);
+    assert.equal(result.rigParts, 27);
     assert.equal(result.bust, 'bust'); assert.equal(result.full, 'full'); assert(result.rejectedView);
     assert(Math.abs(result.posed.headX - .7) < .03);
     assert(Math.abs(result.posed.gazeX + .8) < .03);

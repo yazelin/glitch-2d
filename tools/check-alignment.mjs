@@ -30,21 +30,22 @@ try{
       const restored=JSON.stringify(saved)===JSON.stringify(api.exportRig());
       const migrations=calibrations.map(({name,rig})=>{
         const migration=api.importRig(rig),migrated=api.exportRig();
-        const preserved=migrated.parts.filter(p=>!migration.replaced.includes(p.id)).every(p=>JSON.stringify(p.adjustment)===JSON.stringify(rig.parts.find(q=>q.id===p.id).adjustment));
+        /* Parts the model has gained since this setting was saved had no edit to preserve. */
+        const preserved=migrated.parts.filter(p=>!migration.replaced.includes(p.id)&&rig.parts.some(q=>q.id===p.id)).every(p=>JSON.stringify(p.adjustment)===JSON.stringify(rig.parts.find(q=>q.id===p.id).adjustment));
         const currentArt=JSON.stringify(migrated.textures)===JSON.stringify(original.textures)&&migration.replaced.every(id=>JSON.stringify(migrated.parts.find(p=>p.id===id))===JSON.stringify(original.parts.find(p=>p.id===id)));
         return{name,migration,preserved,currentArt};
       });
       return{before,moved,redone,reset,edited,restored,migrations,referenceFixed:JSON.stringify(reference)===JSON.stringify(api.getInfo().reference),info:api.getInfo()};
     },calibrations);
-    assert.equal(result.info.renderer,mode==='webgl'?'WebGL':'Canvas 2D');assert.equal(result.info.graphicsError,0);assert.equal(result.info.parts,21);
+    assert.equal(result.info.renderer,mode==='webgl'?'WebGL':'Canvas 2D');assert.equal(result.info.graphicsError,0);assert.equal(result.info.parts,27);
     assert(Math.abs(result.moved[0]-result.before[0]-25)<1e-7);assert(Math.abs(result.moved[1]-result.before[1]+10)<1e-7);
     assert(result.redone&&result.reset&&result.restored&&result.referenceFixed);assert(result.edited.hidden.includes('arm-right'));assert(result.edited.bones);assert.equal(result.edited.zoom,180);
     const expected={
       'user-alignment-v0.4.0':[['arm-left','arm-right','skirt','leg-left','leg-right'],['torso','face']],
       'user-alignment-v0.4.1':[['arm-left','arm-right','leg-left','leg-right'],['torso','face']],
       'user-alignment-v0.4.2':[['arm-left','arm-right','leg-left','leg-right'],['torso']],
-      'user-alignment-v0.4.6':[['leg-left','leg-right'],[]],
-      'user-alignment-v0.4.7':[[],[]]};
+      'user-alignment-v0.4.6':[['arm-left','leg-left','leg-right'],[]],
+      'user-alignment-v0.4.7':[['arm-left'],[]]};
     for(const entry of result.migrations){const[replaced,recalibrated]=expected[entry.name];assert.deepEqual(entry.migration.replaced,replaced,entry.name);assert.deepEqual(entry.migration.recalibrated,recalibrated,entry.name);assert(entry.preserved&&entry.currentArt,entry.name);}
     assert.deepEqual(errors,[]);assert.deepEqual(failed,[]);console.log(JSON.stringify({mode,...result,errors,failed},null,2));await page.close();
   }

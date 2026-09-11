@@ -171,21 +171,9 @@ export class Alignment {
       // The node hierarchy is the model's skeleton, not the user's placement,
       // so a setting saved before a joint existed still loads.
       if (this.original.nodes) imported.nodes = structuredClone(this.original.nodes);
-      // And so does every other field describing how a part behaves. Listing
-      // the model's fields one by one meant each new rig feature rejected every
-      // old setting, so the rule is inverted: the setting keeps what it owns
-      // and the model supplies the rest. What it owns is its adjustment plus
-      // the geometry that adjustment is measured against, which is left alone
-      // so a setting belonging to a different model is still rejected.
-      for (const current of this.original.parts) {
-        const part = imported.parts.find(p => p.id === current.id);
-        if (!part) continue;
-        for (const key of new Set([...Object.keys(current), ...Object.keys(part)])) {
-          if (OWNED_BY_SETTING.has(key)) continue;
-          if (current[key] === undefined) delete part[key];
-          else part[key] = structuredClone(current[key]);
-        }
-      }
+      // Parts the model has dropped go with it.
+      const live = new Set(this.original.parts.map(p => p.id));
+      imported.parts = imported.parts.filter(p => live.has(p.id));
       const groups = [
         { texture: 'sleeveLeft', parts: ['arm-left'], nodes: ['arm-left'] },
         { texture: 'sleeveRight', parts: ['arm-right'], nodes: ['arm-right'] },
@@ -214,9 +202,47 @@ export class Alignment {
       // Art fixes outside those groups (masks, chroma) also belong to the model.
       for (const [id, spec] of Object.entries(this.original.textures || {})) {
         if (!imported.textures || JSON.stringify(imported.textures[id]) === JSON.stringify(spec)) continue;
+        // A texture the model has added is not a correction to the user's work,
+        // so it arrives quietly rather than being reported back as recalibrated.
+        const known = imported.textures[id] !== undefined;
         imported.textures[id] = structuredClone(spec);
-        if (!recalibrated.includes(id)) recalibrated.push(id);
+        if (known && !recalibrated.includes(id)) recalibrated.push(id);
       }
+      for (const id of Object.keys(imported.textures || {})) {
+        if (!this.original.textures?.[id]) delete imported.textures[id];
+      }
+      // And so does every other field describing how a part behaves. Listing
+      // the model's fields one by one meant each new rig feature rejected every
+      // old setting, so the rule is inverted: the setting keeps what it owns
+      // and the model supplies the rest. What it owns is its adjustment plus
+      // the geometry that adjustment is measured against, which is left alone
+      // so a setting belonging to a different model is still rejected.
+      // A saved setting owns its adjustment and the geometry that adjustment is
+      // measured against. If that geometry disagrees for a part both sides
+      // know, and the art-replacement groups above did not explain it, the
+      // setting belongs to a different model and is refused.
+      for (const current of this.original.parts) {
+        const before = imported.parts.find(p => p.id === current.id);
+        if (!before || replaced.includes(current.id)) continue;
+        for (const key of OWNED_BY_SETTING) {
+          if (key === 'adjustment') continue;
+          if (JSON.stringify(before[key]) !== JSON.stringify(current[key])) {
+            throw new Error('這份設定的底模不同，請載入本工具匯出的設定。');
+          }
+        }
+      }
+      // Rebuild the part list in the model's own order, keeping each saved
+      // placement where the part still exists. Parts the model has added come
+      // in with its placement, parts it has dropped go with it, and restore()
+      // can line the adjustments up by index again.
+      const saved = new Map(imported.parts.map(p => [p.id, p]));
+      imported.parts = this.original.parts.map(current => {
+        const part = structuredClone(current);
+        const before = saved.get(current.id);
+        if (before && before.adjustment !== undefined) part.adjustment = before.adjustment;
+        else delete part.adjustment;
+        return part;
+      });
       if (stripped(imported) !== stripped(this.original)) throw new Error('這份設定的底模不同，請載入本工具匯出的設定。');
     }
     for (const p of imported.parts) if (p.adjustment !== undefined) {

@@ -28,8 +28,11 @@ const draw = (pose, hidden) => {
 };
 // Bare skin: the sleeve and the hoodie are all blue-white, the hand is not.
 const isSkin = (d, i) => d[i + 3] > 140 && d[i] > 232 && d[i + 1] > 196 && d[i + 1] < 248 && d[i + 2] > 188 && d[i + 2] < 244;
-const others = new Set(rig.parts.map(part => part.id).filter(id => id !== 'arm-left'));
-const everything = new Set(['arm-left']);
+// The hand is its own part now, and one of the two variants is always drawn,
+// so the arm under test is the sleeve plus whichever hand is showing.
+const limb = new Set(['arm-left', 'hand-side', 'hand-open']);
+const others = new Set(rig.parts.map(part => part.id).filter(id => !limb.has(id)));
+const everything = new Set(limb);
 
 // The hoodie has a socket cut out of it where the sleeve attaches, so if the
 // arm swings off that socket the hole shows. This is the socket itself, in
@@ -58,9 +61,12 @@ const bands = { chest: [700, 1100] };
 // Bare throat between the jaw and the collar. The head travels when the spine
 // bends, and if the neck column does not follow it the throat stretches.
 const neckBand = [560, 700];
+// Only the neck column. Scanning the whole row counted the raised hand as
+// throat the moment it passed this height.
+const neckColumn = [Math.round(420 - viewX), Math.round(580 - viewX)];
 const throat = data => {
   let n = 0;
-  for (let y = neckBand[0]; y < neckBand[1]; y++) for (let x = 0; x < width; x++) {
+  for (let y = neckBand[0]; y < neckBand[1]; y++) for (let x = neckColumn[0]; x < neckColumn[1]; x++) {
     if (isSkin(data, (y * width + x) * 4)) n++;
   }
   return n;

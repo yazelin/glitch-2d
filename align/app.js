@@ -22,6 +22,17 @@ async function start() {
   const hidden = new Set(editor.scene().filter(item => item.opacity < .05).map(item => item.part.id));
   // Keep dormant expression art at its full size, available through each visibility switch.
   editor.pose.mouthOpen = 1;
+  /* The raised pose. Hands that only appear mid-wave are drawn for that pose,
+     so placing them against a hanging arm means judging them upside down. */
+  let raised = false;
+  const setRaised = value => {
+    raised = value;
+    Object.assign(editor.pose, raised
+      ? { armRaise: 1, armFold: 1, handAngle: 0, slots: { leftHand: 'open' } }
+      : { armRaise: 0, armFold: 0, handAngle: 0, slots: {} });
+    $('raise').setAttribute('aria-pressed', String(raised));
+    refresh();
+  };
   const alpha = Object.fromEntries(Object.entries(textures).map(([id, img]) => {
     const c = makeCanvas(img.width, img.height), ctx = c.getContext('2d', { willReadFrequently: true });
     ctx.drawImage(img, 0, 0); return [id, { width: img.width, height: img.height, data: ctx.getImageData(0, 0, img.width, img.height).data }];
@@ -180,6 +191,7 @@ async function start() {
   }
   document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
   document.querySelectorAll('[data-frame]').forEach(b => b.addEventListener('click', () => setFrame(b.dataset.frame)));
+  $('raise').addEventListener('click', () => setRaised(!raised));
   $('zoom').addEventListener('input', () => setZoom(Number($('zoom').value)));
   for (const id of ['guides','bones']) $(id).addEventListener('change', () => { state[id] = $(id).checked; schedule(); });
   for (const [id,fn] of [['smaller',()=>editor.scale(.98)],['larger',()=>editor.scale(1.02)],['rotate-left',()=>editor.rotate(-1)],['rotate-right',()=>editor.rotate(1)],['reset-part',()=>editor.reset()],['reset-all',()=>editor.reset(true)]]) $(id).addEventListener('click', () => change(fn));
@@ -277,6 +289,7 @@ async function start() {
     move:(x,y)=>change(()=>editor.move(x,y)), scale:factor=>change(()=>editor.scale(factor)), rotate:angle=>change(()=>editor.rotate(angle)),
     undo:()=>{editor.undo();refresh();},redo:()=>{editor.redo();refresh();},reset:()=>change(()=>editor.reset(true)),
     setMode,setFrame,setZoom,
+    setRaised:value=>{setRaised(Boolean(value));},
     setVisible:(id,value)=>{if(!editor.rig.parts.some(p=>p.id===id))throw new RangeError('Unknown part');if(value)hidden.delete(id);else hidden.add(id);refresh();},
     setBones:value=>{state.bones=Boolean(value);$('bones').checked=state.bones;schedule();},
     getInfo:()=>({renderer:renderer.kind,graphicsError:renderer.gl?.getError()||0,parts:editor.rig.parts.length,selection:editor.selection,changed:editor.changed,hidden:[...hidden],...state,reference:structuredClone(editor.rig.reference),bounds:editor.bounds(),canUndo:Boolean(editor.past.length),canRedo:Boolean(editor.future.length)}),
