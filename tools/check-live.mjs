@@ -111,20 +111,26 @@ for (const [name, contextOptions] of Object.entries(LAYOUTS)) {
   // of guessing. Software rendering a full-size desktop canvas usually lands
   // there: the engine clamps its own timestep below 20fps and the wave
   // stretches by an amount that wanders.
-  await timeWave(false);
+  await timeWave(false);                       // 暖機：第一次的影格率最不穩
   await page.waitForTimeout(400);
-  const first = await timeWave(false);
+  const before = await timeWave(false);
   await page.waitForTimeout(400);
-  const second = await timeWave(false);
+  const clicked = await timeWave(true);
   await page.waitForTimeout(400);
-  const noise = Math.abs(first - second);
+  const after = await timeWave(false);
+  // The clean runs bracket the clicked one, so their disagreement describes the
+  // conditions the clicked run actually ran under. Measuring both cleans first
+  // was tried and underestimated: the machine drifts, and the drift landed on
+  // the clicked run alone, which read as a restart that mobile — same code —
+  // never showed.
+  const noise = Math.abs(before - after);
+  const baseline = Math.max(before, after);
   if (noise > 300) {
-    skip(`${name} 連點不重揮`, `這台機器量不準：兩次乾淨揮手相差 ${noise.toFixed(0)}ms，而重揮只多約 900ms。改由 npm run test:runtime 在兩種繪製路徑上確定性驗證。`);
+    skip(`${name} 連點不重揮`, `這台機器量不準：連點前後兩次乾淨揮手相差 ${noise.toFixed(0)}ms，而重揮只多約 900ms。改由 npm run test:runtime 在兩種繪製路徑上確定性驗證。`);
   } else {
-    const clicked = await timeWave(true);
-    const longer = clicked - Math.min(first, second);
+    const longer = clicked - baseline;
     check(`${name} 連點不重揮`, longer < 450,
-      `乾淨 ${first.toFixed(0)}/${second.toFixed(0)}ms（誤差 ${noise.toFixed(0)}ms），中途連點兩次 ${clicked.toFixed(0)}ms，多了 ${longer.toFixed(0)}ms`);
+      `乾淨 ${before.toFixed(0)}／${after.toFixed(0)}ms（誤差 ${noise.toFixed(0)}ms），中途連點兩次 ${clicked.toFixed(0)}ms，多了 ${longer.toFixed(0)}ms（重揮會多約 900ms）`);
   }
 
   const wrong = assets.filter(a => !a.endsWith('.webp'));
