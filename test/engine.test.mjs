@@ -284,3 +284,20 @@ test('bending the arm keeps the shoulder still and carries the hand upward', () 
   const before = deformPoint(part, ...wrist, rest, rig), after = deformPoint(part, ...wrist, up, rig);
   assert.ok(after[1] < before[1] - 400, `the wrist rises, moved ${(before[1] - after[1]).toFixed(0)}px`);
 });
+
+test('a second wave is ignored until the first has finished', () => {
+  const motion = new Motion(() => .5);
+  motion.idle = false; motion.follow = false;
+  motion.wave();
+  for (let i = 0; i < 30; i++) motion.step(1 / 30);      // 一秒，手正舉著
+  const midway = motion.step(0).armRaise;
+  assert.ok(midway > .5 && motion.waving, 'the first wave is still running');
+  motion.wave();                                         // 中途再點
+  const after = motion.step(1 / 30).armRaise;
+  assert.ok(Math.abs(after - midway) < .1, `the arm keeps going, went from ${midway.toFixed(3)} to ${after.toFixed(3)}`);
+  // 跑完之後才接受下一次
+  for (let t = 0; t < WAVE_DURATION + .2; t += 1 / 30) motion.step(1 / 30);
+  assert.ok(!motion.waving, 'the wave ends');
+  motion.wave();
+  assert.ok(motion.waving, 'and a wave after that one is accepted');
+});

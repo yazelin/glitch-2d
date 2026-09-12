@@ -35,6 +35,15 @@ try {
       const sleepy = api.getParameters();
       // A wave has to reach full height, swing, and put the arm back down.
       api.gesture();
+      // Clicking again mid-wave used to restart it from hanging, which reads as
+      // the arm dropping and starting over. The second call must do nothing.
+      await frames(30);
+      const partway = api.getParameters().armRaise ?? 0;
+      api.gesture();
+      await frames(1);
+      const interrupted = Math.abs((api.getParameters().armRaise ?? 0) - partway) > .15;
+      for (let i = 0; i < 200; i++) await frames(1);
+      api.gesture();
       const trail = [];
       for (let i = 0; i < 230; i++) { await frames(1); trail.push(api.getParameters()); }
       const wave = {
@@ -59,7 +68,7 @@ try {
         for (let i = 0; i < 120; i++) { await frames(1); peak = Math.max(peak, api.getParameters().mouthOpen); }
         api.stopAudio(); await frames(40);
       }
-      return { info: api.getInfo(), bust, full, rejectedView, posed, sleepy, wave, peak, stopped: api.getParameters().mouthOpen, rigParts: api.exportRig().parts.length };
+      return { info: api.getInfo(), bust, full, rejectedView, posed, sleepy, wave, interrupted, peak, stopped: api.getParameters().mouthOpen, rigParts: api.exportRig().parts.length };
     }, mode);
     assert.equal(result.info.renderer, mode === 'webgl' ? 'WebGL' : 'Canvas 2D');
     assert.equal(result.info.graphicsError, 0);
@@ -69,6 +78,7 @@ try {
     assert(Math.abs(result.posed.gazeX + .8) < .03);
     assert(Math.abs(result.posed.eyeOpen - .3) < .03);
     assert(Math.abs(result.sleepy.eyeOpen - .5) < .03);
+    assert(!result.interrupted, 'a second click restarted the wave instead of being ignored');
     assert(result.wave.peakRaise > .9, `wave never reached full height: ${result.wave.peakRaise}`);
     assert(result.wave.endRaise < .05, `arm did not come back down: ${result.wave.endRaise}`);
     assert(result.wave.reversals >= 3, `forearm did not swing: ${result.wave.reversals} reversals`);
