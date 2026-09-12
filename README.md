@@ -443,4 +443,26 @@ npm run test:alignment
 
 GitHub Pages 延用 `main` 分支根目錄，保留 `.nojekyll`。先前的 Live2D 頁面移至 `legacy/`，其 `model/` 與 `source/` 仍在原位置；新版不會讀取這些檔案。原有 Cubism 專案與 PSD 保留。
 
+### `source/glitch.cmo3` 的工作目錄版來歷不明，兩版都留著
+
+工作目錄裡的 `source/glitch.cmo3` 是 `M`（已修改未提交），先講結論：**它跟線上那批貼圖無關，提交版與磁碟版都做不出線上的貼圖**，因為線上的貼圖不是 Cubism 匯出的。
+
+- 線上跑的是 `character/glitch/*.png`（`hand-open-v6.png` 1189×1420、`sleeve-left-v9.png` 1024×1536、`face-features.png` 1254×1254 …），逐部件的散圖，由內建 imagegen 產生與本人手修，經 `ai-brain-site/scripts/sync_glitch2d.py` 轉成 webp。
+- Cubism 這條線只會吐一張 `model/glitch.2048/texture_00.png`（2048×2048 圖集）＋ `model/glitch.moc3`，只有 `legacy/` 讀。兩條管線沒有交集。
+- 所以真站的事實來源是 `character/glitch/*.png` ＋ `character/glitch/rig.json`，兩者都在版控裡。`.cmo3` 是 `legacy/` 那條線的來源，不是真站的。
+
+那個 09-10 的改動有沒有意義，**判斷不出來**，兩邊證據都在：
+
+- 傾向「不是有意義的編輯」：Cubism 的 Wine prefix（`~/.wine-cubism`）自 09-05 起沒有任何檔案被動過，編輯器設定最後寫入是 09-07 17:56，`drive_c` 在 09-10 整天沒有動靜。提交版 `46d2ec7`（09-07 15:32）與 `model/` 的匯出時間同一分鐘，是最後一次真正的 Cubism 作業。
+- 無法排除「是有意義的編輯」：磁碟版 7,240,579 位元組，跟 Cubism 工作夾裡 09-06 的中間檔 `glitch-rig.cmo3` 大小一模一樣，內容卻有 7,238,988 位元組不同。`.cmo3` 是 CAFF 容器，位移 0x0C 有一組每次存檔都會變的種子，整份酬載跟著它變，所以「位元組幾乎全不同」不代表邏輯內容不同。沒有辦法離線解出 CAFF 來比對邏輯內容，也沒有 headless 的 Cubism 可以重匯驗證。
+
+因此不提交也不還原，兩版都保留，等本人決定：
+
+| 版本 | 位置 | sha256 |
+| --- | --- | --- |
+| 提交版（09-07 `46d2ec7`） | `git cat-file blob 46d2ec7:source/glitch.cmo3` | `4ebefe873c468a66…` |
+| 工作目錄版（09-10 22:23） | `source/glitch.cmo3`，另備份於 `~/.wine-cubism/drive_c/glitch/glitch-worktree-2026-09-10.cmo3` | `c933887b16f02791…` |
+
+要判定的話只有一條路：在 Cubism 裡分別開這兩個檔比對綁定，或各重匯一次 `moc3` 比對。`git checkout source/glitch.cmo3` 之前記得工作目錄那版的備份在上表第二列。
+
 程式碼沿用 [MIT 授權](LICENSE-CODE)。角色名稱、設計、圖像及配音的權利安排沿用原專案，不因程式碼授權而改變。
